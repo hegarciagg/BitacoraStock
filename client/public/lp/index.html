@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORCA LP Professional Decision Engine</title>
+    <style>
+        /* Incrustando CSS básico para asegurar que los estilos carguen inmediatamente para previsualización, 
+           Estilos completos estarán en styles.css pero enlazados aquí */
+    </style>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js vía CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.0"></script>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🧠 ORCA LP <span class="highlight">Professional</span></h1>
+        <p class="subtitle">Liquidity Provider Decision Engine v2.0</p>
+    </header>
+
+    <main class="dashboard-grid">
+        <!-- PANEL DE ENTRADAS -->
+        <section class="panel inputs-panel">
+            <h2>⚙️ Strategy Parameters</h2>
+            <form id="lpForm">
+                <div class="form-group">
+                    <label for="symbol">Asset Pair (Yahoo Ticker)</label>
+                    <input type="text" id="symbol" value="SOL-USD" placeholder="e.g. ETH-USD">
+                </div>
+                
+                <div class="form-group">
+                    <label for="capital">Initial Capital ($)</label>
+                    <input type="number" id="capital" value="9468" step="100">
+                </div>
+
+                <div class="row">
+                    <div class="form-group half">
+                        <label for="pLow">Min Price (P_Low)</label>
+                        <input type="number" id="pLow" value="80" step="10">
+                    </div>
+                    <div class="form-group half">
+                        <label for="pHigh">Max Price (P_High)</label>
+                        <input type="number" id="pHigh" value="120" step="10">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group half">
+                        <label for="fees24h">Est. 24h Pool Fees ($)</label>
+                        <input type="number" id="fees24h" value="124000" step="1000">
+                    </div>
+                    <div class="form-group half">
+                        <label for="tvl">Pool TVL ($)</label>
+                        <input type="number" id="tvl" value="25400000" step="10000">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="startDate">Analysis Start Date</label>
+                    <input type="date" id="startDate" value="2023-01-01">
+                </div>
+
+                <button type="button" id="runAnalysis" class="btn-primary">
+                    🚀 EJECUTAR ANÁLISIS
+                </button>
+                <div id="statusMessage" class="status-message"></div>
+            </form>
+        </section>
+
+        <!-- PANEL DE RESULTADOS -->
+        <section class="panel results-panel">
+            <!-- NUEVO DASHBOARD DE PORTFOLIO -->
+            <div class="portfolio-header">
+                <h2>Portfolio</h2>
+                <p class="subtitle-text">Track and manage your active liquidity positions.</p>
+                
+                <div class="portfolio-summary-row">
+                    <div class="summary-item">
+                        <span class="label">Total Value</span>
+                        <span class="value" id="val-total-value">--</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Estimated Yield (24H)</span>
+                        <span class="value-group">
+                            <span class="value" id="val-est-yield-24h">--</span>
+                            <span class="sub-value" id="val-apy-24h">--</span>
+                        </span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Rango Óptimo (7d)</span>
+                        <span class="value-group">
+                            <span class="value" id="val-opt-range">--</span>
+                            <span class="sub-value" style="color: var(--text-secondary); font-size: 0.75rem;" id="val-opt-vol">Volatilidad: --</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marcador de Posición de Barra de Búsqueda -->
+            <div class="search-bar">
+                <input type="text" placeholder="Search tokens ..." disabled style="background: #0f172a; border: 1px solid #334155; padding: 10px; border-radius: 6px; width: 100%; max-width: 300px; margin-bottom: 20px;">
+            </div>
+
+            <!-- Tabla de Portafolio -->
+            <div class="table-responsive">
+                <table class="portfolio-table">
+                    <thead>
+                        <tr>
+                            <th>Pool</th>
+                            <th>Balance</th>
+                            <th>&uarr; Est. Yield &#9432; 24H</th>
+                            <th style="min-width: 200px;">Position Range</th>
+                            <th>Current Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="pool-info">
+                                    <div class="pool-icon-wrapper">
+                                        <span class="pool-icon">🪙</span>
+                                    </div>
+                                    <div class="pool-details">
+                                        <span class="pool-name" id="table-pool-name">--/--</span>
+                                        <span class="pool-tier">0.05%</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-val" id="table-balance">--</td>
+                            <td class="table-val">
+                                <span id="table-est-yield">--</span>
+                            </td>
+                            <td class="range-cell">
+                                <div class="range-visual-container">
+                                    <div class="range-labels">
+                                        <span class="range-limit min-limit" id="range-min">--</span>
+                                        <span class="range-limit max-limit" id="range-max">--</span>
+                                    </div>
+                                    <div class="range-bar-track">
+                                         <!-- Barra de Rango Activo -->
+                                         <div class="range-bar-fill"></div>
+                                         <!-- Marcador de Precio Actual -->
+                                         <div class="range-marker" id="range-marker" style="left: 50%;"></div>
+                                    </div>
+                                    <div class="range-badges">
+                                        <span class="badge" id="range-status">--</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="price-cell">
+                                <div class="price-wrapper">
+                                    <span class="price-val" id="table-price">--</span>
+                                    <span class="price-unit" id="table-price-unit">--</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Cuadrícula de Estadísticas Detalladas (Suplementaria) -->
+            <div class="metrics-grid" style="margin-top: 20px; border-top: 1px solid #334155; padding-top: 20px;">
+                <div class="metric-card small-card">
+                    <span class="label">Sharpe Ratio</span>
+                    <span class="value" id="val-sharpe">--</span>
+                </div>
+                <div class="metric-card small-card">
+                    <span class="label">Max Drawdown</span>
+                    <span class="value" id="val-drawdown">--</span>
+                </div>
+                 <div class="metric-card small-card">
+                    <span class="label">Impermanent Loss</span>
+                    <span class="value" id="val-il">--</span>
+                </div>
+            </div>
+
+            <div class="alert-box" id="lpAlertBox">
+                <!-- Las alertas aparecerán aquí -->
+                <div class="placeholder-text">Run analysis to generate LP Strategy Alerts</div>
+            </div>
+
+            <!-- Informe de Texto Detallado -->
+            <div class="report-container" style="margin-top: 20px;">
+                <h3>📜 Detailed Strategy Report</h3>
+                <pre id="detailedReport" style="background: #1e293b; color: #f8fafc; padding: 15px; border-radius: 8px; font-family: monospace; white-space: pre-wrap; border: 1px solid #334155;">Waiting for analysis...</pre>
+            </div>
+        </section>
+
+        <!-- PANEL DE GRÁFICOS -->
+        <section class="panel chart-panel">
+            <h2>📈 Price Action & LP Range</h2>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+            
+            <h2 style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 20px;">🆚 Performance Comparison (LP vs HODL)</h2>
+            <div class="chart-container">
+                <canvas id="performanceChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Desarrollado por Hector E. Garcia | ORCA LP Decision Engine | Data provided by Yahoo Finance (via Proxy) | USE AT OWN RISK</p>
+    </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

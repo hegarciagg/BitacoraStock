@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MAIN STOCK | Institutional Portfolio Optimization</title>
+    
+    <!-- Meta Tags for SEO & Premium Feel -->
+    <meta name="description" content="Advanced Quantitative Portfolio Analysis Engine - Institutional grade optimization and risk assessment.">
+    <meta name="keywords" content="Portfolio Optimization, Efficient Frontier, Quantitative Analysis, Financial Dashboard">
+    <meta name="author" content="Hector E. Garcia">
+    
+    <!-- Open Graph (for social sharing) -->
+    <meta property="og:title" content="MAIN STOCK | Portfolio Analytics">
+    <meta property="og:description" content="Professional-grade portfolio optimization using modern portfolio theory.">
+    <meta property="og:type" content="website">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body class="dark-theme">
+    <div class="glass-bg"></div>
+    
+    <div class="app-container">
+        <!-- Sidebar (Left): Selection & Config -->
+        <aside class="sidebar premium-panel">
+            <div class="brand">
+                <div class="logo-glow"></div>
+                <h1>⚡ QuantEngine<span>Pro</span></h1>
+                <p>Institutional Grade Optimization</p>
+            </div>
+
+            <div class="theme-toggle-container">
+                <button id="theme-btn" class="theme-btn">
+                    <span class="theme-icon">🌙</span> Dark Mode
+                </button>
+            </div>
+
+            <div class="sidebar-top-actions">
+                <div id="status-indicator" class="status-badge ready">Ready</div>
+                <button id="run-btn" class="btn-primary btn-glow">
+                    Analyze Portfolio
+                </button>
+            </div>
+            
+            <div class="sidebar-scroll">
+                <!-- 1. Assets Section -->
+                <section class="control-section" title="Selecciona los activos que deseas incluir en la optimización de tu portafolio.">
+                    <div class="section-header">
+                        <h3><span class="icon">📈</span> Selected Assets</h3>
+                        <div class="add-ticker-tool">
+                            <input type="text" id="custom-ticker" placeholder="ADD TICKER (e.g. AAPL)">
+                            <button id="add-ticker-btn">+</button>
+                        </div>
+                    </div>
+                    <div id="asset-selector" class="asset-list">
+                        <p class="loading-text">Initializing engine...</p>
+                    </div>
+                </section>
+
+                <!-- 2. Settings Section -->
+                <section class="control-section" title="Configura los parámetros de la simulación, como el número de escenarios y el rango de fechas históricas.">
+                    <div class="section-header">
+                        <h3><span class="icon">⚙️</span> Analysis Config</h3>
+                    </div>
+                    <!-- Moved data-stats higher for better visibility -->
+                    <div id="data-stats" class="data-stats-info hidden">
+                        <span class="icon">📊</span> <span id="record-count">0</span> Yahoo Records Sync'd
+                    </div>
+                    <div class="settings-grid">
+                        <div class="setting-group">
+                            <label>Simulations</label>
+                            <input type="number" value="400000" id="sim-count" min="1000" step="1000">
+                        </div>
+                        <div class="setting-group">
+                            <label>Start Date</label>
+                            <input type="date" id="start-date">
+                        </div>
+                        <div class="setting-group">
+                            <label>End Date</label>
+                            <input type="date" id="end-date">
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </aside>
+
+        <!-- Main Content: Dashboard -->
+        <main class="main-content">
+            <!-- Header Metrics -->
+            <header class="dashboard-header">
+                <div class="metric-card glass-card" title="El Ratio de Sharpe mide el retorno adicional por cada unidad de riesgo (volatilidad). Un valor más alto es mejor.">
+                    <div class="metric-info">
+                        <h3>Max Sharpe Ratio</h3>
+                        <div class="metric-value" id="max-sharpe-val">--</div>
+                    </div>
+                    <div class="metric-icon sharpe">⭐</div>
+                </div>
+                <div class="metric-card glass-card" title="Representa el riesgo anualizado esperado del portafolio con la menor varianza posible.">
+                    <div class="metric-info">
+                        <h3>Min Volatility</h3>
+                        <div class="metric-value" id="min-vol-val">--</div>
+                    </div>
+                    <div class="metric-icon vol">📉</div>
+                </div>
+                <div class="metric-card glass-card" title="El retorno anualizado esperado calculado a partir de los datos históricos y los pesos optimizados.">
+                    <div class="metric-info">
+                        <h3>Expected Return</h3>
+                        <div class="metric-value" id="max-return-val">--</div>
+                    </div>
+                    <div class="metric-icon ret">🚀</div>
+                </div>
+            </header>
+
+            <!-- Progress Overlay (Subtle) -->
+            <div id="progress-container" class="progress-bar-container hidden">
+                <div class="progress-info">
+                    <span id="progress-text">Processing...</span>
+                    <span id="progress-pct">0%</span>
+                </div>
+                <div class="progress-track">
+                    <div id="progress-bar" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Charts Cluster -->
+            <div class="charts-grid">
+                <div class="chart-card wide premium-card" title="Histórico de precios normalizados de los activos seleccionados. Permite visualizar el rendimiento relativo de cada uno en una escala logarítmica.">
+                    <div class="chart-header">
+                        <h3>Market History Analysis</h3>
+                        <div class="chart-tags"><span class="tag">Log Scale</span><span class="tag">Normalized</span></div>
+                    </div>
+                    <div id="price-history-chart" class="chart-container"></div>
+                </div>
+                
+                <div class="chart-card premium-card" title="La Frontera Eficiente muestra el conjunto de portafolios óptimos que ofrecen el mayor retorno esperado para un nivel determinado de riesgo.">
+                    <div class="chart-header"><h3>Efficient Frontier Optimization</h3></div>
+                    <div id="frontier-chart" class="chart-container"></div>
+                </div>
+                
+                <div class="chart-card premium-card" title="Muestra la relación entre los movimientos de precio de los activos. El verde indica correlación positiva; el rojo, diversificación (correlación baja o negativa).">
+                    <div class="chart-header"><h3>Inter-Asset Correlation</h3></div>
+                    <div id="correlation-chart" class="chart-container"></div>
+                </div>
+                
+                <div class="chart-card premium-card" title="El Beta mide la sensibilidad de cada activo respecto al mercado (VOO). Un beta mayor a 1 indica que el activo es más volátil que el mercado.">
+                    <div class="chart-header"><h3>Beta Sensitivity (vs VOO)</h3></div>
+                    <div id="beta-chart" class="chart-container"></div>
+                </div>
+                
+                <div class="chart-card premium-card" title="Simulación histórica del crecimiento de $100 invertidos en los portafolios optimizados frente al benchmark de referencia.">
+                    <div class="chart-header"><h3>Cumulative Alpha Performance</h3></div>
+                    <div id="performance-chart" class="chart-container"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Metrics Panel -->
+        <aside class="right-sidebar premium-panel">
+            <div class="sidebar-header">
+                <h2>Allocation Alpha</h2>
+                <p>Optimal Weight Distribution</p>
+            </div>
+            
+            <div class="results-table-container">
+                <div id="results-table-wrapper" class="glass-table-container">
+                    <table id="results-table">
+                        <thead>
+                            <tr>
+                                <th>Portfolio Factor</th>
+                                <th class="col-max">Max Sharpe</th>
+                                <th class="col-min">Min Var</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-table-body">
+                            <!-- Injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Premium Footer -->
+        <footer class="app-footer">
+            <div class="footer-container">
+                <div class="footer-section brand-section">
+                    <div class="footer-logo">MAIN<span>STOCK</span></div>
+                    <p>&copy; 2024 Quantitative Analysis Engine.</p>
+                    <p class="designer-credit">Diseñado por <span>Hector E. Garcia</span></p>
+                </div>
+                
+                <div class="footer-section links-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section contact-section">
+                    <h4>Institutional</h4>
+                    <ul>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">API Status</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section legal-section">
+                    <p class="disclaimer-text">
+                        <strong>Disclaimer:</strong> Financial data is for informational purposes only. 
+                        The analysis generated by this engine is based on historical data and does not 
+                        guarantee future market performance. Always consult with a certified professional.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/mathEngine.js"></script>
+    <script src="js/dataService.js"></script>
+    <script src="js/portfolioEngine.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
