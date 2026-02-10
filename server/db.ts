@@ -10,6 +10,26 @@ export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
       _db = drizzle(process.env.DATABASE_URL);
+      // Asegurar un usuario por defecto para el bypass de OAuth
+      const db = _db;
+      setTimeout(async () => {
+        try {
+          const result = await db.select().from(users).where(eq(users.id, 1)).limit(1);
+          if (result.length === 0) {
+            await db.insert(users).values({
+              id: 1,
+              openId: "invitado_local",
+              name: "Usuario Hegarciagg",
+              email: "hegarciagg@local.com",
+              loginMethod: "local",
+              role: "admin",
+            });
+            console.log("[Database] Default user created for local access.");
+          }
+        } catch (e) {
+          console.warn("[Database] Could not seed default user:", e);
+        }
+      }, 1000);
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;

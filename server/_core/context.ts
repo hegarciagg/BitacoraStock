@@ -16,8 +16,21 @@ export async function createContext(
   try {
     user = await sdk.authenticateRequest(opts.req);
   } catch (error) {
-    // Authentication is optional for public procedures.
-    user = null;
+    // Si falla la autenticación (OAuth no configurado), inyectamos un usuario por defecto
+    // para permitir el uso de la aplicación localmente.
+    user = {
+      id: 1,
+      openId: "invitado_local",
+      name: "Usuario Hegarciagg",
+      email: "hegarciagg@local.com",
+      loginMethod: "local",
+      role: "admin",
+      riskProfile: "moderate",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      lastSignedIn: new Date(),
+      profilePicture: null,
+    };
   }
 
   return {
