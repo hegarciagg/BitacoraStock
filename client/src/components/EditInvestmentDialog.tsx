@@ -27,6 +27,7 @@ const updateInvestmentSchema = z.object({
   saleCommission: z.string().optional(),
   dividend: z.string().optional(),
   comments: z.string().optional(),
+  purchaseReason: z.string().optional(),
 });
 
 type UpdateInvestmentInput = z.infer<typeof updateInvestmentSchema>;
@@ -44,6 +45,7 @@ interface EditInvestmentDialogProps {
     commission?: string;
     dividend?: string;
     comments?: string;
+    purchaseReason?: string;
   };
   onSuccess?: () => void;
 }
@@ -65,6 +67,7 @@ export function EditInvestmentDialog({
     commission: initialData.commission || "",
     dividend: initialData.dividend || "",
     comments: initialData.comments || "",
+    purchaseReason: initialData.purchaseReason || "",
   });
   const [errors, setErrors] = useState<Partial<UpdateInvestmentInput>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -246,6 +249,22 @@ export function EditInvestmentDialog({
             />
             {errors.comments && (
               <p className="text-sm text-red-500">{errors.comments}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="purchaseReason">Motivo de Compra (Opcional)</Label>
+            <Textarea
+              id="purchaseReason"
+              name="purchaseReason"
+              value={formData.purchaseReason}
+              onChange={handleChange}
+              placeholder="¿Por qué compraste este activo?"
+              disabled={isLoading}
+              rows={2}
+            />
+            {errors.purchaseReason && (
+              <p className="text-sm text-red-500">{errors.purchaseReason}</p>
             )}
           </div>
 

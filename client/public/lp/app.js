@@ -731,6 +731,18 @@ document.getElementById('runAnalysis').addEventListener('click', async () => {
         const hodlCurve = prices.map(p => capital * (p / prices[0]));
         renderPerformanceChart('performanceChart', dates, lpResult.equityCurve, hodlCurve);
 
+        // Sync with Database
+        if (window.SyncService) {
+            window.SyncService.syncLPAnalysis(symbol, capital, {
+                apy: currentApyVal,
+                sharpe: sharpe,
+                drawdown: maxDd,
+                il: lpResult.il,
+                finalLp: lpResult.finalEquity,
+                finalHodl: lpResult.finalHodlEquity
+            });
+        }
+
     } catch (error) {
         console.error(error);
         statusMsg.textContent = `❌ Error: ${error.message}`;

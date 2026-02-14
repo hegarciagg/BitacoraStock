@@ -181,6 +181,8 @@ export const appRouter = router({
         saleCommission: z.string().optional(),
         dividend: z.string().optional(),
         comments: z.string().optional(),
+        purchaseReason: z.string().optional(),
+
       }))
       .mutation(async ({ ctx, input }) => {
         const portfolio = await db.getPortfolioById(input.portfolioId);
@@ -209,6 +211,8 @@ export const appRouter = router({
         saleCommission: z.string().optional(),
         dividend: z.string().optional(),
         comments: z.string().optional(),
+        purchaseReason: z.string().optional(),
+
       }))
       .mutation(async ({ ctx, input }) => {
         const portfolio = await db.getPortfolioById(input.portfolioId);
@@ -230,9 +234,10 @@ export const appRouter = router({
           salePrice: input.salePrice,
           saleValue: input.saleValue,
           saleCommission: input.saleCommission,
-          dividend: input.dividend,
           comments: input.comments,
+          purchaseReason: input.purchaseReason,
         });
+
       }),
     
     delete: protectedProcedure
@@ -252,7 +257,76 @@ export const appRouter = router({
         const { deleteInvestmentWithCacheInvalidation } = await import("./services/crudWithCacheInvalidation");
         return deleteInvestmentWithCacheInvalidation(ctx.user.id, input.investmentId, input.portfolioId);
       }),
+
+
+    addComment: protectedProcedure
+      .input(z.object({
+        investmentId: z.number(),
+        comment: z.string(),
+        sentiment: z.enum(["bullish", "bearish", "neutral"]).optional(),
+        date: z.date(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const investment = await db.getInvestmentById(input.investmentId);
+        if (!investment || investment.userId !== ctx.user.id) {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+        return db.addInvestmentComment({
+          investmentId: input.investmentId,
+          userId: ctx.user.id,
+          comment: input.comment,
+          sentiment: input.sentiment,
+          date: input.date,
+        });
+      }),
+
+    getComments: protectedProcedure
+      .input(z.object({ investmentId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        const investment = await db.getInvestmentById(input.investmentId);
+        if (!investment || investment.userId !== ctx.user.id) {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+        return db.getInvestmentComments(input.investmentId);
+      }),
+
+    updateComment: protectedProcedure
+      .input(z.object({
+        commentId: z.number(),
+        comment: z.string().optional(),
+        sentiment: z.enum(["bullish", "bearish", "neutral"]).optional(),
+        date: z.date().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const comment = await db.getInvestmentCommentById(input.commentId);
+        if (!comment || comment.userId !== ctx.user.id) {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+        return db.updateInvestmentComment(input.commentId, {
+          comment: input.comment,
+          sentiment: input.sentiment,
+          date: input.date,
+        });
+      }),
+
+    deleteComment: protectedProcedure
+      .input(z.object({ commentId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        const comment = await db.getInvestmentCommentById(input.commentId);
+        return db.deleteInvestmentComment(input.commentId);
+      }),
+
   }),
+
+  market: router({
+    getPrices: protectedProcedure
+      .input(z.object({ symbols: z.array(z.string()) }))
+      .query(async ({ input }) => {
+        const { getCurrentPrices } = await import("./services/marketDataService");
+        return getCurrentPrices(input.symbols);
+      }),
+  }),
+
 
   // Portfolio Assets routers
   portfolioAsset: router({

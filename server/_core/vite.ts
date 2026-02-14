@@ -17,12 +17,20 @@ export async function setupVite(app: Express, server: Server) {
     ...viteConfig,
     configFile: false,
     server: serverOptions,
-    appType: "custom",
   });
+
+  // Serve public directory explicitly in development for integrated projects
+  const publicDir = path.resolve(process.cwd(), "client", "public");
+  app.use(express.static(publicDir));
 
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
+
+    // Skip SPA fallback for API and integrated static projects
+    if (url.startsWith("/api") || url.startsWith("/lp") || url.startsWith("/stock")) {
+      return next();
+    }
 
     try {
       const clientTemplate = path.resolve(

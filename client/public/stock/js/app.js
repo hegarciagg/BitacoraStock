@@ -407,6 +407,12 @@ class App {
                     this.lastMarketData = dataForCharts;
                     this.lastBenchSeries = benchSeries;
                     this.onSimulationComplete(results, dataForCharts, benchSeries);
+                    
+                    // Sync with Database
+                    if (window.SyncService) {
+                        window.SyncService.syncStockAnalysis(results);
+                    }
+
                     btn.disabled = false;
                     this.updateStatus('Analysis Synced', 'ready');
                     setTimeout(() => progressContainer.classList.add('hidden'), 3000);

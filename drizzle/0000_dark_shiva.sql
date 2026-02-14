@@ -11,7 +11,7 @@ CREATE TABLE `investments` (
 	`totalValue` decimal(18,2) NOT NULL,
 	`commission` decimal(18,2) DEFAULT '0',
 	`transactionDate` timestamp NOT NULL,
-	`saleDate` timestamp,
+	`saleDate` datetime,
 	`salePrice` decimal(18,8),
 	`saleValue` decimal(18,2),
 	`saleCommission` decimal(18,2) DEFAULT '0',
@@ -72,6 +72,19 @@ CREATE TABLE `portfolioAssets` (
 	CONSTRAINT `portfolioAssets_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
+CREATE TABLE `portfolioHistory` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`portfolioId` int NOT NULL,
+	`userId` int NOT NULL,
+	`changeType` enum('created','updated','asset_added','asset_removed','asset_modified','rebalanced','deleted') NOT NULL,
+	`description` text,
+	`previousValue` decimal(18,2),
+	`newValue` decimal(18,2),
+	`metadata` text,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `portfolioHistory_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
 CREATE TABLE `portfolioReports` (
 	`id` int AUTO_INCREMENT NOT NULL,
 	`portfolioId` int NOT NULL,
@@ -112,4 +125,65 @@ CREATE TABLE `recommendations` (
 	CONSTRAINT `recommendations_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
-ALTER TABLE `users` ADD `riskProfile` enum('conservative','moderate','aggressive') DEFAULT 'moderate';
+CREATE TABLE `sentimentAnalysis` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`portfolioId` int NOT NULL,
+	`userId` int NOT NULL,
+	`overallSentiment` decimal(3,2) NOT NULL,
+	`marketConfidence` decimal(3,2) NOT NULL,
+	`riskAdjustment` decimal(5,2) NOT NULL,
+	`recommendedAction` enum('comprar','vender','mantener') NOT NULL,
+	`correlations` json,
+	`newsCount` int DEFAULT 0,
+	`analysisDate` timestamp NOT NULL,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `sentimentAnalysis_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `sentimentAnalysisCache` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`cacheKey` varchar(255) NOT NULL,
+	`portfolioId` int,
+	`userId` int NOT NULL,
+	`analysisData` json NOT NULL,
+	`newsCount` int DEFAULT 0,
+	`ttlSeconds` int DEFAULT 3600,
+	`expiresAt` timestamp NOT NULL,
+	`hits` int DEFAULT 0,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `sentimentAnalysisCache_id` PRIMARY KEY(`id`),
+	CONSTRAINT `sentimentAnalysisCache_cacheKey_unique` UNIQUE(`cacheKey`)
+);
+--> statement-breakpoint
+CREATE TABLE `userSessions` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`userId` int NOT NULL,
+	`sessionId` varchar(255) NOT NULL,
+	`userAgent` text,
+	`ipAddress` varchar(45),
+	`deviceType` varchar(50),
+	`browserName` varchar(100),
+	`osName` varchar(100),
+	`isCurrentSession` int DEFAULT 0,
+	`lastActivityAt` timestamp NOT NULL DEFAULT (now()),
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `userSessions_id` PRIMARY KEY(`id`),
+	CONSTRAINT `userSessions_sessionId_unique` UNIQUE(`sessionId`)
+);
+--> statement-breakpoint
+CREATE TABLE `users` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`openId` varchar(64) NOT NULL,
+	`name` text,
+	`email` varchar(320),
+	`loginMethod` varchar(64),
+	`profilePicture` text,
+	`role` enum('user','admin') NOT NULL DEFAULT 'user',
+	`riskProfile` enum('conservative','moderate','aggressive') DEFAULT 'moderate',
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	`lastSignedIn` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `users_id` PRIMARY KEY(`id`),
+	CONSTRAINT `users_openId_unique` UNIQUE(`openId`)
+);

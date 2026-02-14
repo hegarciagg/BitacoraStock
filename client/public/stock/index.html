@@ -16,6 +16,7 @@
     <meta property="og:type" content="website">
     
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/shared/nav-footer.css">
     <!-- Google Fonts: Inter & Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,8 +24,42 @@
     <!-- Plotly.js -->
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
-<body class="dark-theme">
+<body class="dark-theme has-nav">
     <div class="glass-bg"></div>
+    
+    <!-- Navigation -->
+    <nav class="app-nav">
+        <div class="container">
+            <a href="/dashboard" class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#2ea043;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#238636;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <rect x="3" y="12" width="4" height="9" rx="1" fill="url(#logo-gradient)"/>
+                    <rect x="10" y="6" width="4" height="15" rx="1" fill="url(#logo-gradient)"/>
+                    <rect x="17" y="3" width="4" height="18" rx="1" fill="url(#logo-gradient)"/>
+                </svg>
+                <span class="brand-text">MAIN<span class="highlight">STOCK</span></span>
+            </a>
+            <div class="nav-links">
+                <div class="nav-links-inner">
+                    <a href="/dashboard" class="nav-link">📊 Dashboard</a>
+                    <a href="/backtesting" class="nav-link">📅 Backtesting</a>
+                    <a href="/sentiment" class="nav-link">📈 Sentimiento</a>
+                    <a href="/compare" class="nav-link">📊 Comparador</a>
+                    <a href="/lp/index.html" class="nav-link">💧 Gestión LP</a>
+                    <a href="/stock/index.html" class="nav-link active">⚡ QuantEngine</a>
+                </div>
+            </div>
+            <div class="user-section">
+                <div class="user-avatar">U</div>
+                <span class="user-name">Usuario Hegarciagg</span>
+            </div>
+        </div>
+    </nav>
     
     <div class="app-container">
         <!-- Sidebar (Left): Selection & Config -->
@@ -227,6 +262,8 @@
     <!-- Scripts -->
     <script src="js/config.js"></script>
     <script src="js/mathEngine.js"></script>
+    <!-- Shared Sync Bridge -->
+    <script src="/shared/sync-bridge.js"></script>
     <script src="js/dataService.js"></script>
     <script src="js/portfolioEngine.js"></script>
     <script src="js/charts.js"></script>

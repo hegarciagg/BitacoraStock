@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { InvestmentCommentsDialog } from "@/components/InvestmentCommentsDialog";
+import { MessageSquare } from "lucide-react";
 
 export default function PortfolioDetail() {
   const { portfolioId } = useParams<{ portfolioId: string }>();
@@ -28,6 +30,13 @@ export default function PortfolioDetail() {
     commission: "0",
     transactionDate: new Date().toISOString().split("T")[0],
     comments: "",
+    purchaseReason: "",
+  });
+
+  const [commentsDialog, setCommentsDialog] = useState<{ open: boolean; investmentId: number; symbol: string }>({
+    open: false,
+    investmentId: 0,
+    symbol: "",
   });
 
   const portfolioId_num = parseInt(portfolioId || "0", 10);
@@ -35,6 +44,13 @@ export default function PortfolioDetail() {
   const portfolio = trpc.portfolio.get.useQuery({ portfolioId: portfolioId_num });
   const investments = trpc.investment.list.useQuery({ portfolioId: portfolioId_num });
   const portfolioHistory = trpc.portfolio.getHistory.useQuery({ portfolioId: portfolioId_num });
+  
+  const uniqueSymbols = Array.from(new Set(investments.data?.map((i) => i.symbol) || []));
+  const pricesQuery = trpc.market.getPrices.useQuery(
+    { symbols: uniqueSymbols },
+    { enabled: uniqueSymbols.length > 0, refetchInterval: 60000 }
+  );
+
   const createInvestment = trpc.investment.create.useMutation({
     onSuccess: () => {
       investments.refetch();
@@ -48,6 +64,7 @@ export default function PortfolioDetail() {
         commission: "0",
         transactionDate: new Date().toISOString().split("T")[0],
         comments: "",
+        purchaseReason: "",
       });
       setIsAddingInvestment(false);
     },
@@ -67,6 +84,7 @@ export default function PortfolioDetail() {
       commission: formData.commission || "0",
       transactionDate: new Date(formData.transactionDate),
       comments: formData.comments || undefined,
+      purchaseReason: formData.purchaseReason || undefined,
     });
   };
 
@@ -261,6 +279,15 @@ export default function PortfolioDetail() {
                     className="bg-slate-700 border-slate-600 text-white"
                   />
                 </div>
+                <div className="col-span-2">
+                  <Label className="text-white">Motivo de Compra (opcional)</Label>
+                  <Textarea
+                    placeholder="¿Por qué compraste este activo? Estrategia, análisis..."
+                    value={formData.purchaseReason}
+                    onChange={(e) => setFormData({ ...formData, purchaseReason: e.target.value })}
+                    className="bg-slate-700 border-slate-600 text-white"
+                  />
+                </div>
               </div>
               <Button
                 onClick={handleAddInvestment}
@@ -295,13 +322,33 @@ export default function PortfolioDetail() {
                       <th className="text-left py-3 px-4 text-slate-300">Tipo</th>
                       <th className="text-left py-3 px-4 text-slate-300">Acción</th>
                       <th className="text-right py-3 px-4 text-slate-300">Cantidad</th>
-                      <th className="text-right py-3 px-4 text-slate-300">Precio</th>
+                      <th className="text-right py-3 px-4 text-slate-300">Precio Compra</th>
+                      <th className="text-right py-3 px-4 text-slate-300">Precio Actual</th>
                       <th className="text-right py-3 px-4 text-slate-300">Total</th>
+                      <th className="text-right py-3 px-4 text-slate-300">Retorno</th>
                       <th className="text-left py-3 px-4 text-slate-300">Fecha</th>
+                      <th className="text-center py-3 px-4 text-slate-300">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {investments.data.map((inv) => (
+                    {investments.data.map((inv) => {
+                      const marketData = pricesQuery.data?.[inv.symbol];
+                      const currentPrice = marketData?.price;
+                      const purchasePrice = parseFloat(inv.unitPrice.toString());
+                      const quantity = parseFloat(inv.quantity.toString());
+                      const totalValue = quantity * purchasePrice;
+                      
+                      let currentTotal = totalValue;
+                      let returnVal = 0;
+                      let returnPercent = 0;
+
+                      if (currentPrice) {
+                        currentTotal = quantity * currentPrice;
+                        returnVal = currentTotal - totalValue;
+                        returnPercent = (returnVal / totalValue) * 100;
+                      }
+
+                      return (
                       <tr key={inv.id} className="border-b border-slate-700 hover:bg-slate-700/50">
                         <td className="py-3 px-4 text-white font-semibold">{inv.symbol}</td>
                         <td className="py-3 px-4 text-slate-300">{inv.assetType}</td>
@@ -310,12 +357,36 @@ export default function PortfolioDetail() {
                             {inv.action === "buy" ? "Compra" : inv.action === "sell" ? "Venta" : "Dividendo"}
                           </span>
                         </td>
-                        <td className="py-3 px-4 text-right text-slate-300">{parseFloat(inv.quantity.toString()).toFixed(2)}</td>
-                        <td className="py-3 px-4 text-right text-slate-300">${parseFloat(inv.unitPrice.toString()).toFixed(2)}</td>
-                        <td className="py-3 px-4 text-right text-white font-semibold">${parseFloat(inv.totalValue.toString()).toFixed(2)}</td>
+                        <td className="py-3 px-4 text-right text-slate-300">{quantity.toFixed(2)}</td>
+                        <td className="py-3 px-4 text-right text-slate-300">${purchasePrice.toFixed(2)}</td>
+                        <td className="py-3 px-4 text-right text-slate-300">
+                          {currentPrice ? `$${currentPrice.toFixed(2)}` : "-"}
+                        </td>
+                        <td className="py-3 px-4 text-right text-white font-semibold">${totalValue.toFixed(2)}</td>
+                        <td className="py-3 px-4 text-right">
+                          {currentPrice ? (
+                            <span className={returnVal >= 0 ? "text-green-400" : "text-red-400"}>
+                              {returnVal >= 0 ? "+" : ""}{returnPercent.toFixed(2)}%
+                            </span>
+                          ) : "-"}
+                        </td>
                         <td className="py-3 px-4 text-slate-300">{new Date(inv.transactionDate).toLocaleDateString("es-ES")}</td>
+                        <td className="py-3 px-4 text-center">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="hover:bg-slate-600 rounded-full gap-1 px-2"
+                            onClick={() => setCommentsDialog({ open: true, investmentId: inv.id, symbol: inv.symbol })}
+                          >
+                            <MessageSquare className="w-4 h-4 text-blue-400" />
+                            {(inv as any).commentCount > 0 && (
+                              <span className="text-xs font-medium text-slate-300">{(inv as any).commentCount}</span>
+                            )}
+                          </Button>
+                        </td>
                       </tr>
-                    ))}
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -359,6 +430,13 @@ export default function PortfolioDetail() {
           />
         </div>
       </div>
+
+      <InvestmentCommentsDialog 
+        open={commentsDialog.open} 
+        onOpenChange={(open) => setCommentsDialog(prev => ({ ...prev, open }))}
+        investmentId={commentsDialog.investmentId}
+        investmentSymbol={commentsDialog.symbol}
+      />
     </DashboardLayout>
   );
 }

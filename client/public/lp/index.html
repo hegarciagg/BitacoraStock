@@ -9,11 +9,46 @@
            Estilos completos estarán en styles.css pero enlazados aquí */
     </style>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/shared/nav-footer.css">
     <!-- Chart.js vía CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.0"></script>
 </head>
-<body>
+<body class="has-nav">
+
+<!-- Navigation -->
+<nav class="app-nav">
+    <div class="container">
+        <a href="/dashboard" class="brand">
+            <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#2ea043;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#238636;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect x="3" y="12" width="4" height="9" rx="1" fill="url(#logo-gradient)"/>
+                <rect x="10" y="6" width="4" height="15" rx="1" fill="url(#logo-gradient)"/>
+                <rect x="17" y="3" width="4" height="18" rx="1" fill="url(#logo-gradient)"/>
+            </svg>
+            <span class="brand-text">MAIN<span class="highlight">STOCK</span></span>
+        </a>
+        <div class="nav-links">
+            <div class="nav-links-inner">
+                <a href="/dashboard" class="nav-link">📊 Dashboard</a>
+                <a href="/backtesting" class="nav-link">📅 Backtesting</a>
+                <a href="/sentiment" class="nav-link">📈 Sentimiento</a>
+                <a href="/compare" class="nav-link">📊 Comparador</a>
+                <a href="/lp/index.html" class="nav-link active">💧 Gestión LP</a>
+                <a href="/stock/index.html" class="nav-link">⚡ QuantEngine</a>
+            </div>
+        </div>
+        <div class="user-section">
+            <div class="user-avatar">U</div>
+            <span class="user-name">Usuario Hegarciagg</span>
+        </div>
+    </div>
+</nav>
 
 <div class="container">
     <header>
@@ -203,11 +238,59 @@
         </section>
     </main>
 
-    <footer>
-        <p>Desarrollado por Hector E. Garcia | ORCA LP Decision Engine | Data provided by Yahoo Finance (via Proxy) | USE AT OWN RISK</p>
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <span class="footer-brand-icon">📊</span>
+                        <span class="footer-brand-text">MAIN<span class="highlight">STOCK</span></span>
+                    </div>
+                    <p class="footer-text">
+                        &copy; 2024 Quantitative Analysis Engine.
+                    </p>
+                    <p class="footer-text">
+                        Diseñado por <span class="designer">Hector E. Garcia</span>
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Recursos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Política de Privacidad</a></li>
+                        <li><a href="#">Términos de Servicio</a></li>
+                        <li><a href="#">Documentación</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Institucional</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Soporte</a></li>
+                        <li><a href="#">Estado de la API</a></li>
+                        <li><a href="#">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <p class="footer-text">
+                        <strong>Disclaimer:</strong> Los datos financieros son para fines informativos únicamente. 
+                        El análisis generado se basa en datos históricos y no garantiza el rendimiento futuro del mercado. 
+                        Consulta siempre con un profesional certificado.
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                Data provided by Yahoo Finance (via Proxy) | USE AT OWN RISK
+            </div>
+        </div>
     </footer>
 </div>
 
-<script src="app.js"></script>
+    <!-- Shared Sync Bridge -->
+    <script src="/shared/sync-bridge.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

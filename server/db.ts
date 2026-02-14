@@ -1,6 +1,6 @@
-import { eq, desc, and, gte, lte } from "drizzle-orm";
+import { eq, desc, and, gte, lte, sql, getTableColumns } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, portfolios, investments, portfolioAssets, monteCarloSimulations, recommendations, portfolioReports, notifications, portfolioHistory, InsertPortfolio, InsertInvestment, InsertPortfolioAsset, InsertMonteCarloSimulation, InsertRecommendation, InsertPortfolioReport, InsertNotification, InsertPortfolioHistory } from "../drizzle/schema";
+import { InsertUser, users, portfolios, investments, portfolioAssets, monteCarloSimulations, recommendations, portfolioReports, notifications, portfolioHistory, investmentMarketComments, InsertPortfolio, InsertInvestment, InsertPortfolioAsset, InsertMonteCarloSimulation, InsertRecommendation, InsertPortfolioReport, InsertNotification, InsertPortfolioHistory, InsertInvestmentMarketComment } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -146,7 +146,15 @@ export async function createPortfolio(userId: number, name: string, description?
 export async function getPortfolioInvestments(portfolioId: number) {
   const db = await getDb();
   if (!db) return [];
-  return db.select().from(investments).where(eq(investments.portfolioId, portfolioId));
+  return db
+    .select({
+      ...getTableColumns(investments),
+      commentCount: sql<number>`count(${investmentMarketComments.id})`.mapWith(Number),
+    })
+    .from(investments)
+    .leftJoin(investmentMarketComments, eq(investments.id, investmentMarketComments.investmentId))
+    .where(eq(investments.portfolioId, portfolioId))
+    .groupBy(investments.id);
 }
 
 export async function createInvestment(data: InsertInvestment) {
@@ -509,3 +517,40 @@ export async function getPortfolioHistoryByDateRange(
     return [];
   }
 }
+
+// Helper functions for Investment Market Comments
+export async function getInvestmentComments(investmentId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db
+    .select()
+    .from(investmentMarketComments)
+    .where(eq(investmentMarketComments.investmentId, investmentId))
+    .orderBy(desc(investmentMarketComments.date));
+}
+
+export async function addInvestmentComment(data: InsertInvestmentMarketComment) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.insert(investmentMarketComments).values(data);
+}
+
+export async function getInvestmentCommentById(commentId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(investmentMarketComments).where(eq(investmentMarketComments.id, commentId)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function updateInvestmentComment(commentId: number, data: Partial<InsertInvestmentMarketComment>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.update(investmentMarketComments).set(data).where(eq(investmentMarketComments.id, commentId));
+}
+
+export async function deleteInvestmentComment(commentId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.delete(investmentMarketComments).where(eq(investmentMarketComments.id, commentId));
+}
+

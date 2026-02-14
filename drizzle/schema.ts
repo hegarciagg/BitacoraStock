@@ -1,4 +1,4 @@
-import { decimal, int, json, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { decimal, int, json, mysqlEnum, mysqlTable, text, timestamp, varchar, datetime } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -55,18 +55,33 @@ export const investments = mysqlTable("investments", {
   totalValue: decimal("totalValue", { precision: 18, scale: 2 }).notNull(),
   commission: decimal("commission", { precision: 18, scale: 2 }).default("0"),
   transactionDate: timestamp("transactionDate").notNull(),
-  saleDate: timestamp("saleDate"),
+  saleDate: datetime("saleDate"),
   salePrice: decimal("salePrice", { precision: 18, scale: 8 }),
   saleValue: decimal("saleValue", { precision: 18, scale: 2 }),
   saleCommission: decimal("saleCommission", { precision: 18, scale: 2 }).default("0"),
   dividend: decimal("dividend", { precision: 18, scale: 2 }).default("0"),
-  comments: text("comments"),
+  comments: text("comments"), // General comments
+  purchaseReason: text("purchaseReason"), // Specific reason for purchase
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export type Investment = typeof investments.$inferSelect;
 export type InsertInvestment = typeof investments.$inferInsert;
+
+// Tabla para comentarios de mercado por fecha en inversiones
+export const investmentMarketComments = mysqlTable("investmentMarketComments", {
+  id: int("id").autoincrement().primaryKey(),
+  investmentId: int("investmentId").notNull(),
+  userId: int("userId").notNull(),
+  comment: text("comment").notNull(),
+  sentiment: mysqlEnum("sentiment", ["bullish", "bearish", "neutral"]).default("neutral"),
+  date: datetime("date").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type InvestmentMarketComment = typeof investmentMarketComments.$inferSelect;
+export type InsertInvestmentMarketComment = typeof investmentMarketComments.$inferInsert;
 
 // Tabla para activos en portafolios
 export const portfolioAssets = mysqlTable("portfolioAssets", {

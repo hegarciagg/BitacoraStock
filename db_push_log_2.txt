@@ -1,0 +1,123 @@
+
+> webfinanciera@1.0.0 db:push D:\BitacoraStock
+> drizzle-kit generate && drizzle-kit migrate
+
+No config path provided, using default 'drizzle.config.ts'
+Reading config file 'D:\BitacoraStock\drizzle.config.ts'
+Reading schema files:
+D:\BitacoraStock\drizzle\schema.ts
+
+12 tables
+investments 20 columns 0 indexes 0 fks
+monteCarloSimulations 17 columns 0 indexes 0 fks
+notifications 9 columns 0 indexes 0 fks
+portfolioAssets 12 columns 0 indexes 0 fks
+portfolioHistory 9 columns 0 indexes 0 fks
+portfolioReports 10 columns 0 indexes 0 fks
+portfolios 6 columns 0 indexes 0 fks
+recommendations 12 columns 0 indexes 0 fks
+sentimentAnalysis 11 columns 0 indexes 0 fks
+sentimentAnalysisCache 11 columns 0 indexes 0 fks
+userSessions 11 columns 0 indexes 0 fks
+users 11 columns 0 indexes 0 fks
+
+No schema changes, nothing to migrate 😴
+No config path provided, using default 'drizzle.config.ts'
+Reading config file 'D:\BitacoraStock\drizzle.config.ts'
+[⣷] applying migrations...DrizzleQueryError: Failed query: CREATE TABLE `investments` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`portfolioId` int NOT NULL,
+	`userId` int NOT NULL,
+	`symbol` varchar(20) NOT NULL,
+	`assetName` varchar(255) NOT NULL,
+	`assetType` enum('stock','etf','bond','crypto','commodity','other') NOT NULL,
+	`action` enum('buy','sell','dividend') NOT NULL,
+	`quantity` decimal(18,8) NOT NULL,
+	`unitPrice` decimal(18,8) NOT NULL,
+	`totalValue` decimal(18,2) NOT NULL,
+	`commission` decimal(18,2) DEFAULT '0',
+	`transactionDate` timestamp NOT NULL,
+	`saleDate` timestamp,
+	`salePrice` decimal(18,8),
+	`saleValue` decimal(18,2),
+	`saleCommission` decimal(18,2) DEFAULT '0',
+	`dividend` decimal(18,2) DEFAULT '0',
+	`comments` text,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `investments_id` PRIMARY KEY(`id`)
+);
+
+params: 
+    at MySql2PreparedQuery.queryWithCache (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql-core\session.ts:79:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async MySql2PreparedQuery.execute (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql2\session.ts:100:16)
+    at async <anonymous> (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql-core\dialect.ts:82:7)
+    at async MySql2Session.transaction (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql2\session.ts:311:19)
+    at async MySqlDialect.migrate (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql-core\dialect.ts:75:3)
+    at async migrate (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql2\migrator.ts:10:2) {
+  query: 'CREATE TABLE `investments` (\r\n' +
+    '\t`id` int AUTO_INCREMENT NOT NULL,\r\n' +
+    '\t`portfolioId` int NOT NULL,\r\n' +
+    '\t`userId` int NOT NULL,\r\n' +
+    '\t`symbol` varchar(20) NOT NULL,\r\n' +
+    '\t`assetName` varchar(255) NOT NULL,\r\n' +
+    "\t`assetType` enum('stock','etf','bond','crypto','commodity','other') NOT NULL,\r\n" +
+    "\t`action` enum('buy','sell','dividend') NOT NULL,\r\n" +
+    '\t`quantity` decimal(18,8) NOT NULL,\r\n' +
+    '\t`unitPrice` decimal(18,8) NOT NULL,\r\n' +
+    '\t`totalValue` decimal(18,2) NOT NULL,\r\n' +
+    "\t`commission` decimal(18,2) DEFAULT '0',\r\n" +
+    '\t`transactionDate` timestamp NOT NULL,\r\n' +
+    '\t`saleDate` timestamp,\r\n' +
+    '\t`salePrice` decimal(18,8),\r\n' +
+    '\t`saleValue` decimal(18,2),\r\n' +
+    "\t`saleCommission` decimal(18,2) DEFAULT '0',\r\n" +
+    "\t`dividend` decimal(18,2) DEFAULT '0',\r\n" +
+    '\t`comments` text,\r\n' +
+    '\t`createdAt` timestamp NOT NULL DEFAULT (now()),\r\n' +
+    '\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\r\n' +
+    '\tCONSTRAINT `investments_id` PRIMARY KEY(`id`)\r\n' +
+    ');\r\n',
+  params: [],
+  cause: Error: Invalid default value for 'saleDate'
+      at PromiseConnection.query (D:\BitacoraStock\node_modules\.pnpm\mysql2@3.15.1\node_modules\mysql2\lib\promise\connection.js:29:22)
+      at <anonymous> (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql2\session.ts:101:25)
+      at MySql2PreparedQuery.queryWithCache (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql-core\session.ts:77:18)
+      at MySql2PreparedQuery.execute (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql2\session.ts:100:27)
+      at MySql2Session.execute (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql-core\session.ts:197:5)
+      at MySql2Transaction.execute (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql-core\db.ts:477:23)
+      at <anonymous> (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql-core\dialect.ts:82:16)
+      at MySql2Session.transaction (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql2\session.ts:311:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async MySqlDialect.migrate (D:\BitacoraStock\node_modules\.pnpm\drizzle-orm@0.44.6_mysql2@3.15.1\node_modules\src\mysql-core\dialect.ts:75:3) {
+    code: 'ER_INVALID_DEFAULT',
+    errno: 1067,
+    sql: 'CREATE TABLE `investments` (\r\n' +
+      '\t`id` int AUTO_INCREMENT NOT NULL,\r\n' +
+      '\t`portfolioId` int NOT NULL,\r\n' +
+      '\t`userId` int NOT NULL,\r\n' +
+      '\t`symbol` varchar(20) NOT NULL,\r\n' +
+      '\t`assetName` varchar(255) NOT NULL,\r\n' +
+      "\t`assetType` enum('stock','etf','bond','crypto','commodity','other') NOT NULL,\r\n" +
+      "\t`action` enum('buy','sell','dividend') NOT NULL,\r\n" +
+      '\t`quantity` decimal(18,8) NOT NULL,\r\n' +
+      '\t`unitPrice` decimal(18,8) NOT NULL,\r\n' +
+      '\t`totalValue` decimal(18,2) NOT NULL,\r\n' +
+      "\t`commission` decimal(18,2) DEFAULT '0',\r\n" +
+      '\t`transactionDate` timestamp NOT NULL,\r\n' +
+      '\t`saleDate` timestamp,\r\n' +
+      '\t`salePrice` decimal(18,8),\r\n' +
+      '\t`saleValue` decimal(18,2),\r\n' +
+      "\t`saleCommission` decimal(18,2) DEFAULT '0',\r\n" +
+      "\t`dividend` decimal(18,2) DEFAULT '0',\r\n" +
+      '\t`comments` text,\r\n' +
+      '\t`createdAt` timestamp NOT NULL DEFAULT (now()),\r\n' +
+      '\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\r\n' +
+      '\tCONSTRAINT `investments_id` PRIMARY KEY(`id`)\r\n' +
+      ');\r\n',
+    sqlState: '42000',
+    sqlMessage: "Invalid default value for 'saleDate'"
+  }
+}
+ ELIFECYCLE  Command failed with exit code 1.
