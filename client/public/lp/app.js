@@ -3,9 +3,10 @@
  * 
  * Módulos:
  * 1. Capa de Datos: Obtiene datos históricos de precios
- * 2. Capa de Estrategia: Simula LP vs HODL
+ * 2. Capa de Estrategia: Simula LP vs HODL (Concentrated Liquidity)
  * 3. Capa de Riesgo y Métricas: Calcula Sharpe, Drawdown, etc.
  * 4. Capa de Visualización y Alertas: Renderiza gráficos y alertas de texto
+ * 5. Motor CL: LPConcentratedEngine.js (cargado externamente)
  */
 
 // ==========================================
@@ -85,71 +86,12 @@ function simulateHodl(prices, capital) {
     };
 }
 
+/**
+ * Simulación de estrategia LP usando Concentrated Liquidity formal.
+ * Delega al motor CLEngine.simulateCLStrategy.
+ */
 function simulateLPStrategy(prices, capitalLP, pLow, pHigh, fees24h, tvl) {
-    if (!prices || prices.length === 0) return { equityCurve: [], feesGenerated: 0, finalEquity: 0, il: 0 };
-
-    const initialPrice = prices[0].price;
-    let accumulatedFees = 0;
-    
-    // Estimación de tasa de comisión diaria basada en parámetros de entrada
-    // feeDaily = fees24h * (capitalLP / tvl)
-    const dailyFeeRate = fees24h * (capitalLP / tvl);
-
-    const equityCurve = prices.map((p, index) => {
-        const price = p.price;
-        
-        // 1. Calcular Comisiones
-        // Verificar si el precio está dentro del rango
-        let feeToday = 0;
-        if (price >= pLow && price <= pHigh) {
-            feeToday = dailyFeeRate;
-        }
-        accumulatedFees += feeToday;
-
-        // 2. Calcular Impermanent Loss (Modelo Genérico/Simplificado V2 relativo a HODL)
-        // IL = 2 * sqrt(ratio) / (1 + ratio) - 1
-        // ratio = price / initialPrice
-        // Esto estima cuánto se rezaga el valor de la posición LP respecto a HODL puro
-        const ratio = price / initialPrice;
-        const ilFactor = (2 * Math.sqrt(ratio)) / (1 + ratio) - 1;
-        
-        // Valor si HODL
-        const hodlValue = capitalLP * ratio;
-        
-        // Valor de la Posición LP (Principal) = Valor HODL * (1 + IL)
-        // Nota: ilFactor es negativo, por lo que reduce el valor
-        const lpPositionValue = hodlValue * (1 + ilFactor);
-        
-        // Equidad Total LP
-        return lpPositionValue + accumulatedFees;
-    });
-
-    const finalLPEquity = equityCurve[equityCurve.length - 1];
-    
-    // Calcular valor absoluto final de IL para mostrar
-    const finalRatio = prices[prices.length - 1].price / initialPrice;
-    const finalHodlValue = capitalLP * finalRatio;
-    const finalLPPositionValue = finalLPEquity - accumulatedFees;
-    const impermanentLossParam = finalLPPositionValue - finalHodlValue; // Debería ser negativo
-
-    // Cálculo de Tiempo en Rango (Time in Box)
-    let daysInBox = 0;
-    for(let p of prices) {
-        if (p.price >= pLow && p.price <= pHigh) {
-            daysInBox++;
-        }
-    }
-    const timeInBoxPct = daysInBox / prices.length;
-
-    return { 
-        equityCurve, 
-        feesGenerated: accumulatedFees, 
-        finalEquity: finalLPEquity,
-        il: impermanentLossParam,
-        finalHodlEquity: finalHodlValue,
-        timeInBox: timeInBoxPct,
-        dailyFeeRate // retornado para proyección
-    };
+    return CLEngine.simulateCLStrategy(prices, capitalLP, pLow, pHigh, fees24h, tvl);
 }
 
 // ==========================================
@@ -277,18 +219,23 @@ function lpAlertSystem(currentPrice, pLow, pHigh, apy, drawdown) {
     };
 }
 
-function generateTextReport(symbol, pLow, pHigh, currentPrice, timeInBox, apy, feesDailyAvg, projectedDailyFee, poolFees24h, il, finalLp, finalHodl, sharpe, maxDd, cvar, capital) {
-    // Lógica de Rebalanceo / Estimaciones
-    // Fórmula Personalizada: Rebalance_Cost = Swap_Fees + Opportunity_Cost
-    // Swap_Fees = Capital_LP * swap_fee_rate (0.0005) * 2
-    const swapFeeRate = 0.0005;
-    const swapFees = capital * swapFeeRate * 2;
+function generateTextReport(symbol, pLow, pHigh, currentPrice, timeInBox, apy, feesDailyAvg, projectedDailyFee, poolFees24h, il, finalLp, finalHodl, sharpe, maxDd, cvar, capital, poolFeeRate) {
+    // Lógica de Rebalanceo / Estimaciones Calibradas
+    // Fórmula mejorada: Rebalance_Cost = Swap_Fees + Slippage + Opportunity_Cost
+    //
+    // Swap_Fees: Se aplica la tasa real del pool (seleccionada por usuario)
+    //   al capital total (cubre reestructuración de tokens al rebalancear)
+    const swapFees = capital * poolFeeRate;
+    
+    // Slippage estimado: ~0.20% conservador para posiciones típicas
+    const slippageRate = 0.002;
+    const slippageCost = capital * slippageRate;
     
     // Opportunity_Cost = Daily_Fees_Earned (projected) * Rebalance_Days (1)
     const rebalanceDays = 1;
     const opportunityCost = projectedDailyFee * rebalanceDays;
     
-    const rebalanceCost = swapFees + opportunityCost;
+    const rebalanceCost = swapFees + slippageCost + opportunityCost;
 
     // Expected Gain logic:
     // Projected Weekly Fees = Theoretical Daily Fee * 7
@@ -329,7 +276,7 @@ function generateTextReport(symbol, pLow, pHigh, currentPrice, timeInBox, apy, f
 
 
 =====================================================================
- ORCA ${symbol} — LP DECISION ENGINE
+ ORCA ${symbol} — LP DECISION ENGINE (Concentrated Liquidity)
 =====================================================================
 
 --- CURRENT RANGE ---
@@ -340,12 +287,16 @@ APY:          ${fmtPct(currentApyVal)}
 
 --- DECISION ---
 Rebalance cost:   ${fmt(rebalanceCost)} (est. ${fmtPct(rebalanceCost/capital)})
+  ├─ Swap fees (${fmtPct(poolFeeRate)}): ${fmt(swapFees)}
+  ├─ Slippage (~0.20%):  ${fmt(slippageCost)}
+  └─ Opportunity (1d):   ${fmt(opportunityCost)}
 Expected gain:    ${fmt(expectedGain)} (7d proj.)
 ⛔ ACTION: ${action}
 
 --- FEES vs IL ---
 💸 Daily Fees Earned:       ${fmt(feesDailyAvg)} (avg)
-📉 Impermanent Loss:        ${fmt(il)}
+📉 Impermanent Loss (USD):  ${fmt(il)}
+📉 Impermanent Loss (%):    ${finalHodl !== 0 ? ((finalLp / finalHodl - 1) * 100).toFixed(4) + '%' : 'N/A'}
 
 ============================================================
  LP ALERT SYSTEM
@@ -530,6 +481,139 @@ function renderPerformanceChart(canvasId, dates, lpEquity, hodlEquity) {
     });
 }
 
+let ilCurveChartInstance = null;
+
+/**
+ * Renderiza el gráfico de Curva de IL vs Precio.
+ * Muestra IL% en el eje Y y precio en el eje X,
+ * con marcadores en Pa, Pb y P_actual.
+ */
+function renderILCurveChart(canvasId, ilData, Pa, Pb, currentPrice) {
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+
+    if (ilCurveChartInstance) {
+        ilCurveChartInstance.destroy();
+    }
+
+    const priceLabels = ilData.prices.map(p => '$' + p.toFixed(2));
+
+    const annotations = {
+        paLine: {
+            type: 'line',
+            xMin: ilData.prices.indexOf(ilData.prices.find(p => p >= Pa)),
+            xMax: ilData.prices.indexOf(ilData.prices.find(p => p >= Pa)),
+            borderColor: 'rgba(239, 68, 68, 0.7)',
+            borderWidth: 2,
+            borderDash: [4, 4],
+            label: { content: 'Pa', display: true, position: 'start', backgroundColor: 'rgba(239, 68, 68, 0.8)' }
+        },
+        pbLine: {
+            type: 'line',
+            xMin: ilData.prices.indexOf(ilData.prices.find(p => p >= Pb)),
+            xMax: ilData.prices.indexOf(ilData.prices.find(p => p >= Pb)),
+            borderColor: 'rgba(239, 68, 68, 0.7)',
+            borderWidth: 2,
+            borderDash: [4, 4],
+            label: { content: 'Pb', display: true, position: 'start', backgroundColor: 'rgba(239, 68, 68, 0.8)' }
+        },
+        currentLine: {
+            type: 'line',
+            xMin: ilData.prices.indexOf(ilData.prices.find(p => p >= currentPrice)),
+            xMax: ilData.prices.indexOf(ilData.prices.find(p => p >= currentPrice)),
+            borderColor: 'rgba(56, 189, 248, 0.9)',
+            borderWidth: 2,
+            label: { content: 'Current', display: true, position: 'end', backgroundColor: 'rgba(56, 189, 248, 0.8)' }
+        },
+        zeroLine: {
+            type: 'line',
+            yMin: 0, yMax: 0,
+            borderColor: 'rgba(148, 163, 184, 0.4)',
+            borderWidth: 1,
+            borderDash: [2, 2]
+        }
+    };
+
+    ilCurveChartInstance = new Chart(ctx.getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: priceLabels,
+            datasets: [
+                {
+                    label: 'Impermanent Loss (%)',
+                    data: ilData.ilPercent,
+                    borderColor: '#f43f5e',
+                    backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    tension: 0.3,
+                    fill: true
+                },
+                {
+                    label: 'LP Value ($)',
+                    data: ilData.lpValues,
+                    borderColor: '#22c55e',
+                    borderWidth: 1.5,
+                    pointRadius: 0,
+                    tension: 0.3,
+                    fill: false,
+                    yAxisID: 'y1'
+                },
+                {
+                    label: 'HODL Value ($)',
+                    data: ilData.hodlValues,
+                    borderColor: '#94a3b8',
+                    borderDash: [5, 5],
+                    borderWidth: 1.5,
+                    pointRadius: 0,
+                    tension: 0.3,
+                    fill: false,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
+            plugins: {
+                legend: { labels: { color: '#94a3b8' } },
+                annotation: { annotations },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (context.datasetIndex === 0) {
+                                return `${label}: ${context.parsed.y.toFixed(2)}%`;
+                            }
+                            return `${label}: $${context.parsed.y.toFixed(2)}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#94a3b8', maxTicksLimit: 15 },
+                    grid: { color: '#334155' }
+                },
+                y: {
+                    type: 'linear',
+                    position: 'left',
+                    title: { display: true, text: 'IL (%)', color: '#94a3b8' },
+                    ticks: { color: '#f43f5e', callback: v => v.toFixed(1) + '%' },
+                    grid: { color: '#334155' }
+                },
+                y1: {
+                    type: 'linear',
+                    position: 'right',
+                    title: { display: true, text: 'Value ($)', color: '#94a3b8' },
+                    ticks: { color: '#22c55e', callback: v => '$' + v.toFixed(0) },
+                    grid: { drawOnChartArea: false }
+                }
+            }
+        }
+    });
+}
 
 
 // ==========================================
@@ -572,10 +656,8 @@ document.getElementById('runAnalysis').addEventListener('click', async () => {
         const dates = priceData.map(d => d.date);
         const prices = priceData.map(d => d.price);
 
-        // 1. Ejecutar Estrategias
+        // 1. Ejecutar Estrategia CL (Concentrated Liquidity)
         const lpResult = simulateLPStrategy(priceData, capital, pLow, pHigh, fees24h, tvl);
-        // Podríamos ejecutar HODL para comparación si se necesita en el futuro
-        // const hodlResult = simulateHodl(priceData, capital);
 
         // 2. Calcular Métricas
         const lpReturns = calculateReturns(lpResult.equityCurve);
@@ -698,25 +780,104 @@ document.getElementById('runAnalysis').addEventListener('click', async () => {
         // -- Métricas Suplementarias (Tarjetas Pequeñas) --
         document.getElementById('val-sharpe').textContent = sharpe.toFixed(2);
         document.getElementById('val-drawdown').textContent = fmtPct(maxDd);
-        document.getElementById('val-il').textContent = fmt(lpResult.il);
+        const ilPctVal = lpResult.finalHodlEquity !== 0 ? ((lpResult.finalEquity - lpResult.feesGenerated) / lpResult.finalHodlEquity - 1) : 0;
+        document.getElementById('val-il').textContent = (ilPctVal * 100).toFixed(2) + '%';
 
-        // 4. Alertas
+        // ── Concentrated Liquidity Analysis ──
+        // Análisis para COMPOSICIÓN ACTUAL: usa currentPrice como P0
+        // para que los valores de tokens y LP/HODL sean proporcionales al capital real.
+        const clSnapshot = CLEngine.analyzePosition(capital, currentPrice, pLow, pHigh, currentPrice);
+        
+        // Análisis HISTÓRICO para IL y Break-Even: usa precio de entrada del backtest
+        const clBacktest = CLEngine.analyzePosition(capital, priceData[0].price, pLow, pHigh, currentPrice);
+        const rangeEff   = CLEngine.rangeEfficiency(pLow, pHigh);
+        const breakEven  = CLEngine.calculateBreakEvenFees(capital, priceData[0].price, pLow, pHigh, currentPrice, calendarDays);
+
+        // Actualizar UI CL
+        const clL = document.getElementById('cl-liquidity-L');
+        if (clL) clL.textContent = clSnapshot.liquidity.toFixed(2);
+
+        const clEff = document.getElementById('cl-range-efficiency');
+        if (clEff) clEff.textContent = rangeEff.toFixed(2) + 'x';
+
+        const clBE = document.getElementById('cl-breakeven-fees');
+        if (clBE) clBE.textContent = fmt(breakEven.dailyFeesNeeded) + '/day';
+
+        const clBEAPY = document.getElementById('cl-breakeven-apy');
+        if (clBEAPY) clBEAPY.textContent = fmtPct(breakEven.annualizedAPYNeeded);
+
+        // Token Composition: usar snapshot actual (proporcional al capital)
+        const clTokenX = document.getElementById('cl-token-x');
+        if (clTokenX) {
+            const tokenBase = symbol.split('-')[0] || 'BASE';
+            clTokenX.textContent = `${clSnapshot.targetAmounts.x.toFixed(6)} ${tokenBase}`;
+        }
+
+        const clTokenY = document.getElementById('cl-token-y');
+        if (clTokenY) {
+            const tokenQuote = symbol.split('-')[1] || 'QUOTE';
+            clTokenY.textContent = `${clSnapshot.targetAmounts.y.toFixed(2)} ${tokenQuote}`;
+        }
+
+        // LP Value y HODL Value: usar snapshot actual (proporcionales al capital)
+        const clValueLP = document.getElementById('cl-value-lp');
+        if (clValueLP) clValueLP.textContent = fmt(clSnapshot.valueLP);
+
+        const clValueHodl = document.getElementById('cl-value-hodl');
+        if (clValueHodl) clValueHodl.textContent = fmt(clSnapshot.valueHodl);
+
+        // IL: usar valor del backtest histórico (simulación completa)
+        const clILPct = document.getElementById('cl-il-pct');
+        if (clILPct) {
+            const ilVal = ilPctVal * 100; // ilPctVal ya calculado del backtest en línea 783
+            clILPct.textContent = ilVal.toFixed(4) + '%';
+            clILPct.style.color = ilVal < 0 ? '#ef4444' : '#22c55e';
+        }
+
+        // 4. Alertas - Actualizar Summary Item
         // Obtener precio actual (último precio) - YA DEFINIDO ARRIBA
         const alertData = lpAlertSystem(currentPrice, pLow, pHigh, currentApyVal, maxDd);
         
-        const alertBox = document.getElementById('lpAlertBox');
-        alertBox.textContent = alertData.text;
-        alertBox.className = `alert-box ${alertData.cssClass}`;
+        const alertSignalEl = document.getElementById('val-alert-signal');
+        const alertDetailEl = document.getElementById('val-alert-detail');
+        const alertItemEl = document.getElementById('alert-summary-item');
+        
+        if (alertSignalEl) {
+            alertSignalEl.textContent = alertData.signal;
+            // Color según señal
+            if (alertData.signal === 'HOLD') {
+                alertSignalEl.style.color = '#22c55e'; // verde
+            } else {
+                alertSignalEl.style.color = '#f59e0b'; // amber/warning
+            }
+        }
+        if (alertDetailEl) {
+            // Extraer la acción corta del texto
+            const isIn = currentPrice >= pLow && currentPrice <= pHigh;
+            if (isIn) {
+                alertDetailEl.textContent = '✅ In Range · Earning fees';
+            } else if (currentPrice < pLow) {
+                alertDetailEl.textContent = '⚠️ Out of Range (Low)';
+            } else {
+                alertDetailEl.textContent = '⚠️ Out of Range (High)';
+            }
+            alertDetailEl.style.color = isIn ? '#22c55e' : '#f59e0b';
+        }
 
         // 5. Generar Informe de Texto Detallado
         // const theoreticalDailyFee ya está definido arriba
+        const poolFeeRate = parseFloat(document.getElementById('poolFeeTier').value) || 0.003;
+        
+        // Actualizar Pool Tier Label en tabla
+        const poolTierLabel = document.getElementById('pool-tier-label');
+        if (poolTierLabel) poolTierLabel.textContent = (poolFeeRate * 100).toFixed(2) + '%';
         
         const reportText = generateTextReport(
             symbol, pLow, pHigh, currentPrice, 
             lpResult.timeInBox, currentApyVal, dailyFeesAvg, theoreticalDailyFee,
             fees24h, lpResult.il, 
             lpResult.finalEquity, lpResult.finalHodlEquity, 
-            sharpe, maxDd, cvar, capital
+            sharpe, maxDd, cvar, capital, poolFeeRate
         );
         document.getElementById('detailedReport').textContent = reportText;
 
@@ -725,11 +886,18 @@ document.getElementById('runAnalysis').addEventListener('click', async () => {
         renderPriceRangeChart('priceChart', dates, prices, pLow, pHigh);
         
         // Renderizar Gráfico de Rendimiento
-        // Necesitamos la curva HODL eficientemente. 
-        // Ya calculamos finalHodlEquity en simulateLP pero no la curva completa.
-        // Generemos rápidamente la curva HODL para el gráfico.
-        const hodlCurve = prices.map(p => capital * (p / prices[0]));
+        // Usar curva HODL del motor CL (consistente con la composición inicial)
+        const hodlCurve = lpResult.hodlCurve;
         renderPerformanceChart('performanceChart', dates, lpResult.equityCurve, hodlCurve);
+
+        // 7. Renderizar Gráfico de Curva IL (Concentrated Liquidity)
+        const priceLow  = Math.max(pLow * 0.5, 1);
+        const priceHigh = pHigh * 1.5;
+        const steps     = 200;
+        const step      = (priceHigh - priceLow) / steps;
+        const ilPrices  = Array.from({ length: steps + 1 }, (_, i) => priceLow + i * step);
+        const ilData    = CLEngine.calculateILCurve(capital, priceData[0].price, pLow, pHigh, ilPrices);
+        renderILCurveChart('ilCurveChart', ilData, pLow, pHigh, currentPrice);
 
         // Sync with Database
         if (window.SyncService) {

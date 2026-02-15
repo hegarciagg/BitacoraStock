@@ -100,11 +100,11 @@ export default function Dashboard() {
               Comparar Portafolios
             </Button>
             <Button
-              onClick={() => navigate("/backtesting")}
+              onClick={() => navigate("/analysis")}
               className="bg-indigo-600 hover:bg-indigo-700"
             >
               <Calendar className="w-4 h-4 mr-2" />
-              Backtesting
+              Análisis
             </Button>
           </div>
         </div>

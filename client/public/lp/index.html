@@ -36,8 +36,7 @@
         <div class="nav-links">
             <div class="nav-links-inner">
                 <a href="/dashboard" class="nav-link">📊 Dashboard</a>
-                <a href="/backtesting" class="nav-link">📅 Backtesting</a>
-                <a href="/sentiment" class="nav-link">📈 Sentimiento</a>
+                <a href="/analysis" class="nav-link">📈 Análisis</a>
                 <a href="/compare" class="nav-link">📊 Comparador</a>
                 <a href="/lp/index.html" class="nav-link active">💧 Gestión LP</a>
                 <a href="/stock/index.html" class="nav-link">⚡ QuantEngine</a>
@@ -93,9 +92,20 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="startDate">Analysis Start Date</label>
-                    <input type="date" id="startDate" value="2023-01-01">
+                <div class="row">
+                    <div class="form-group half">
+                        <label for="startDate">Analysis Start Date</label>
+                        <input type="date" id="startDate" value="2023-01-01">
+                    </div>
+                    <div class="form-group half">
+                        <label for="poolFeeTier">Pool Fee Tier</label>
+                        <select id="poolFeeTier" style="background: #0f172a; color: #f8fafc; border: 1px solid #334155; padding: 10px; border-radius: 6px; width: 100%; font-size: 0.95rem;">
+                            <option value="0.0001">0.01%</option>
+                            <option value="0.0005">0.05%</option>
+                            <option value="0.003" selected>0.30%</option>
+                            <option value="0.01">1.00%</option>
+                        </select>
+                    </div>
                 </div>
 
                 <button type="button" id="runAnalysis" class="btn-primary">
@@ -131,8 +141,16 @@
                             <span class="sub-value" style="color: var(--text-secondary); font-size: 0.75rem;" id="val-opt-vol">Volatilidad: --</span>
                         </span>
                     </div>
+                    <div class="summary-item" id="alert-summary-item">
+                        <span class="label">🚨 LP Alert Signal</span>
+                        <span class="value-group">
+                            <span class="value" id="val-alert-signal" style="color: #94a3b8;">--</span>
+                            <span class="sub-value" id="val-alert-detail" style="font-size: 0.7rem; color: var(--text-secondary);">Run analysis</span>
+                        </span>
+                    </div>
                 </div>
             </div>
+
 
             <!-- Marcador de Posición de Barra de Búsqueda -->
             <div class="search-bar">
@@ -160,7 +178,7 @@
                                     </div>
                                     <div class="pool-details">
                                         <span class="pool-name" id="table-pool-name">--/--</span>
-                                        <span class="pool-tier">0.05%</span>
+                                        <span class="pool-tier" id="pool-tier-label">0.30%</span>
                                     </div>
                                 </div>
                             </td>
@@ -212,15 +230,65 @@
                 </div>
             </div>
 
-            <div class="alert-box" id="lpAlertBox">
-                <!-- Las alertas aparecerán aquí -->
-                <div class="placeholder-text">Run analysis to generate LP Strategy Alerts</div>
-            </div>
 
             <!-- Informe de Texto Detallado -->
             <div class="report-container" style="margin-top: 20px;">
                 <h3>📜 Detailed Strategy Report</h3>
                 <pre id="detailedReport" style="background: #1e293b; color: #f8fafc; padding: 15px; border-radius: 8px; font-family: monospace; white-space: pre-wrap; border: 1px solid #334155;">Waiting for analysis...</pre>
+            </div>
+
+            <!-- Concentrated Liquidity Analysis -->
+            <div class="cl-analysis-panel" style="margin-top: 20px;">
+                <h3>📐 Concentrated Liquidity Analysis</h3>
+                <p class="cl-subtitle">Formal CL Model (Uniswap V3 / Orca Whirlpools)</p>
+
+                <div class="cl-metrics-grid">
+                    <div class="cl-metric-card">
+                        <span class="cl-metric-icon">🔬</span>
+                        <span class="cl-metric-label">Liquidity (L)</span>
+                        <span class="cl-metric-value" id="cl-liquidity-L">--</span>
+                    </div>
+                    <div class="cl-metric-card">
+                        <span class="cl-metric-icon">🎯</span>
+                        <span class="cl-metric-label">Range Efficiency</span>
+                        <span class="cl-metric-value" id="cl-range-efficiency">--</span>
+                    </div>
+                    <div class="cl-metric-card">
+                        <span class="cl-metric-icon">⚖️</span>
+                        <span class="cl-metric-label">Break-Even Fees</span>
+                        <span class="cl-metric-value" id="cl-breakeven-fees">--</span>
+                        <span class="cl-metric-sub" id="cl-breakeven-apy">--</span>
+                    </div>
+                    <div class="cl-metric-card">
+                        <span class="cl-metric-icon">📉</span>
+                        <span class="cl-metric-label">IL (Exact %)</span>
+                        <span class="cl-metric-value" id="cl-il-pct">--</span>
+                    </div>
+                </div>
+
+                <div class="cl-composition">
+                    <h4>🪙 Token Composition (Current Price)</h4>
+                    <div class="cl-comp-row">
+                        <div class="cl-comp-item">
+                            <span class="cl-comp-label">Token Base (x)</span>
+                            <span class="cl-comp-value" id="cl-token-x">--</span>
+                        </div>
+                        <div class="cl-comp-item">
+                            <span class="cl-comp-label">Token Quote (y)</span>
+                            <span class="cl-comp-value" id="cl-token-y">--</span>
+                        </div>
+                    </div>
+                    <div class="cl-comp-row">
+                        <div class="cl-comp-item">
+                            <span class="cl-comp-label">LP Value</span>
+                            <span class="cl-comp-value" id="cl-value-lp">--</span>
+                        </div>
+                        <div class="cl-comp-item">
+                            <span class="cl-comp-label">HODL Value</span>
+                            <span class="cl-comp-value" id="cl-value-hodl">--</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -234,6 +302,12 @@
             <h2 style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 20px;">🆚 Performance Comparison (LP vs HODL)</h2>
             <div class="chart-container">
                 <canvas id="performanceChart"></canvas>
+            </div>
+
+            <h2 style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 20px;">📐 IL Curve — Concentrated Liquidity</h2>
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 10px;">Impermanent Loss vs Price with LP/HODL value overlay. Red dashed lines = range bounds.</p>
+            <div class="chart-container">
+                <canvas id="ilCurveChart"></canvas>
             </div>
         </section>
     </main>
@@ -291,6 +365,7 @@
 
     <!-- Shared Sync Bridge -->
     <script src="/shared/sync-bridge.js"></script>
+    <script src="LPConcentratedEngine.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

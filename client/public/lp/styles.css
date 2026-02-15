@@ -517,3 +517,139 @@ footer {
     color: var(--text-primary);
     margin-bottom: 15px;
 }
+
+/* =========================================
+   CONCENTRATED LIQUIDITY ANALYSIS
+   ========================================= */
+
+.cl-analysis-panel {
+    background: linear-gradient(135deg, rgba(35, 134, 54, 0.05) 0%, rgba(56, 189, 248, 0.04) 100%);
+    border: 1px solid rgba(35, 134, 54, 0.2);
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.cl-analysis-panel h3 {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.cl-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+}
+
+.cl-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.cl-metric-card {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.cl-metric-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.cl-metric-icon {
+    font-size: 1.4rem;
+    margin-bottom: 2px;
+}
+
+.cl-metric-label {
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+}
+
+.cl-metric-value {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    word-break: break-all;
+}
+
+.cl-metric-sub {
+    font-size: 0.78rem;
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+.cl-composition {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.cl-composition h4 {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.cl-comp-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.cl-comp-row:last-child {
+    margin-bottom: 0;
+}
+
+.cl-comp-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.cl-comp-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.cl-comp-value {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+@media (max-width: 600px) {
+    .cl-metrics-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .cl-comp-row {
+        flex-direction: column;
+    }
+}

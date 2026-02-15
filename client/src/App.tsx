@@ -12,8 +12,7 @@ import DiversificationAnalysis from "./pages/DiversificationAnalysis";
 import SimulationHistory from "./pages/SimulationHistory";
 import PortfolioComparator from "./pages/PortfolioComparator";
 import ScenarioAnalysis from "./pages/ScenarioAnalysis";
-import Backtesting from "./pages/Backtesting";
-import SentimentAnalysisPage from "./pages/SentimentAnalysisPage";
+import AnalysisHub from "./pages/AnalysisHub";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 
@@ -28,8 +27,9 @@ function Router() {
       <Route path="/portfolio/:portfolioId/diversification" component={DiversificationAnalysis} />
       <Route path="/portfolio/:portfolioId/history" component={SimulationHistory} />
       <Route path="/portfolio/:portfolioId/scenarios" component={ScenarioAnalysis} />
-      <Route path="/backtesting" component={Backtesting} />
-      <Route path="/sentiment" component={SentimentAnalysisPage} />
+      <Route path="/analysis" component={AnalysisHub} />
+      <Route path="/backtesting">{() => { window.location.replace('/analysis'); return null; }}</Route>
+      <Route path="/sentiment">{() => { window.location.replace('/analysis'); return null; }}</Route>
       <Route path="/profile" component={ProfilePage} />
       <Route path="/compare" component={PortfolioComparator} />
       <Route path="/404" component={NotFound} />
