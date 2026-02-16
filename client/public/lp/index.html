@@ -99,7 +99,7 @@
                     </div>
                     <div class="form-group half">
                         <label for="poolFeeTier">Pool Fee Tier</label>
-                        <select id="poolFeeTier" style="background: #0f172a; color: #f8fafc; border: 1px solid #334155; padding: 10px; border-radius: 6px; width: 100%; font-size: 0.95rem;">
+                        <select id="poolFeeTier">
                             <option value="0.0001">0.01%</option>
                             <option value="0.0005">0.05%</option>
                             <option value="0.003" selected>0.30%</option>
@@ -138,24 +138,21 @@
                         <span class="label">Rango Óptimo (7d)</span>
                         <span class="value-group">
                             <span class="value" id="val-opt-range">--</span>
-                            <span class="sub-value" style="color: var(--text-secondary); font-size: 0.75rem;" id="val-opt-vol">Volatilidad: --</span>
+                            <span class="sub-value opt-vol-sub" id="val-opt-vol">Volatilidad: --</span>
                         </span>
                     </div>
                     <div class="summary-item" id="alert-summary-item">
                         <span class="label">🚨 LP Alert Signal</span>
                         <span class="value-group">
-                            <span class="value" id="val-alert-signal" style="color: #94a3b8;">--</span>
-                            <span class="sub-value" id="val-alert-detail" style="font-size: 0.7rem; color: var(--text-secondary);">Run analysis</span>
+                            <span class="value alert-signal-value" id="val-alert-signal">--</span>
+                            <span class="sub-value alert-signal-detail" id="val-alert-detail">Run analysis</span>
                         </span>
                     </div>
                 </div>
             </div>
 
 
-            <!-- Marcador de Posición de Barra de Búsqueda -->
-            <div class="search-bar">
-                <input type="text" placeholder="Search tokens ..." disabled style="background: #0f172a; border: 1px solid #334155; padding: 10px; border-radius: 6px; width: 100%; max-width: 300px; margin-bottom: 20px;">
-            </div>
+
 
             <!-- Tabla de Portafolio -->
             <div class="table-responsive">
@@ -215,7 +212,7 @@
             </div>
 
             <!-- Cuadrícula de Estadísticas Detalladas (Suplementaria) -->
-            <div class="metrics-grid" style="margin-top: 20px; border-top: 1px solid #334155; padding-top: 20px;">
+            <div class="metrics-grid" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
                 <div class="metric-card small-card">
                     <span class="label">Sharpe Ratio</span>
                     <span class="value" id="val-sharpe">--</span>
@@ -234,7 +231,7 @@
             <!-- Informe de Texto Detallado -->
             <div class="report-container" style="margin-top: 20px;">
                 <h3>📜 Detailed Strategy Report</h3>
-                <pre id="detailedReport" style="background: #1e293b; color: #f8fafc; padding: 15px; border-radius: 8px; font-family: monospace; white-space: pre-wrap; border: 1px solid #334155;">Waiting for analysis...</pre>
+                <pre id="detailedReport" class="report-pre">Waiting for analysis...</pre>
             </div>
 
             <!-- Concentrated Liquidity Analysis -->
@@ -305,7 +302,7 @@
             </div>
 
             <h2 style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 20px;">📐 IL Curve — Concentrated Liquidity</h2>
-            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 10px;">Impermanent Loss vs Price with LP/HODL value overlay. Red dashed lines = range bounds.</p>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 10px;">Impermanent Loss vs Price with LP/HODL value overlay. Red dashed lines = range bounds.</p>
             <div class="chart-container">
                 <canvas id="ilCurveChart"></canvas>
             </div>

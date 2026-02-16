@@ -210,7 +210,7 @@ export function PercentileAnalysis({ simData }: { simData: SimulationData }) {
           {data.map((item, idx) => (
             <div key={idx} className="bg-slate-700 rounded-lg p-3 text-center">
               <p className="text-xs text-slate-400 mb-1">{item.label}</p>
-              <p className="text-lg font-bold text-blue-400">${(item.value / 1000).toFixed(1)}k</p>
+              <p className="text-lg font-bold text-primary">${(item.value / 1000).toFixed(1)}k</p>
               <p className="text-xs text-slate-500">{item.percentile}</p>
             </div>
           ))}

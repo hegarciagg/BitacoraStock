@@ -108,7 +108,7 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
             <CardTitle className="text-sm text-slate-300">Sharpe Ratio</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-400">
+            <div className="text-2xl font-bold text-primary">
               {latestSim.sharpeRatio.toFixed(2)}
             </div>
             {previousSim && (
@@ -301,7 +301,7 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
                     <td className="py-3 px-4 text-right text-orange-400 font-semibold">
                       {row.volatility.toFixed(2)}%
                     </td>
-                    <td className="py-3 px-4 text-right text-blue-400 font-semibold">
+                    <td className="py-3 px-4 text-right text-primary font-semibold">
                       {row.sharpeRatio.toFixed(2)}
                     </td>
                     <td className="py-3 px-4 text-right text-red-400 font-semibold">
@@ -321,9 +321,9 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
       {/* Análisis de Tendencias */}
       <Card className="bg-blue-900 bg-opacity-30 border border-blue-700">
         <CardHeader>
-          <CardTitle className="text-blue-300">Análisis de Tendencias</CardTitle>
+          <CardTitle className="text-primary">Análisis de Tendencias</CardTitle>
         </CardHeader>
-        <CardContent className="text-blue-200 space-y-3 text-sm">
+        <CardContent className="text-slate-300 space-y-3 text-sm">
           {data.length > 1 && (
             <>
               <div>

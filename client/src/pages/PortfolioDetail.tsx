@@ -136,42 +136,47 @@ export default function PortfolioDetail() {
           <div className="flex gap-2">
             <Button
               onClick={() => navigate(`/portfolio/${portfolioId}/simulation`)}
-              className="bg-yellow-600 hover:bg-yellow-700"
+              variant="outline"
+              className="border-primary/30 text-primary hover:bg-primary/10"
             >
               <BarChart3 className="w-4 h-4 mr-2" />
               Análisis Monte Carlo
             </Button>
             <Button
               onClick={() => navigate(`/portfolio/${portfolioId}/recommendations`)}
-              className="bg-green-600 hover:bg-green-700"
+              variant="outline"
+              className="border-primary/30 text-primary hover:bg-primary/10"
             >
               <TrendingUp className="w-4 h-4 mr-2" />
               Recomendaciones
             </Button>
             <Button
               onClick={() => navigate(`/portfolio/${portfolioId}/diversification`)}
-              className="bg-cyan-600 hover:bg-cyan-700"
+              variant="outline"
+              className="border-primary/30 text-primary hover:bg-primary/10"
             >
               <TrendingUpIcon className="w-4 h-4 mr-2" />
               Diversificación
             </Button>
             <Button
               onClick={() => navigate(`/portfolio/${portfolioId}/history`)}
-              className="bg-indigo-600 hover:bg-indigo-700"
+              variant="outline"
+              className="border-primary/30 text-primary hover:bg-primary/10"
             >
               <Clock className="w-4 h-4 mr-2" />
               Historial
             </Button>
             <Button
               onClick={() => navigate(`/portfolio/${portfolioId}/scenarios`)}
-              className="bg-purple-600 hover:bg-purple-700"
+              variant="outline"
+              className="border-primary/30 text-primary hover:bg-primary/10"
             >
               <Zap className="w-4 h-4 mr-2" />
               Escenarios
             </Button>
             <Dialog open={isAddingInvestment} onOpenChange={setIsAddingInvestment}>
               <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700">
+                <Button className="bg-primary hover:bg-primary/90">
                   <Plus className="w-4 h-4 mr-2" />
                   Agregar Inversión
                 </Button>
@@ -291,7 +296,7 @@ export default function PortfolioDetail() {
               </div>
               <Button
                 onClick={handleAddInvestment}
-                className="w-full bg-blue-600 hover:bg-blue-700"
+                className="w-full bg-primary hover:bg-primary/90"
                 disabled={!formData.symbol || !formData.quantity || !formData.unitPrice || createInvestment.isPending}
               >
                 {createInvestment.isPending ? "Agregando..." : "Agregar Inversión"}
@@ -309,7 +314,7 @@ export default function PortfolioDetail() {
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-blue-500" />
+                <BarChart3 className="w-5 h-5 text-primary" />
                 Operaciones de Inversión
               </CardTitle>
             </CardHeader>
@@ -378,7 +383,7 @@ export default function PortfolioDetail() {
                             className="hover:bg-slate-600 rounded-full gap-1 px-2"
                             onClick={() => setCommentsDialog({ open: true, investmentId: inv.id, symbol: inv.symbol })}
                           >
-                            <MessageSquare className="w-4 h-4 text-blue-400" />
+                            <MessageSquare className="w-4 h-4 text-primary" />
                             {(inv as any).commentCount > 0 && (
                               <span className="text-xs font-medium text-slate-300">{(inv as any).commentCount}</span>
                             )}
@@ -400,7 +405,7 @@ export default function PortfolioDetail() {
               <p className="text-slate-400 mb-6">Comienza a registrar tus operaciones de inversión.</p>
               <Button
                 onClick={() => setIsAddingInvestment(true)}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-primary hover:bg-primary/90"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Agregar Inversión

@@ -149,6 +149,65 @@ input:focus {
     flex: 1;
 }
 
+/* Select Dropdown */
+select,
+.form-select {
+    width: 100%;
+    padding: 12px;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b949e' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+}
+
+select:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+select option {
+    background-color: #161b22;
+    color: var(--text-primary);
+    padding: 8px;
+}
+
+/* Report Pre Block */
+.report-pre {
+    background: rgba(30, 41, 59, 0.6);
+    color: var(--text-primary);
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    border: 1px solid var(--border-color);
+}
+
+/* Alert Signal */
+.alert-signal-value {
+    color: var(--text-secondary);
+}
+
+.alert-signal-detail {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+}
+
+/* Optimal Range Sub-Value */
+.opt-vol-sub {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+}
+
 .btn-primary {
     width: 100%;
     padding: 16px;
@@ -538,7 +597,7 @@ footer {
 
 .cl-subtitle {
     color: var(--text-secondary);
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     margin-bottom: 20px;
     letter-spacing: 0.3px;
 }
@@ -575,21 +634,21 @@ footer {
 
 .cl-metric-label {
     color: var(--text-secondary);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.6px;
     font-weight: 600;
 }
 
 .cl-metric-value {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-primary);
     word-break: break-all;
 }
 
 .cl-metric-sub {
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     color: var(--success-color);
     font-weight: 500;
 }
@@ -640,7 +699,7 @@ footer {
 }
 
 .cl-comp-value {
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--text-primary);
 }

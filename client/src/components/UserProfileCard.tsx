@@ -33,7 +33,7 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
         <div className="flex items-center space-x-4">
           <Avatar className="w-16 h-16">
             <AvatarImage src={user.profilePicture || undefined} alt={user.name || "Usuario"} />
-            <AvatarFallback className="bg-blue-600 text-white text-lg">
+            <AvatarFallback className="bg-primary text-white text-lg">
               {initials}
             </AvatarFallback>
           </Avatar>
@@ -46,7 +46,7 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
         {/* Información de contacto */}
         <div className="space-y-3 border-t border-slate-700 pt-4">
           <div className="flex items-center space-x-3">
-            <Mail className="w-4 h-4 text-blue-400" />
+            <Mail className="w-4 h-4 text-primary" />
             <div>
               <p className="text-xs text-slate-500">Correo Electrónico</p>
               <p className="text-sm text-white">{user.email || "No especificado"}</p>
@@ -54,7 +54,7 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
           </div>
 
           <div className="flex items-center space-x-3">
-            <Shield className="w-4 h-4 text-blue-400" />
+            <Shield className="w-4 h-4 text-primary" />
             <div>
               <p className="text-xs text-slate-500">Rol</p>
               <p className="text-sm text-white capitalize">{user.role}</p>
@@ -62,7 +62,7 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
           </div>
 
           <div className="flex items-center space-x-3">
-            <Calendar className="w-4 h-4 text-blue-400" />
+            <Calendar className="w-4 h-4 text-primary" />
             <div>
               <p className="text-xs text-slate-500">Miembro desde</p>
               <p className="text-sm text-white">{createdDate}</p>
@@ -74,7 +74,7 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
         {user.riskProfile && (
           <div className="border-t border-slate-700 pt-4">
             <p className="text-xs text-slate-500 mb-2">Perfil de Riesgo</p>
-            <div className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-blue-600 text-white capitalize">
+            <div className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-primary text-white capitalize">
               {user.riskProfile}
             </div>
           </div>

@@ -33,7 +33,7 @@ const categoryLabels: Record<string, string> = {
 };
 
 const categoryColors: Record<string, string> = {
-  mercado: "bg-blue-500/20 text-blue-300",
+  mercado: "bg-blue-500/20 text-primary",
   economia: "bg-purple-500/20 text-purple-300",
   tecnologia: "bg-cyan-500/20 text-cyan-300",
   divisas: "bg-green-500/20 text-green-300",

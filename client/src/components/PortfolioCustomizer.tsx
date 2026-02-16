@@ -191,7 +191,7 @@ export function PortfolioCustomizer({
               />
               <Button
                 onClick={handleAddAsset}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-primary hover:bg-primary/90"
               >
                 <Plus className="w-4 h-4" />
               </Button>
@@ -222,8 +222,8 @@ export function PortfolioCustomizer({
 
           {/* Información educativa */}
           <div className="p-4 bg-blue-900 bg-opacity-30 rounded-lg border border-blue-700 space-y-2">
-            <h4 className="text-blue-300 font-semibold">Consejos para Personalizar</h4>
-            <ul className="text-sm text-blue-200 space-y-1 list-disc list-inside">
+            <h4 className="text-primary font-semibold">Consejos para Personalizar</h4>
+            <ul className="text-sm text-slate-300 space-y-1 list-disc list-inside">
               <li>Los pesos deben sumar 100% para una simulación válida</li>
               <li>Retorno esperado: histórico promedio del activo (ej: acciones 8%, bonos 3%)</li>
               <li>Volatilidad: desviación estándar histórica (ej: acciones 18%, bonos 5%)</li>

@@ -30,7 +30,7 @@ export function MetricTooltip({
                 {unit && <span className="text-sm ml-1">{unit}</span>}
               </p>
             </div>
-            <HelpCircle className="w-4 h-4 text-blue-400 hover:text-blue-300 transition-colors" />
+            <HelpCircle className="w-4 h-4 text-primary hover:text-primary transition-colors" />
           </div>
         </TooltipTrigger>
         <TooltipContent className="bg-slate-900 border-slate-700 max-w-xs">
@@ -39,7 +39,7 @@ export function MetricTooltip({
             <p className="text-sm text-slate-300">{description}</p>
             {interpretation && (
               <div className="pt-2 border-t border-slate-700">
-                <p className="text-xs font-semibold text-blue-400 mb-1">Interpretación:</p>
+                <p className="text-xs font-semibold text-primary mb-1">Interpretación:</p>
                 <p className="text-xs text-slate-300">{interpretation}</p>
               </div>
             )}

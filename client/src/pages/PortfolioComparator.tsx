@@ -150,19 +150,19 @@ export default function PortfolioComparator() {
                   <h3 className="font-semibold text-white mb-3">Cómo Usar</h3>
                   <ul className="text-sm text-slate-300 space-y-2">
                     <li className="flex items-start gap-2">
-                      <span className="text-blue-400 font-bold">1.</span>
+                      <span className="text-primary font-bold">1.</span>
                       <span>Selecciona hasta 4 portafolios</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-blue-400 font-bold">2.</span>
+                      <span className="text-primary font-bold">2.</span>
                       <span>Visualiza métricas lado a lado</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-blue-400 font-bold">3.</span>
+                      <span className="text-primary font-bold">3.</span>
                       <span>Identifica el mejor para tu perfil</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-blue-400 font-bold">4.</span>
+                      <span className="text-primary font-bold">4.</span>
                       <span>Toma decisiones informadas</span>
                     </li>
                   </ul>
@@ -205,7 +205,7 @@ export default function PortfolioComparator() {
               </p>
               <Button
                 onClick={() => navigate("/dashboard")}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-primary hover:bg-primary/90"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Ir al Dashboard

@@ -94,7 +94,7 @@ export default function ProfilePage() {
               <CardContent className="space-y-4">
                 <div>
                   <p className="text-xs text-slate-500">Portafolios</p>
-                  <p className="text-2xl font-bold text-blue-400">0</p>
+                  <p className="text-2xl font-bold text-primary">0</p>
                 </div>
                 <div>
                   <p className="text-xs text-slate-500">Inversiones</p>

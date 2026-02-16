@@ -130,7 +130,7 @@ export function CorrelationMatrix({
                               </p>
                             )}
                             {value < -0.7 && (
-                              <p className="text-xs text-blue-400 mt-1">
+                              <p className="text-xs text-primary mt-1">
                                 ✓ Correlación fuerte negativa (buena diversificación)
                               </p>
                             )}

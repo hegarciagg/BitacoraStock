@@ -87,7 +87,7 @@ export function ConcentrationAnalysis({ assets }: ConcentrationAnalysisProps) {
 
             <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
               <p className="text-slate-400 text-sm mb-2">Índice de Herfindahl</p>
-              <div className="text-3xl font-bold text-blue-400">
+              <div className="text-3xl font-bold text-primary">
                 {herfindahlIndex.toFixed(4)}
               </div>
               <p className="text-xs text-slate-400 mt-2">
@@ -282,9 +282,9 @@ export function ConcentrationAnalysis({ assets }: ConcentrationAnalysisProps) {
       {/* Recomendaciones */}
       <Card className="bg-blue-900 bg-opacity-30 border border-blue-700">
         <CardHeader>
-          <CardTitle className="text-blue-300">Recomendaciones de Diversificación</CardTitle>
+          <CardTitle className="text-primary">Recomendaciones de Diversificación</CardTitle>
         </CardHeader>
-        <CardContent className="text-blue-200 space-y-2 text-sm">
+        <CardContent className="text-slate-300 space-y-2 text-sm">
           <ul className="list-disc list-inside space-y-2">
             <li>
               Idealmente, ningún activo debe representar más del 30% del portafolio

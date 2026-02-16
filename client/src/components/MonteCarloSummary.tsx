@@ -35,7 +35,7 @@ export function MonteCarloSummary({
 
   const getRiskLevel = (sharpe: number) => {
     if (sharpe > 1.5) return { level: "Muy Bueno", color: "bg-green-600", textColor: "text-green-400" };
-    if (sharpe > 1) return { level: "Bueno", color: "bg-blue-600", textColor: "text-blue-400" };
+    if (sharpe > 1) return { level: "Bueno", color: "bg-primary", textColor: "text-primary" };
     if (sharpe > 0.5) return { level: "Moderado", color: "bg-yellow-600", textColor: "text-yellow-400" };
     return { level: "Bajo", color: "bg-red-600", textColor: "text-red-400" };
   };
@@ -87,9 +87,9 @@ export function MonteCarloSummary({
             <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-slate-400 text-sm">Sharpe Ratio</p>
-                <Target className="w-4 h-4 text-blue-400" />
+                <Target className="w-4 h-4 text-primary" />
               </div>
-              <p className="text-2xl font-bold text-blue-400">
+              <p className="text-2xl font-bold text-primary">
                 {sharpeRatio.toFixed(2)}
               </p>
               <Badge className={`mt-2 ${riskLevel.color} text-white`}>
@@ -195,11 +195,11 @@ export function MonteCarloSummary({
       </Card>
 
       {/* Interpretación */}
-      <Card className="bg-blue-900 bg-opacity-20 border-blue-700">
+      <Card className="bg-primary/10 border-primary/30">
         <CardHeader>
-          <CardTitle className="text-blue-300">Interpretación de Resultados</CardTitle>
+          <CardTitle className="text-primary">Interpretación de Resultados</CardTitle>
         </CardHeader>
-        <CardContent className="text-blue-200 space-y-2 text-sm">
+        <CardContent className="text-slate-300 space-y-2 text-sm">
           <p>
             • <strong>Retorno Esperado:</strong> Ganancia promedio proyectada del portafolio
           </p>

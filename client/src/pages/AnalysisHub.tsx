@@ -131,14 +131,14 @@ export default function AnalysisHub() {
           <TabsList className="grid w-full max-w-md grid-cols-2 bg-slate-800 border border-slate-700">
             <TabsTrigger
               value="backtesting"
-              className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white text-slate-400 gap-2"
+              className="data-[state=active]:bg-primary data-[state=active]:text-white text-slate-400 gap-2"
             >
               <Calendar className="w-4 h-4" />
               Backtesting
             </TabsTrigger>
             <TabsTrigger
               value="sentiment"
-              className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-slate-400 gap-2"
+              className="data-[state=active]:bg-primary data-[state=active]:text-white text-slate-400 gap-2"
             >
               <TrendingUp className="w-4 h-4" />
               Sentimiento
@@ -263,7 +263,7 @@ function BacktestingTab() {
                 <div key={asset}>
                   <div className="flex justify-between mb-2">
                     <label className="text-slate-300 capitalize text-sm">{asset}</label>
-                    <span className="text-blue-400 font-bold">{value}%</span>
+                    <span className="text-primary font-bold">{value}%</span>
                   </div>
                   <input
                     type="range"
@@ -280,7 +280,7 @@ function BacktestingTab() {
               <div className="pt-2 border-t border-slate-700">
                 <p className="text-slate-400 text-xs">
                   Total:{" "}
-                  <span className="text-blue-400">
+                  <span className="text-primary">
                     {Object.values(allocation).reduce((a, b) => a + b, 0)}%
                   </span>
                 </p>
@@ -431,7 +431,7 @@ function BacktestingTab() {
                           </div>
                           <div>
                             <p className="text-slate-400">Recuperación</p>
-                            <p className="text-blue-400 font-semibold">
+                            <p className="text-primary font-semibold">
                               ~{result!.recoveryDays} días
                             </p>
                           </div>
@@ -451,7 +451,7 @@ function BacktestingTab() {
         <Card className="bg-slate-800 border-slate-700 border-l-4 border-l-blue-500">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
-              <Zap className="w-5 h-5 text-blue-400" />
+              <Zap className="w-5 h-5 text-primary" />
               Insights del Backtesting
             </CardTitle>
           </CardHeader>
@@ -509,7 +509,7 @@ function SentimentTab() {
         <Button
           onClick={handleRefreshAnalysis}
           disabled={isLoading}
-          className="bg-blue-600 hover:bg-blue-700"
+          className="bg-primary hover:bg-primary/90"
         >
           {isLoading ? (
             <>
@@ -577,7 +577,7 @@ function SentimentTab() {
             </div>
           </div>
           <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
-            <div className="font-semibold text-blue-500 mb-2">ℹ Consideraciones de Riesgo</div>
+            <div className="font-semibold text-primary mb-2">ℹ Consideraciones de Riesgo</div>
             <div className="text-sm text-slate-300">
               La volatilidad ajustada es 1.15x, indicando mayor variabilidad esperada. Se
               recomienda mantener posiciones de cobertura y revisar límites de pérdida.

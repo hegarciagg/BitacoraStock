@@ -127,7 +127,7 @@ export function InvestmentCommentsDialog({
       <DialogContent className="sm:max-w-[600px] h-[80vh] flex flex-col bg-slate-900 border-slate-800 text-slate-100">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            Bitácora de Mercado: <span className="text-blue-400">{investmentSymbol}</span>
+            Bitácora de Mercado: <span className="text-primary">{investmentSymbol}</span>
           </DialogTitle>
           <DialogDescription className="text-slate-400">
             Historial de comentarios y análisis para esta inversión.
@@ -138,7 +138,7 @@ export function InvestmentCommentsDialog({
           <ScrollArea className="flex-1 pr-4 border rounded-md border-slate-700 bg-slate-950/50 p-4">
             {commentsQuery.isLoading ? (
               <div className="flex justify-center items-center h-20">
-                <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
+                <Loader2 className="h-6 w-6 animate-spin text-primary" />
               </div>
             ) : commentsQuery.data?.length === 0 ? (
               <div className="text-center text-slate-500 py-10">
@@ -156,7 +156,7 @@ export function InvestmentCommentsDialog({
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-6 w-6 hover:bg-slate-700 text-slate-400 hover:text-blue-400"
+                          className="h-6 w-6 hover:bg-slate-700 text-slate-400 hover:text-primary"
                           onClick={() => handleEdit(comment)}
                         >
                           <Pencil className="h-3 w-3" />
@@ -216,7 +216,7 @@ export function InvestmentCommentsDialog({
               <Button 
                 type="submit" 
                 disabled={!newComment.trim() || isSubmitting}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-primary hover:bg-primary/90 text-white"
               >
                 {isSubmitting ? (
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />

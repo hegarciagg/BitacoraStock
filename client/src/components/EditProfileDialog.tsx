@@ -162,7 +162,7 @@ export function EditProfileDialog({ user, onSuccess }: EditProfileDialogProps) {
               </Button>
               <Button
                 type="submit"
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                className="flex-1 bg-primary hover:bg-primary/90 text-white"
                 disabled={updateProfileMutation.isPending}
               >
                 {updateProfileMutation.isPending ? "Guardando..." : "Guardar Cambios"}

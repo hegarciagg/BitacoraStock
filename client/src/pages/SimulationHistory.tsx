@@ -50,7 +50,7 @@ export default function SimulationHistory() {
                   <CardTitle className="text-sm text-slate-300">Total de Simulaciones</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-blue-400">
+                  <div className="text-3xl font-bold text-primary">
                     {simulations.data.length}
                   </div>
                 </CardContent>
@@ -134,7 +134,7 @@ export default function SimulationHistory() {
             <Card className="bg-slate-800 border-slate-700">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-blue-500" />
+                  <Clock className="w-5 h-5 text-primary" />
                   Cómo Interpretar el Historial
                 </CardTitle>
               </CardHeader>
@@ -179,7 +179,7 @@ export default function SimulationHistory() {
               </p>
               <Button
                 onClick={() => navigate(`/portfolio/${portfolioId}/simulation`)}
-                className="bg-yellow-600 hover:bg-yellow-700"
+                className="bg-primary hover:bg-primary/90"
               >
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Ejecutar Simulación

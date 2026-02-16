@@ -175,76 +175,107 @@
     }
   }
   
-  /* MainStock Color System Overrides */
-  .bg-blue-600,
-  .bg-blue-700,
-  .bg-purple-600,
-  .bg-purple-700,
-  .bg-indigo-600,
-  .bg-indigo-700 {
-    background-color: #238636 !important;
-  }
+  /* ═══ Elevation System ═══════════════════════════════════════
+     Level 0: Canvas      — #090a0c (body background)
+     Level 1: Cards       — rgba(13, 17, 23, 0.85)  + blur
+     Level 2: Nested/Inset — rgba(6, 8, 12, 0.5)
+     Level 3: Dialogs     — rgba(22, 27, 34, 0.95)  + strong blur
+     Level 4: Popovers    — rgba(30, 35, 42, 0.98)
+  ═══════════════════════════════════════════════════════════ */
   
-  .hover\:bg-blue-700:hover,
-  .hover\:bg-purple-700:hover,
-  .hover\:bg-indigo-700:hover {
-    background-color: #2ea043 !important;
-  }
-  
-  .text-blue-400,
-  .text-blue-500,
-  .text-blue-600 {
-    color: #2ea043 !important;
-  }
-  
-  .border-blue-500,
-  .border-blue-600 {
-    border-color: #238636 !important;
-  }
-  
-  .hover\:border-blue-500:hover {
-    border-color: #238636 !important;
-  }
-  
-  /* Glassmorphism Cards */
+  /* Level 1 — Cards, primary surfaces */
   .bg-slate-800 {
-    background-color: rgba(22, 27, 34, 0.7) !important;
+    background-color: rgba(13, 17, 23, 0.85) !important;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
   
+  /* Level 2 — Nested elements, recessed areas */
   .bg-slate-700 {
-    background-color: rgba(0, 0, 0, 0.3) !important;
+    background-color: rgba(6, 8, 12, 0.5) !important;
   }
   
+  /* Level 2 — Nested cards with transparency */
   .bg-slate-700\/50 {
-    background-color: rgba(22, 27, 34, 0.5) !important;
+    background-color: rgba(17, 21, 28, 0.6) !important;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
   
-  .border-slate-700,
-  .border-slate-600 {
-    border-color: rgba(255, 255, 255, 0.08) !important;
+  /* Level 3 — Dialogs, elevated above cards */
+  [role="dialog"] .bg-slate-800,
+  [data-state="open"] > .bg-slate-800 {
+    background-color: rgba(22, 27, 34, 0.95) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* ═══ Input Inset Styling ════════════════════════════════════
+     Inputs are "inset" — darker than their surrounding surface
+     to signal "type here" without heavy borders.
+  ═══════════════════════════════════════════════════════════ */
+  
+  input.bg-slate-700,
+  textarea.bg-slate-700,
+  select.bg-slate-700,
+  [role="combobox"].bg-slate-700 {
+    background-color: rgba(0, 0, 0, 0.35) !important;
+    border-color: rgba(255, 255, 255, 0.06) !important;
   }
   
+  input.bg-slate-700:focus,
+  textarea.bg-slate-700:focus,
+  select.bg-slate-700:focus {
+    border-color: rgba(35, 134, 54, 0.5) !important;
+    box-shadow: 0 0 0 2px rgba(35, 134, 54, 0.15);
+  }
+
+  /* ═══ Border Progression ═════════════════════════════════════
+     Soft → Standard → Emphasis → Focus ring
+     Low-opacity rgba blends with background without demanding
+     attention. Solid hex borders look harsh in comparison.
+  ═══════════════════════════════════════════════════════════ */
+  
+  /* Standard separation */
+  .border-slate-700 {
+    border-color: rgba(255, 255, 255, 0.06) !important;
+  }
+  
+  /* Emphasis separation */
+  .border-slate-600 {
+    border-color: rgba(255, 255, 255, 0.10) !important;
+  }
+  
+  /* ═══ Text Hierarchy ═════════════════════════════════════════ */
+  
+  /* Secondary text */
   .text-slate-400 {
     color: #8b949e !important;
   }
   
+  /* Primary text */
   .text-slate-300 {
-    color: #f0f6fc !important;
+    color: #e6edf3 !important;
   }
   
+  /* Tertiary/muted text */
   .text-slate-500 {
     color: #6e7681 !important;
   }
+
+  /* ═══ Interaction States ═════════════════════════════════════ */
   
   .hover\:bg-slate-700:hover {
     background-color: rgba(255, 255, 255, 0.06) !important;
   }
   
-  /* Green accent for success states */
+  .hover\:bg-slate-600:hover {
+    background-color: rgba(255, 255, 255, 0.10) !important;
+  }
+  
+  /* ═══ Semantic Colors ════════════════════════════════════════ */
+  
+  /* Success/profit */
   .text-green-400,
   .text-green-500 {
     color: #2ea043 !important;

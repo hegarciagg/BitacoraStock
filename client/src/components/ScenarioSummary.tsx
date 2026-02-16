@@ -101,7 +101,7 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
           <CardContent className="pt-6">
             <div className="text-center">
               <p className="text-slate-400 text-sm mb-2">Escenarios Analizados</p>
-              <p className="text-2xl font-bold text-blue-400">
+              <p className="text-2xl font-bold text-primary">
                 {data.selectedScenariosCount}
               </p>
             </div>
@@ -209,7 +209,7 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
             <div className="space-y-2">
               <div className="flex justify-between items-center">
                 <span className="text-slate-400">Volatilidad de Impactos</span>
-                <span className="text-blue-400 font-bold">
+                <span className="text-primary font-bold">
                   {(data.volatilityOfImpacts * 100).toFixed(2)}%
                 </span>
               </div>
@@ -245,7 +245,7 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
 
             <div className="p-4 bg-slate-700/50 rounded-lg">
               <p className="text-slate-400 text-sm mb-2">Tiempo de Recuperación</p>
-              <p className="text-xl font-bold text-blue-400">
+              <p className="text-xl font-bold text-primary">
                 {data.keyMetrics.recoveryTime}
               </p>
             </div>
@@ -271,7 +271,7 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
       <Card className="bg-slate-800 border-slate-700">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <CheckCircle className="w-5 h-5 text-blue-500" />
+            <CheckCircle className="w-5 h-5 text-primary" />
             Recomendaciones Basadas en Análisis
           </CardTitle>
           <CardDescription className="text-slate-400">
@@ -288,7 +288,7 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
                 >
                   <div className="flex-shrink-0 mt-1">
                     <div className="flex items-center justify-center h-5 w-5 rounded-full bg-blue-500/20">
-                      <span className="text-blue-400 text-xs font-bold">{idx + 1}</span>
+                      <span className="text-primary text-xs font-bold">{idx + 1}</span>
                     </div>
                   </div>
                   <p className="text-slate-300 text-sm">{rec}</p>

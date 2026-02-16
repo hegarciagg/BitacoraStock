@@ -51,7 +51,7 @@ export default function Dashboard() {
           <div className="flex gap-2">
             <Dialog open={isCreating} onOpenChange={setIsCreating}>
               <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700">
+                <Button className="bg-primary hover:bg-primary/90">
                   <Plus className="w-4 h-4 mr-2" />
                   Nuevo Portafolio
                 </Button>
@@ -84,7 +84,7 @@ export default function Dashboard() {
                 </div>
                 <Button
                   onClick={handleCreatePortfolio}
-                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  className="w-full bg-primary hover:bg-primary/90"
                   disabled={!newPortfolioName.trim() || createPortfolio.isPending}
                 >
                   {createPortfolio.isPending ? "Creando..." : "Crear Portafolio"}
@@ -94,14 +94,16 @@ export default function Dashboard() {
             </Dialog>
             <Button
               onClick={() => navigate("/compare")}
-              className="bg-purple-600 hover:bg-purple-700"
+              variant="outline"
+              className="border-primary/30 text-primary hover:bg-primary/10"
             >
               <BarChart3 className="w-4 h-4 mr-2" />
               Comparar Portafolios
             </Button>
             <Button
               onClick={() => navigate("/analysis")}
-              className="bg-indigo-600 hover:bg-indigo-700"
+              variant="outline"
+              className="border-primary/30 text-primary hover:bg-primary/10"
             >
               <Calendar className="w-4 h-4 mr-2" />
               Análisis
@@ -118,13 +120,13 @@ export default function Dashboard() {
             {portfolios.data.map((portfolio) => (
               <Card
                 key={portfolio.id}
-                className="bg-slate-800 border-slate-700 cursor-pointer hover:border-blue-500 transition-colors"
+                className="bg-slate-800 border-slate-700 cursor-pointer hover:border-primary transition-colors"
                 onClick={() => navigate(`/portfolio/${portfolio.id}`)}
               >
                 <CardHeader>
                   <CardTitle className="text-white flex items-center justify-between">
                     <span>{portfolio.name}</span>
-                    <TrendingUp className="w-5 h-5 text-blue-500" />
+                    <TrendingUp className="w-5 h-5 text-primary" />
                   </CardTitle>
                   <CardDescription className="text-slate-400">
                     {portfolio.description || "Sin descripción"}
@@ -138,7 +140,7 @@ export default function Dashboard() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="w-full border-slate-600 text-blue-400 hover:bg-slate-700"
+                      className="w-full border-slate-600 text-primary hover:bg-slate-700"
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/portfolio/${portfolio.id}`);
@@ -159,7 +161,7 @@ export default function Dashboard() {
               <p className="text-slate-400 mb-6">Crea tu primer portafolio para comenzar a invertir.</p>
               <Button
                 onClick={() => setIsCreating(true)}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-primary hover:bg-primary/90"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Crear Portafolio
@@ -188,7 +190,7 @@ export default function Dashboard() {
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
-                <FileText className="w-5 h-5 text-blue-500" />
+                <FileText className="w-5 h-5 text-primary" />
                 Recursos e Integraciones
               </CardTitle>
             </CardHeader>

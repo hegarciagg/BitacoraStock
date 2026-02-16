@@ -33,7 +33,7 @@ export default function Recommendations() {
       case "medium":
         return <Lightbulb className="w-5 h-5 text-yellow-500" />;
       case "low":
-        return <CheckCircle className="w-5 h-5 text-blue-500" />;
+        return <CheckCircle className="w-5 h-5 text-primary" />;
       default:
         return <TrendingUp className="w-5 h-5 text-slate-500" />;
     }
@@ -100,7 +100,7 @@ export default function Recommendations() {
                   ) as any}
 
                   <div className="flex gap-2 pt-4">
-                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                    <Button size="sm" className="bg-primary hover:bg-primary/90">
                       Aplicar Recomendación
                     </Button>
                     <Button size="sm" variant="outline" className="border-slate-600">
@@ -136,7 +136,7 @@ export default function Recommendations() {
               <ul className="list-disc list-inside space-y-1">
                 <li><strong className="text-red-400">Alta:</strong> Requiere atención inmediata</li>
                 <li><strong className="text-yellow-400">Media:</strong> Considera implementar pronto</li>
-                <li><strong className="text-blue-400">Baja:</strong> Mejora opcional</li>
+                <li><strong className="text-primary">Baja:</strong> Mejora opcional</li>
               </ul>
             </div>
             <div>

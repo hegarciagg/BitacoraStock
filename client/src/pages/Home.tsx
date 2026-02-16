@@ -21,7 +21,7 @@ export default function Home() {
       <header className="border-b border-slate-700 bg-slate-900/50 backdrop-blur">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <TrendingUp className="w-8 h-8 text-blue-500" />
+            <TrendingUp className="w-8 h-8 text-primary" />
             <h1 className="text-2xl font-bold text-white">Web Financiera</h1>
           </div>
           <Button asChild>
@@ -36,7 +36,7 @@ export default function Home() {
           <p className="text-xl text-slate-300 mb-8">
             Análisis avanzado de portafolios con simulación de Monte Carlo, recomendaciones personalizadas y reportes detallados.
           </p>
-          <Button size="lg" asChild className="bg-blue-600 hover:bg-blue-700">
+          <Button size="lg" asChild className="bg-primary hover:bg-primary/90">
             <a href={getLoginUrl()}>Comenzar Ahora <ArrowRight className="ml-2 w-4 h-4" /></a>
           </Button>
         </div>
@@ -44,7 +44,7 @@ export default function Home() {
         <div className="grid md:grid-cols-3 gap-6 mt-20">
           <Card className="bg-slate-800 border-slate-700">
             <CardHeader>
-              <BarChart3 className="w-8 h-8 text-blue-500 mb-2" />
+              <BarChart3 className="w-8 h-8 text-primary mb-2" />
               <CardTitle className="text-white">Análisis de Portafolio</CardTitle>
             </CardHeader>
             <CardContent>

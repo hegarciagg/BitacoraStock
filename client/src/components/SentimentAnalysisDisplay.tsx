@@ -28,7 +28,7 @@ export default function SentimentAnalysisDisplay({ data }: SentimentAnalysisDisp
   const sentimentBg = data.overallSentiment > 0.2 ? 'bg-green-500/10' : data.overallSentiment < -0.2 ? 'bg-red-500/10' : 'bg-yellow-500/10';
 
   const actionIcon = data.recommendedAction === 'comprar' ? <TrendingUp className="w-4 h-4" /> : data.recommendedAction === 'vender' ? <TrendingDown className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />;
-  const actionColor = data.recommendedAction === 'comprar' ? 'bg-green-500/10 text-green-500' : data.recommendedAction === 'vender' ? 'bg-red-500/10 text-red-500' : 'bg-blue-500/10 text-blue-500';
+  const actionColor = data.recommendedAction === 'comprar' ? 'bg-green-500/10 text-green-500' : data.recommendedAction === 'vender' ? 'bg-red-500/10 text-red-500' : 'bg-blue-500/10 text-primary';
 
   return (
     <div className="space-y-6">
@@ -36,7 +36,7 @@ export default function SentimentAnalysisDisplay({ data }: SentimentAnalysisDisp
       <Card className="bg-slate-800 border-slate-700">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <CheckCircle className="w-5 h-5 text-blue-500" />
+            <CheckCircle className="w-5 h-5 text-primary" />
             Análisis de Sentimiento de Mercado
           </CardTitle>
           <CardDescription>Correlación de noticias con movimientos históricos</CardDescription>
@@ -53,7 +53,7 @@ export default function SentimentAnalysisDisplay({ data }: SentimentAnalysisDisp
             {/* Confianza del Mercado */}
             <div className="p-4 rounded-lg bg-blue-500/10 border border-slate-700">
               <div className="text-sm text-slate-400 mb-2">Confianza del Mercado</div>
-              <div className="text-2xl font-bold text-blue-500">{(data.marketConfidence * 100).toFixed(0)}%</div>
+              <div className="text-2xl font-bold text-primary">{(data.marketConfidence * 100).toFixed(0)}%</div>
               <div className="text-xs text-slate-400 mt-2">
                 {data.marketConfidence > 0.7 ? 'Alta' : data.marketConfidence > 0.4 ? 'Moderada' : 'Baja'}
               </div>
@@ -187,7 +187,7 @@ export default function SentimentAnalysisDisplay({ data }: SentimentAnalysisDisp
               </div>
               <div className="text-right">
                 <div className="text-sm text-slate-400 mb-2">Impacto</div>
-                <div className="text-lg font-semibold text-blue-500">
+                <div className="text-lg font-semibold text-primary">
                   {((data.riskAdjustment - 1) * 100).toFixed(1)}%
                 </div>
                 <div className="text-xs text-slate-400 mt-2">Cambio en volatilidad</div>

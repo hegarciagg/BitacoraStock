@@ -81,7 +81,7 @@ export default function SentimentAnalysisPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-              <TrendingUp className="w-8 h-8 text-blue-500" />
+              <TrendingUp className="w-8 h-8 text-primary" />
               Análisis de Sentimiento Avanzado
             </h1>
             <p className="text-slate-400 mt-2">Correlación de noticias con movimientos históricos del mercado</p>
@@ -89,7 +89,7 @@ export default function SentimentAnalysisPage() {
           <Button
             onClick={handleRefreshAnalysis}
             disabled={isLoading}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-primary hover:bg-primary/90"
           >
             {isLoading ? (
               <>
@@ -152,7 +152,7 @@ export default function SentimentAnalysisPage() {
               </div>
             </div>
             <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
-              <div className="font-semibold text-blue-500 mb-2">ℹ Consideraciones de Riesgo</div>
+              <div className="font-semibold text-primary mb-2">ℹ Consideraciones de Riesgo</div>
               <div className="text-sm text-slate-300">
                 La volatilidad ajustada es 1.15x, indicando mayor variabilidad esperada. Se recomienda mantener posiciones de cobertura y revisar límites de pérdida.
               </div>

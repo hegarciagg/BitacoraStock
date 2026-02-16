@@ -99,7 +99,7 @@ export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
             <CardTitle className="text-sm text-slate-300">Menor Volatilidad</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-400">
+            <div className="text-2xl font-bold text-primary">
               {(lowestVolatility * 100).toFixed(2)}%
             </div>
             <p className="text-xs text-slate-400 mt-2">
@@ -353,7 +353,7 @@ export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
                     <td className="py-3 px-4 text-right text-orange-400 font-semibold">
                       {(parseFloat(portfolio.volatility.toString()) * 100).toFixed(2)}%
                     </td>
-                    <td className="py-3 px-4 text-right text-blue-400 font-semibold">
+                    <td className="py-3 px-4 text-right text-primary font-semibold">
                       {parseFloat(portfolio.sharpeRatio.toString()).toFixed(2)}
                     </td>
                     <td className="py-3 px-4 text-right text-red-400 font-semibold">
@@ -373,9 +373,9 @@ export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
       {/* Recomendaciones Comparativas */}
       <Card className="bg-blue-900 bg-opacity-30 border border-blue-700">
         <CardHeader>
-          <CardTitle className="text-blue-300">Análisis Comparativo</CardTitle>
+          <CardTitle className="text-primary">Análisis Comparativo</CardTitle>
         </CardHeader>
-        <CardContent className="text-blue-200 space-y-3 text-sm">
+        <CardContent className="text-slate-300 space-y-3 text-sm">
           <div>
             <h4 className="font-semibold mb-2">Portafolio Más Agresivo:</h4>
             <p>

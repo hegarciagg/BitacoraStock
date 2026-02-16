@@ -240,7 +240,7 @@ export function PDFCustomizationDialog({
           <Button
             onClick={handleExport}
             disabled={isLoading || !Object.values(sections).some((v) => v)}
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            className="w-full bg-primary hover:bg-primary/90"
           >
             {isLoading ? (
               <>

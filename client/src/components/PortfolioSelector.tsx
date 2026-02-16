@@ -50,7 +50,7 @@ export function PortfolioSelector({
                 <Badge
                   key={portfolio.id}
                   variant="secondary"
-                  className="bg-blue-900 text-blue-100 px-3 py-2 flex items-center gap-2"
+                  className="bg-primary/20 text-primary px-3 py-2 flex items-center gap-2"
                 >
                   <span>{portfolio.name}</span>
                   <button

@@ -112,7 +112,7 @@ export default function SimulationAnalysis() {
             )}
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-yellow-600 hover:bg-yellow-700">
+                <Button className="bg-primary hover:bg-primary/90">
                   <Zap className="w-4 h-4 mr-2" />
                   Ejecutar Simulación
                 </Button>
@@ -173,8 +173,8 @@ export default function SimulationAnalysis() {
                         </p>
                       </div>
                       <div className="p-4 bg-blue-900 bg-opacity-30 rounded-lg border border-blue-700">
-                        <h4 className="text-blue-300 font-semibold mb-2">Información</h4>
-                        <ul className="text-sm text-blue-200 space-y-1 list-disc list-inside">
+                        <h4 className="text-primary font-semibold mb-2">Información</h4>
+                        <ul className="text-sm text-slate-300 space-y-1 list-disc list-inside">
                           <li>Más simulaciones aumentan precisión pero tiempo de cálculo</li>
                           <li>Horizonte temporal afecta la volatilidad proyectada</li>
                           <li>Típicamente se usa 1 año (365 días) para análisis anual</li>
@@ -196,7 +196,7 @@ export default function SimulationAnalysis() {
                 <Button
                   onClick={handleRunSimulation}
                   disabled={executeSimulation.isPending}
-                  className="flex-1 bg-yellow-600 hover:bg-yellow-700"
+                  className="flex-1 bg-primary hover:bg-primary/90"
                 >
                   {executeSimulation.isPending ? "Ejecutando..." : "Ejecutar Simulación"}
                 </Button>
@@ -258,7 +258,7 @@ export default function SimulationAnalysis() {
               <p className="text-slate-400 mb-6">Ejecuta una simulación de Monte Carlo para ver los resultados.</p>
               <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-yellow-600 hover:bg-yellow-700">
+                  <Button className="bg-primary hover:bg-primary/90">
                     <Zap className="w-4 h-4 mr-2" />
                     Ejecutar Simulación
                   </Button>
@@ -334,7 +334,7 @@ export default function SimulationAnalysis() {
                     <Button
                       onClick={handleRunSimulation}
                       disabled={executeSimulation.isPending}
-                      className="flex-1 bg-yellow-600 hover:bg-yellow-700"
+                      className="flex-1 bg-primary hover:bg-primary/90"
                     >
                       {executeSimulation.isPending ? "Ejecutando..." : "Ejecutar Simulación"}
                     </Button>
@@ -348,7 +348,7 @@ export default function SimulationAnalysis() {
         <Card className="bg-slate-800 border-slate-700">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-blue-500" />
+              <TrendingUp className="w-5 h-5 text-primary" />
               Información de la Simulación
             </CardTitle>
           </CardHeader>

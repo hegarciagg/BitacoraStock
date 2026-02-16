@@ -202,7 +202,7 @@ export default function Backtesting() {
                   <div key={asset}>
                     <div className="flex justify-between mb-2">
                       <label className="text-slate-300 capitalize text-sm">{asset}</label>
-                      <span className="text-blue-400 font-bold">{value}%</span>
+                      <span className="text-primary font-bold">{value}%</span>
                     </div>
                     <input
                       type="range"
@@ -219,7 +219,7 @@ export default function Backtesting() {
                 <div className="pt-2 border-t border-slate-700">
                   <p className="text-slate-400 text-xs">
                     Total:{" "}
-                    <span className="text-blue-400">
+                    <span className="text-primary">
                       {Object.values(allocation).reduce((a, b) => a + b, 0)}%
                     </span>
                   </p>
@@ -370,7 +370,7 @@ export default function Backtesting() {
                             </div>
                             <div>
                               <p className="text-slate-400">Recuperación</p>
-                              <p className="text-blue-400 font-semibold">
+                              <p className="text-primary font-semibold">
                                 ~{result!.recoveryDays} días
                               </p>
                             </div>
@@ -390,7 +390,7 @@ export default function Backtesting() {
           <Card className="bg-slate-800 border-slate-700 border-l-4 border-l-blue-500">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
-                <Zap className="w-5 h-5 text-blue-400" />
+                <Zap className="w-5 h-5 text-primary" />
                 Insights del Backtesting
               </CardTitle>
             </CardHeader>

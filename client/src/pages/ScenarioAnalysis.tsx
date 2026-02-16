@@ -292,7 +292,7 @@ export default function ScenarioAnalysis() {
           <Card className="lg:col-span-2 bg-slate-800 border-slate-700">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-blue-500" />
+                <BarChart3 className="w-5 h-5 text-primary" />
                 Constructor de Escenario Personalizado
               </CardTitle>
             </CardHeader>
@@ -314,7 +314,7 @@ export default function ScenarioAnalysis() {
                   <div>
                     <div className="flex justify-between items-center mb-2">
                       <Label className="text-white">Impacto en Acciones</Label>
-                      <span className="text-blue-400 font-semibold">
+                      <span className="text-primary font-semibold">
                         {(customScenario.equity * 100).toFixed(1)}%
                       </span>
                     </div>
