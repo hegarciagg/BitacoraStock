@@ -45,13 +45,34 @@ window.DataService = class {
             params += '&range=5y';
         }
 
-        const proxyUrl = 'https://corsproxy.io/?';
         const targetUrl = encodeURIComponent(baseUrl + params);
-        
-        const response = await fetch(proxyUrl + targetUrl);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const proxyUrls = [
+            `https://corsproxy.io/?${targetUrl}`,
+            `https://api.allorigins.win/raw?url=${targetUrl}`,
+            `https://api.codetabs.com/v1/proxy?quest=${targetUrl}`
+        ];
 
-        const json = await response.json();
+        let json = null;
+        let lastError = null;
+
+        for (const proxyUrl of proxyUrls) {
+            try {
+                const response = await fetch(proxyUrl);
+                if (response.ok) {
+                    json = await response.json();
+                    break;
+                } else {
+                    lastError = new Error(`HTTP ${response.status}`);
+                    console.warn(`Proxy returned status ${response.status}: ${proxyUrl}`);
+                }
+            } catch (error) {
+                console.warn(`Proxy failed: ${proxyUrl}`, error);
+                lastError = error;
+            }
+        }
+
+        if (!json) throw lastError || new Error('All proxies failed');
+
         const result = json.chart.result[0];
         
         if (!result || !result.timestamp) throw new Error('No data found');
@@ -67,7 +88,7 @@ window.DataService = class {
      * @param {string} ticker 
      */
     async fetchMetadata(ticker) {
-        const proxyUrl = 'https://corsproxy.io/?';
+        const proxyUrl = 'https://api.allorigins.win/raw?url=';
         
         // Stage 1: Try quoteSummary for full details
         try {

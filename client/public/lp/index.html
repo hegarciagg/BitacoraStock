@@ -139,6 +139,7 @@
                         <span class="value-group">
                             <span class="value" id="val-opt-range">--</span>
                             <span class="sub-value opt-vol-sub" id="val-opt-vol">Volatilidad: --</span>
+                            <span class="sub-value opt-coins-sub" id="val-opt-coins" style="color: var(--accent-color); font-weight: 500; font-size: 0.75rem; margin-top: 2px;">--</span>
                         </span>
                     </div>
                     <div class="summary-item" id="alert-summary-item">
@@ -186,8 +187,14 @@
                             <td class="range-cell">
                                 <div class="range-visual-container">
                                     <div class="range-labels">
-                                        <span class="range-limit min-limit" id="range-min">--</span>
-                                        <span class="range-limit max-limit" id="range-max">--</span>
+                                        <div style="display: flex; flex-direction: column;">
+                                            <span class="range-limit min-limit" id="range-min">--</span>
+                                            <span class="sub-value" id="range-min-coins" style="font-size: 0.65rem; color: var(--text-secondary);">--</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                                            <span class="range-limit max-limit" id="range-max">--</span>
+                                            <span class="sub-value" id="range-max-coins" style="font-size: 0.65rem; color: var(--text-secondary);">--</span>
+                                        </div>
                                     </div>
                                     <div class="range-bar-track">
                                          <!-- Barra de Rango Activo -->
