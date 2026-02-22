@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import MarketNewsFeed from "@/components/MarketNewsFeed";
 import { getMarketNews } from "@/lib/marketNews";
+import { BrainCircuit } from "lucide-react";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -208,6 +209,14 @@ export default function Dashboard() {
                     <TrendingUp className="w-4 h-4 mr-2 text-green-500" />
                     MainStock Analytics
                   </a>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start border-purple-500/30 hover:bg-purple-500/10 text-purple-400"
+                  onClick={() => navigate("/hmm-trading")}
+                >
+                  <BrainCircuit className="w-4 h-4 mr-2 text-purple-400" />
+                  HMM Trading System
                 </Button>
               </div>
               <div className="pt-4 space-y-2 border-t border-slate-700">

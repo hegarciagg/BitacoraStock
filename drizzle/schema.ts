@@ -248,3 +248,38 @@ export const portfolioHistory = mysqlTable("portfolioHistory", {
 
 export type PortfolioHistory = typeof portfolioHistory.$inferSelect;
 export type InsertPortfolioHistory = typeof portfolioHistory.$inferInsert;
+
+// ─── HMM Trading System ───────────────────────────────────────────────────────
+
+// Tabla: Trades simulados/en vivo del sistema HMM
+export const hmmTrades = mysqlTable("hmm_trades", {
+  id: int("id").autoincrement().primaryKey(),
+  entryPrice:    decimal("entry_price",   { precision: 18, scale: 8 }).notNull(),
+  exitPrice:     decimal("exit_price",    { precision: 18, scale: 8 }),
+  pnl:           decimal("pnl",           { precision: 18, scale: 4 }),
+  leverage:      decimal("leverage",      { precision: 4,  scale: 2 }).default("2.5"),
+  entryTime:     datetime("entry_time").notNull(),
+  exitTime:      datetime("exit_time"),
+  regime:        int("regime").notNull(),
+  confirmations: int("confirmations").notNull(),
+  isOpen:        int("is_open").default(1),         // 1 = open, 0 = closed
+  capitalBefore: decimal("capital_before", { precision: 18, scale: 4 }),
+  capitalAfter:  decimal("capital_after",  { precision: 18, scale: 4 }),
+  createdAt:     timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type HmmTrade = typeof hmmTrades.$inferSelect;
+export type InsertHmmTrade = typeof hmmTrades.$inferInsert;
+
+// Tabla: Curva de equity acumulada del sistema HMM
+export const hmmEquityCurve = mysqlTable("hmm_equity_curve", {
+  id:        int("id").autoincrement().primaryKey(),
+  timestamp: datetime("timestamp").notNull(),
+  equity:    decimal("equity", { precision: 18, scale: 4 }).notNull(),
+  drawdown:  decimal("drawdown", { precision: 8, scale: 6 }),          // e.g. -0.123456
+  regime:    int("regime"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type HmmEquityPoint = typeof hmmEquityCurve.$inferSelect;
+export type InsertHmmEquityPoint = typeof hmmEquityCurve.$inferInsert;

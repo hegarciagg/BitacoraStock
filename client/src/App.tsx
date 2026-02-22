@@ -14,6 +14,7 @@ import PortfolioComparator from "./pages/PortfolioComparator";
 import ScenarioAnalysis from "./pages/ScenarioAnalysis";
 import AnalysisHub from "./pages/AnalysisHub";
 import ProfilePage from "./pages/ProfilePage";
+import HMMTradingSystem from "./pages/HMMTradingSystem";
 import NotFound from "./pages/NotFound";
 
 function Router() {
@@ -30,6 +31,7 @@ function Router() {
       <Route path="/analysis" component={AnalysisHub} />
       <Route path="/backtesting">{() => { window.location.replace('/analysis'); return null; }}</Route>
       <Route path="/sentiment">{() => { window.location.replace('/analysis'); return null; }}</Route>
+      <Route path="/hmm-trading" component={HMMTradingSystem} />
       <Route path="/profile" component={ProfilePage} />
       <Route path="/compare" component={PortfolioComparator} />
       <Route path="/404" component={NotFound} />
