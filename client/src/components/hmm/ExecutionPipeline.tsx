@@ -10,7 +10,7 @@ const STEPS = [
   { n: 6, label: "Compute Indicators", detail: "RSI · EMA · MACD · ADX · Momentum", color: "text-yellow-400", border: "border-yellow-500/30", bg: "bg-yellow-500/10" },
   { n: 7, label: "Apply Voting System", detail: "8 confirmaciones → votingScore", color: "text-orange-400", border: "border-orange-500/30", bg: "bg-orange-500/10" },
   { n: 8, label: "Generate Signal", detail: "LONG si bullState + score ≥ 7 + cooldown OK", color: "text-green-400", border: "border-green-500/30", bg: "bg-green-500/10" },
-  { n: 9, label: "Apply Risk Rules", detail: "PnL calc · 2.5x leverage · capital dinámico", color: "text-green-400", border: "border-green-500/30", bg: "bg-green-500/10" },
+  { n: 9, label: "Apply Risk Rules", detail: "PnL calc · 1.3x leverage · capital dinámico", color: "text-green-400", border: "border-green-500/30", bg: "bg-green-500/10" },
   { n: 10, label: "Persist Trade + Equity", detail: "INSERT trades + equity_curve → MySQL", color: "text-orange-400", border: "border-orange-500/30", bg: "bg-orange-500/10" },
   { n: 11, label: "Serve via API", detail: "tRPC routes → React Dashboard", color: "text-cyan-400", border: "border-cyan-500/30", bg: "bg-cyan-500/10" },
 ];

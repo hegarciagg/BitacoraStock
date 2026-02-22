@@ -57,7 +57,7 @@ export default function HeroSection() {
               <p className="text-xs text-slate-400">Confirmaciones</p>
             </div>
             <div className="p-3 rounded-xl bg-slate-700/50 border border-slate-600">
-              <p className="text-2xl font-bold text-white">2.5x</p>
+              <p className="text-2xl font-bold text-white">1.3x</p>
               <p className="text-xs text-slate-400">Leverage</p>
             </div>
           </div>

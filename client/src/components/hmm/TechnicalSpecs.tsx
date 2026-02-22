@@ -142,13 +142,13 @@ bearState = argmin(mean_return_per_state)
         </AccordionItem>
 
         {/* C. Risk Formula */}
-        <AccordionItem title="C. Fórmula de Riesgo y PnL" badge="Leverage 2.5x">
+        <AccordionItem title="C. Fórmula de Riesgo y PnL" badge="Leverage 1.3x">
           <CodeBlock>
 {`// Capital inicial
 initialCapital = $10,000
 
 // Leverage
-leverage = 2.5
+leverage = 1.3
 
 // Cálculo de PnL por trade
 PnL = ((exitPrice - entryPrice) / entryPrice) × capital × leverage

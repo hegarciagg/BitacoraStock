@@ -44,7 +44,7 @@ const MODULES: Module[] = [
     emoji: "💰",
     name: "Risk Engine",
     stack: "TypeScript · Math",
-    description: "Capital $10K · Leverage 2.5x · PnL = ((exit-entry)/entry) × capital × 2.5.",
+    description: "Capital $10K · Leverage 1.3x · PnL = ((exit-entry)/entry) × capital × 1.3.",
     status: "Pendiente",
   },
   {

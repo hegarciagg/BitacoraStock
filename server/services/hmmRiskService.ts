@@ -2,7 +2,7 @@
  * hmmRiskService.ts
  * Runs a full historical backtest of the HMM strategy.
  *
- * Constants: initialCapital = $10,000, leverage = 2.5x
+ * Constants: initialCapital = $10,000, leverage = 1.3x
  * PnL formula: ((exitPrice - entryPrice) / entryPrice) * capital * leverage
  */
 
@@ -11,7 +11,7 @@ import { evaluateVoting, generateSignal, setCooldown, clearCooldown, isInCooldow
 
 // ── Config ────────────────────────────────────────────────────────────────────
 export const INITIAL_CAPITAL = 10_000;
-export const LEVERAGE        = 2.5;
+export const LEVERAGE        = 1.3;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export interface SimulatedTrade {

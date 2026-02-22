@@ -118,7 +118,7 @@ Respuesta:
 | Covariance type | full |
 | Iterations | 1000 |
 | Capital inicial | $10,000 |
-| Leverage | 2.5x |
+| Leverage | 1.3x |
 | Confirmaciones mínimas | 7/8 |
 | Cooldown post-bear | 48 horas |
 | Data BTC | 1H, últimos 730 días |

@@ -257,7 +257,7 @@ export const hmmTrades = mysqlTable("hmm_trades", {
   entryPrice:    decimal("entry_price",   { precision: 18, scale: 8 }).notNull(),
   exitPrice:     decimal("exit_price",    { precision: 18, scale: 8 }),
   pnl:           decimal("pnl",           { precision: 18, scale: 4 }),
-  leverage:      decimal("leverage",      { precision: 4,  scale: 2 }).default("2.5"),
+  leverage:      decimal("leverage",      { precision: 4,  scale: 2 }).default("1.3"),
   entryTime:     datetime("entry_time").notNull(),
   exitTime:      datetime("exit_time"),
   regime:        int("regime").notNull(),

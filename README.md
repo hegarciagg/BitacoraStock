@@ -93,7 +93,7 @@ BitacoraStock/
 │   ├── services/
 │   │   ├── hmmFeatureService.ts    # BTC data + technical indicators
 │   │   ├── hmmStrategyService.ts   # 8-confirmation voting engine
-│   │   ├── hmmRiskService.ts       # Backtest engine (2.5x leverage)
+│   │   ├── hmmRiskService.ts       # Backtest engine (1.3x leverage)
 │   │   ├── hmmPersistenceService.ts
 │   │   ├── monteCarloService.ts
 │   │   ├── sentimentAnalysisService.ts
@@ -122,7 +122,7 @@ El módulo más avanzado — detecta regímenes de mercado (Bull/Bear/Neutral) m
 ```
 Yahoo Finance (730d 1H) → Feature Engineering (11 indicadores)
   → Python GaussianHMM(7 states) → Voting Engine (8 confirmaciones)
-    → LONG/CASH signal → Backtest ($10K × 2.5x leverage)
+    → LONG/CASH signal → Backtest ($10K × 1.3x leverage)
       → Equity Curve → MySQL → React Dashboard
 ```
 

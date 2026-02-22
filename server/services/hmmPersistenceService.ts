@@ -18,7 +18,7 @@ export async function saveTrades(trades: SimulatedTrade[]): Promise<void> {
     entryPrice:    t.entryPrice.toFixed(8),
     exitPrice:     t.exitPrice.toFixed(8),
     pnl:           t.pnl.toFixed(4),
-    leverage:      "2.50",
+    leverage:      "1.30",
     entryTime:     t.entryTime,
     exitTime:      t.exitTime,
     regime:        t.regime,
