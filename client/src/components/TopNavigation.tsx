@@ -26,7 +26,7 @@ export default function TopNavigation() {
               <rect x="10" y="6" width="4" height="15" rx="1" fill="url(#logo-gradient-react)"/>
               <rect x="17" y="3" width="4" height="18" rx="1" fill="url(#logo-gradient-react)"/>
             </svg>
-            <span className="font-heading text-[1.25rem] font-bold text-white leading-none">
+            <span className="font-heading text-[1.25rem] font-bold text-slate-900 leading-none">
               MAIN<span className="text-[#238636]">STOCK</span>
             </span>
           </a>
@@ -55,7 +55,7 @@ export default function TopNavigation() {
                         : "text-[#8b949e] hover:text-[#2ea043]"
                     }`}
                   >
-                    <span className="text-base leading-none">{item.emoji}</span>
+                    {item.icon && <item.icon className="w-5 h-5 text-current" />}
                     <span className="hidden md:inline">{item.label}</span>
                   </a>
                 );
@@ -69,7 +69,7 @@ export default function TopNavigation() {
               <div className="w-8 h-8 rounded-full bg-[rgba(35,134,54,0.2)] border border-[rgba(255,255,255,0.08)] flex items-center justify-center font-bold text-[#2ea043] text-sm">
                 {user.name?.charAt(0).toUpperCase() || 'U'}
               </div>
-              <span className="hidden lg:inline text-sm text-white font-semibold">{user.name}</span>
+              <span className="hidden lg:inline text-sm text-slate-900 font-semibold">{user.name}</span>
             </div>
           )}
         </div>

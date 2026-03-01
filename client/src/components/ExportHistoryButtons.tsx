@@ -72,7 +72,7 @@ export function ExportHistoryButtons({ portfolioId }: ExportHistoryButtonsProps)
         disabled={isExporting !== null}
         variant="outline"
         size="sm"
-        className="text-slate-300 border-slate-600 hover:bg-slate-700"
+        className="text-slate-700 border-slate-300 hover:bg-slate-100"
       >
         <FileText className="w-4 h-4 mr-2" />
         {isExporting === "csv" ? "Exportando..." : "Descargar CSV"}
@@ -82,7 +82,7 @@ export function ExportHistoryButtons({ portfolioId }: ExportHistoryButtonsProps)
         disabled={isExporting !== null}
         variant="outline"
         size="sm"
-        className="text-slate-300 border-slate-600 hover:bg-slate-700"
+        className="text-slate-700 border-slate-300 hover:bg-slate-100"
       >
         <File className="w-4 h-4 mr-2" />
         {isExporting === "pdf" ? "Exportando..." : "Descargar PDF"}

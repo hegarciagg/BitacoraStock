@@ -68,9 +68,9 @@ export default function MarketNewsFeed({ news = [], isLoading = false, limit = 5
 
   if (isLoading) {
     return (
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-slate-900 flex items-center gap-2">
             <Zap className="w-5 h-5 text-yellow-500" />
             Noticias del Mercado
           </CardTitle>
@@ -78,7 +78,7 @@ export default function MarketNewsFeed({ news = [], isLoading = false, limit = 5
         <CardContent>
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-20 bg-slate-700 rounded-lg animate-pulse" />
+              <div key={i} className="h-20 bg-slate-100 rounded-lg animate-pulse" />
             ))}
           </div>
         </CardContent>
@@ -88,28 +88,28 @@ export default function MarketNewsFeed({ news = [], isLoading = false, limit = 5
 
   if (displayNews.length === 0) {
     return (
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-slate-900 flex items-center gap-2">
             <Zap className="w-5 h-5 text-yellow-500" />
             Noticias del Mercado
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-slate-400 text-center py-8">No hay noticias disponibles</p>
+          <p className="text-slate-500 text-center py-8">No hay noticias disponibles</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-slate-900 flex items-center gap-2">
           <Zap className="w-5 h-5 text-yellow-500" />
           Noticias del Mercado
         </CardTitle>
-        <CardDescription className="text-slate-400">
+        <CardDescription className="text-slate-500">
           Últimas noticias financieras relevantes para tu portafolio
         </CardDescription>
       </CardHeader>
@@ -121,29 +121,29 @@ export default function MarketNewsFeed({ news = [], isLoading = false, limit = 5
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block p-3 rounded-lg bg-slate-700/50 hover:bg-slate-700 transition-colors border border-slate-600 hover:border-slate-500"
+              className="block p-3 rounded-lg bg-slate-50 border border-slate-200 hover:bg-slate-100 hover:border-slate-300 transition-colors"
             >
               <div className="flex items-start gap-3">
                 <div className="mt-1">{getSentimentIcon(item.sentiment)}</div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2 mb-1">
-                    <h4 className="text-sm font-semibold text-white line-clamp-2">{item.title}</h4>
-                    <span className="text-xs text-slate-400 whitespace-nowrap">{formatTime(item.publishedAt)}</span>
+                    <h4 className="text-sm font-semibold text-slate-900 line-clamp-2">{item.title}</h4>
+                    <span className="text-xs text-slate-500 whitespace-nowrap">{formatTime(item.publishedAt)}</span>
                   </div>
-                  <p className="text-xs text-slate-400 line-clamp-2 mb-2">{item.description}</p>
+                  <p className="text-xs text-slate-500 line-clamp-2 mb-2">{item.description}</p>
                   <div className="flex items-center gap-2 flex-wrap">
                     <Badge className={`text-xs ${categoryColors[item.category]}`}>
                       {categoryLabels[item.category]}
                     </Badge>
                     <span className="text-xs text-slate-500">{item.source}</span>
-                    <div className="ml-auto text-xs text-slate-400">
+                    <div className="ml-auto text-xs text-slate-500">
                       Relevancia: {item.relevance}%
                     </div>
                   </div>
                   {item.affectedAssets && item.affectedAssets.length > 0 && (
                     <div className="mt-2 flex gap-1 flex-wrap">
                       {item.affectedAssets.slice(0, 3).map((asset) => (
-                        <span key={asset} className="text-xs bg-slate-600/50 text-slate-300 px-2 py-1 rounded">
+                        <span key={asset} className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded border border-slate-200">
                           {asset}
                         </span>
                       ))}

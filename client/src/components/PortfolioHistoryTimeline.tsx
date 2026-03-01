@@ -32,9 +32,9 @@ const changeTypeConfig = {
 export function PortfolioHistoryTimeline({ history, isLoading }: PortfolioHistoryTimelineProps) {
   if (isLoading) {
     return (
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardContent className="pt-12 text-center">
-          <p className="text-slate-400">Cargando historial...</p>
+          <p className="text-slate-500">Cargando historial...</p>
         </CardContent>
       </Card>
     );
@@ -42,19 +42,19 @@ export function PortfolioHistoryTimeline({ history, isLoading }: PortfolioHistor
 
   if (!history || history.length === 0) {
     return (
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardContent className="pt-12 text-center">
           <Clock className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-          <p className="text-slate-400">No hay cambios registrados</p>
+          <p className="text-slate-500">No hay cambios registrados</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-slate-900 flex items-center gap-2">
           <Clock className="w-5 h-5" />
           Historial de Cambios
         </CardTitle>
@@ -72,7 +72,7 @@ export function PortfolioHistoryTimeline({ history, isLoading }: PortfolioHistor
               <div key={entry.id} className="flex gap-4">
                 {/* Timeline line */}
                 <div className="flex flex-col items-center">
-                  <div className={`${config.color} p-2 rounded-full text-white`}>
+                  <div className={`${config.color} p-2 rounded-full text-slate-900`}>
                     <Icon className="w-4 h-4" />
                   </div>
                   {index < history.length - 1 && (
@@ -88,10 +88,10 @@ export function PortfolioHistoryTimeline({ history, isLoading }: PortfolioHistor
                         {config.label}
                       </Badge>
                       {entry.description && (
-                        <p className="text-white text-sm font-medium">{entry.description}</p>
+                        <p className="text-slate-900 text-sm font-medium">{entry.description}</p>
                       )}
                     </div>
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-slate-500">
                       {new Date(entry.createdAt).toLocaleString("es-ES", {
                         year: "numeric",
                         month: "short",
@@ -104,14 +104,14 @@ export function PortfolioHistoryTimeline({ history, isLoading }: PortfolioHistor
 
                   {/* Value changes */}
                   {prevValue !== null && newValue !== null && (
-                    <div className="mt-2 text-sm text-slate-300">
+                    <div className="mt-2 text-sm text-slate-700">
                       <span>Valor anterior: </span>
-                      <span className="text-slate-200 font-medium">
+                      <span className="text-slate-800 font-medium">
                         ${prevValue.toLocaleString("es-ES", { maximumFractionDigits: 2 })}
                       </span>
                       <span className="mx-2">→</span>
                       <span>Valor nuevo: </span>
-                      <span className="text-slate-200 font-medium">
+                      <span className="text-slate-800 font-medium">
                         ${newValue.toLocaleString("es-ES", { maximumFractionDigits: 2 })}
                       </span>
                       {change !== null && (
@@ -124,7 +124,7 @@ export function PortfolioHistoryTimeline({ history, isLoading }: PortfolioHistor
 
                   {/* Metadata */}
                   {entry.metadata && (
-                    <div className="mt-2 text-xs text-slate-400 bg-slate-700 p-2 rounded">
+                    <div className="mt-2 text-xs text-slate-500 bg-slate-100 p-2 rounded">
                       {(() => {
                         try {
                           const meta = JSON.parse(entry.metadata);

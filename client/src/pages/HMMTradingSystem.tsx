@@ -24,17 +24,17 @@ export default function HMMTradingSystem() {
         </div>
 
         <Tabs defaultValue="live" className="w-full">
-          <TabsList className="bg-slate-800 border border-slate-700 mb-6">
+          <TabsList className="bg-white shadow-sm border border-slate-200 mb-6">
             <TabsTrigger
               value="live"
-              className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-white"
+              className="flex items-center gap-2 data-[state=active]:bg-purple-600 data-[state=active]:text-slate-900"
             >
               <LayoutDashboard className="w-4 h-4" />
               Live Dashboard
             </TabsTrigger>
             <TabsTrigger
               value="blueprint"
-              className="flex items-center gap-2 data-[state=active]:bg-slate-700 data-[state=active]:text-white"
+              className="flex items-center gap-2 data-[state=active]:bg-slate-100 data-[state=active]:text-slate-900"
             >
               <BookOpen className="w-4 h-4" />
               Blueprint

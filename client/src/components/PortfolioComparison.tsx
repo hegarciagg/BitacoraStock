@@ -39,10 +39,10 @@ const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"];
 export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
   if (portfolios.length === 0) {
     return (
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardContent className="pt-12 text-center">
           <AlertCircle className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-          <p className="text-slate-400">Selecciona portafolios para ver la comparación</p>
+          <p className="text-slate-500">Selecciona portafolios para ver la comparación</p>
         </CardContent>
       </Card>
     );
@@ -79,60 +79,60 @@ export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
     <div className="space-y-6">
       {/* Resumen Comparativo con Animaciones */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-slate-300">Mejor Retorno</CardTitle>
+            <CardTitle className="text-sm text-slate-700">Mejor Retorno</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-400">
               {(bestReturn * 100).toFixed(2)}%
             </div>
-            <p className="text-xs text-slate-400 mt-2">
+            <p className="text-xs text-slate-500 mt-2">
               {portfolios.find((p) => parseFloat(p.expectedReturn.toString()) === bestReturn)
                 ?.portfolioName}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-slate-300">Menor Volatilidad</CardTitle>
+            <CardTitle className="text-sm text-slate-700">Menor Volatilidad</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">
               {(lowestVolatility * 100).toFixed(2)}%
             </div>
-            <p className="text-xs text-slate-400 mt-2">
+            <p className="text-xs text-slate-500 mt-2">
               {portfolios.find((p) => parseFloat(p.volatility.toString()) === lowestVolatility)
                 ?.portfolioName}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-slate-300">Mejor Sharpe Ratio</CardTitle>
+            <CardTitle className="text-sm text-slate-700">Mejor Sharpe Ratio</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-purple-400">
               {bestSharpe.toFixed(2)}
             </div>
-            <p className="text-xs text-slate-400 mt-2">
+            <p className="text-xs text-slate-500 mt-2">
               {portfolios.find((p) => parseFloat(p.sharpeRatio.toString()) === bestSharpe)
                 ?.portfolioName}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-slate-300">Menor VaR 95%</CardTitle>
+            <CardTitle className="text-sm text-slate-700">Menor VaR 95%</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-400">
               ${lowestVaR.toFixed(2)}
             </div>
-            <p className="text-xs text-slate-400 mt-2">
+            <p className="text-xs text-slate-500 mt-2">
               {portfolios.find((p) => parseFloat(p.valueAtRisk95.toString()) === lowestVaR)
                 ?.portfolioName}
             </p>
@@ -141,19 +141,19 @@ export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
       </div>
 
       {/* Comparación de Retorno Esperado */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Comparación de Retorno Esperado</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Comparación de Retorno Esperado</CardTitle>
+          <CardDescription className="text-slate-500">
             Retorno anual esperado de cada portafolio
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={comparisonData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="name" stroke="#94a3b8" style={{ fontSize: "12px" }} />
-              <YAxis stroke="#94a3b8" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <XAxis dataKey="name" stroke="#64748b" style={{ fontSize: "12px" }} />
+              <YAxis stroke="#64748b" />
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#1e293b",
@@ -173,19 +173,19 @@ export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
       </Card>
 
       {/* Comparación de Volatilidad */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Comparación de Volatilidad</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Comparación de Volatilidad</CardTitle>
+          <CardDescription className="text-slate-500">
             Desviación estándar de retornos (menor es mejor)
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={comparisonData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="name" stroke="#94a3b8" style={{ fontSize: "12px" }} />
-              <YAxis stroke="#94a3b8" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <XAxis dataKey="name" stroke="#64748b" style={{ fontSize: "12px" }} />
+              <YAxis stroke="#64748b" />
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#1e293b",
@@ -205,29 +205,29 @@ export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
       </Card>
 
       {/* Gráfico Riesgo-Retorno (Scatter) */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Análisis Riesgo-Retorno</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Análisis Riesgo-Retorno</CardTitle>
+          <CardDescription className="text-slate-500">
             Relación entre volatilidad (eje X) y retorno esperado (eje Y)
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={350}>
             <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis
                 type="number"
                 dataKey="volatility"
                 name="Volatilidad (%)"
-                stroke="#94a3b8"
+                stroke="#64748b"
                 label={{ value: "Volatilidad (%)", position: "insideBottomRight", offset: -5 }}
               />
               <YAxis
                 type="number"
                 dataKey="expectedReturn"
                 name="Retorno (%)"
-                stroke="#94a3b8"
+                stroke="#64748b"
                 label={{ value: "Retorno (%)", angle: -90, position: "insideLeft" }}
               />
               <Tooltip
@@ -253,19 +253,19 @@ export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
       </Card>
 
       {/* Comparación de Sharpe Ratio */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Comparación de Sharpe Ratio</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Comparación de Sharpe Ratio</CardTitle>
+          <CardDescription className="text-slate-500">
             Retorno ajustado por riesgo (mayor es mejor)
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={comparisonData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="name" stroke="#94a3b8" style={{ fontSize: "12px" }} />
-              <YAxis stroke="#94a3b8" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <XAxis dataKey="name" stroke="#64748b" style={{ fontSize: "12px" }} />
+              <YAxis stroke="#64748b" />
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#1e293b",
@@ -285,19 +285,19 @@ export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
       </Card>
 
       {/* Comparación de VaR */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Comparación de Value at Risk</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Comparación de Value at Risk</CardTitle>
+          <CardDescription className="text-slate-500">
             Pérdida máxima esperada en diferentes niveles de confianza
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={comparisonData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="name" stroke="#94a3b8" style={{ fontSize: "12px" }} />
-              <YAxis stroke="#94a3b8" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <XAxis dataKey="name" stroke="#64748b" style={{ fontSize: "12px" }} />
+              <YAxis stroke="#64748b" />
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#1e293b",
@@ -315,28 +315,28 @@ export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
       </Card>
 
       {/* Tabla Detallada de Comparación */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Comparación Detallada</CardTitle>
+          <CardTitle className="text-slate-900">Comparación Detallada</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-600">
-                  <th className="text-left py-3 px-4 text-slate-300">Portafolio</th>
-                  <th className="text-right py-3 px-4 text-slate-300">Retorno (%)</th>
-                  <th className="text-right py-3 px-4 text-slate-300">Volatilidad (%)</th>
-                  <th className="text-right py-3 px-4 text-slate-300">Sharpe</th>
-                  <th className="text-right py-3 px-4 text-slate-300">VaR 95%</th>
-                  <th className="text-right py-3 px-4 text-slate-300">Diversificación</th>
+                <tr className="border-b border-slate-300">
+                  <th className="text-left py-3 px-4 text-slate-700">Portafolio</th>
+                  <th className="text-right py-3 px-4 text-slate-700">Retorno (%)</th>
+                  <th className="text-right py-3 px-4 text-slate-700">Volatilidad (%)</th>
+                  <th className="text-right py-3 px-4 text-slate-700">Sharpe</th>
+                  <th className="text-right py-3 px-4 text-slate-700">VaR 95%</th>
+                  <th className="text-right py-3 px-4 text-slate-700">Diversificación</th>
                 </tr>
               </thead>
               <tbody>
                 {portfolios.map((portfolio, idx) => (
                   <tr
                     key={portfolio.portfolioId}
-                    className="border-b border-slate-700 hover:bg-slate-700/50 transition-colors"
+                    className="border-b border-slate-200 hover:bg-slate-50 border border-slate-200 transition-colors"
                   >
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
@@ -344,7 +344,7 @@ export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
                           className="w-3 h-3 rounded-full"
                           style={{ backgroundColor: COLORS[idx % COLORS.length] }}
                         />
-                        <span className="text-white font-medium">{portfolio.portfolioName}</span>
+                        <span className="text-slate-900 font-medium">{portfolio.portfolioName}</span>
                       </div>
                     </td>
                     <td className="py-3 px-4 text-right text-green-400 font-semibold">
@@ -375,7 +375,7 @@ export function PortfolioComparison({ portfolios }: PortfolioComparisonProps) {
         <CardHeader>
           <CardTitle className="text-primary">Análisis Comparativo</CardTitle>
         </CardHeader>
-        <CardContent className="text-slate-300 space-y-3 text-sm">
+        <CardContent className="text-slate-700 space-y-3 text-sm">
           <div>
             <h4 className="font-semibold mb-2">Portafolio Más Agresivo:</h4>
             <p>

@@ -124,18 +124,18 @@ export function InvestmentCommentsDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] h-[80vh] flex flex-col bg-slate-900 border-slate-800 text-slate-100">
+      <DialogContent className="sm:max-w-[600px] h-[80vh] flex flex-col bg-slate-50 border-slate-200 text-slate-100">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             Bitácora de Mercado: <span className="text-primary">{investmentSymbol}</span>
           </DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogDescription className="text-slate-500">
             Historial de comentarios y análisis para esta inversión.
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 min-h-0 flex flex-col gap-4">
-          <ScrollArea className="flex-1 pr-4 border rounded-md border-slate-700 bg-slate-950/50 p-4">
+          <ScrollArea className="flex-1 pr-4 border rounded-md border-slate-200 bg-white/50 p-4">
             {commentsQuery.isLoading ? (
               <div className="flex justify-center items-center h-20">
                 <Loader2 className="h-6 w-6 animate-spin text-primary" />
@@ -147,16 +147,16 @@ export function InvestmentCommentsDialog({
             ) : (
               <div className="space-y-4">
                 {commentsQuery.data?.map((comment) => (
-                  <div key={comment.id} className="bg-slate-800 rounded-lg p-3 border border-slate-700">
+                  <div key={comment.id} className="bg-white shadow-sm rounded-lg p-3 border border-slate-200">
                     <div className="flex justify-between items-start mb-2">
-                      <span className="text-xs font-medium text-slate-400 bg-slate-900/50 px-2 py-1 rounded">
+                      <span className="text-xs font-medium text-slate-500 bg-slate-50/50 px-2 py-1 rounded">
                         {format(new Date(comment.date), "PPP", { locale: es })}
                       </span>
                       <div className="flex gap-1">
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-6 w-6 hover:bg-slate-700 text-slate-400 hover:text-primary"
+                          className="h-6 w-6 hover:bg-slate-100 text-slate-500 hover:text-primary"
                           onClick={() => handleEdit(comment)}
                         >
                           <Pencil className="h-3 w-3" />
@@ -164,24 +164,24 @@ export function InvestmentCommentsDialog({
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-6 w-6 hover:bg-slate-700 text-slate-400 hover:text-red-400"
+                          className="h-6 w-6 hover:bg-slate-100 text-slate-500 hover:text-red-400"
                           onClick={() => handleDelete(comment.id)}
                         >
                           <Trash2 className="h-3 w-3" />
                         </Button>
                       </div>
                     </div>
-                    <p className="text-sm text-slate-200 whitespace-pre-wrap">{comment.comment}</p>
+                    <p className="text-sm text-slate-800 whitespace-pre-wrap">{comment.comment}</p>
                   </div>
                 ))}
               </div>
             )}
           </ScrollArea>
 
-          <form onSubmit={handleSubmit} className="border-t border-slate-700 pt-4 space-y-4">
+          <form onSubmit={handleSubmit} className="border-t border-slate-200 pt-4 space-y-4">
             <div className="space-y-2">
                <div className="flex items-center justify-between">
-                <Label htmlFor="new-comment" className="text-slate-200">
+                <Label htmlFor="new-comment" className="text-slate-800">
                   {editingCommentId ? "Editar Comentario" : "Nuevo Comentario"}
                 </Label>
                 <div className="w-40">
@@ -189,7 +189,7 @@ export function InvestmentCommentsDialog({
                         type="date"
                         value={commentDate}
                         onChange={(e) => setCommentDate(e.target.value)}
-                        className="h-8 text-xs bg-slate-800 border-slate-700 text-slate-300"
+                        className="h-8 text-xs bg-white shadow-sm border-slate-200 text-slate-700"
                     />
                 </div>
                </div>
@@ -198,16 +198,16 @@ export function InvestmentCommentsDialog({
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Escribe tu análisis o motivo..."
-                className="min-h-[100px] bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-500 focus-visible:ring-blue-500"
+                className="min-h-[100px] bg-white shadow-sm border-slate-200 text-slate-100 placeholder:text-slate-500 focus-visible:ring-blue-500"
               />
             </div>
-            <div className="flex justify-end bg-slate-900 border-t border-slate-800 pt-4 mt-4">
+            <div className="flex justify-end bg-slate-50 border-t border-slate-200 pt-4 mt-4">
               {editingCommentId && (
                 <Button
                   type="button"
                   variant="ghost"
                   onClick={handleCancelEdit}
-                  className="mr-2 hover:bg-slate-800 text-slate-400"
+                  className="mr-2 hover:bg-white shadow-sm text-slate-500"
                 >
                   <X className="h-4 w-4 mr-2" />
                   Cancelar

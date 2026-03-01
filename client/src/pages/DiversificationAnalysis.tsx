@@ -81,45 +81,45 @@ export default function DiversificationAnalysis() {
               variant="outline"
               size="icon"
               onClick={() => navigate(`/portfolio/${portfolioId}`)}
-              className="border-slate-600"
+              className="border-slate-300"
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-white">Análisis de Diversificación</h1>
-              <p className="text-slate-400 mt-2">{portfolio.data?.name}</p>
+              <h1 className="text-3xl font-bold text-slate-900">Análisis de Diversificación</h1>
+              <p className="text-slate-500 mt-2">{portfolio.data?.name}</p>
             </div>
           </div>
         </div>
 
         {assets.isLoading ? (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-white shadow-sm border-slate-200">
             <CardContent className="pt-12 text-center">
-              <div className="text-slate-400">Cargando datos del portafolio...</div>
+              <div className="text-slate-500">Cargando datos del portafolio...</div>
             </CardContent>
           </Card>
         ) : (
           <>
             {/* Información General */}
-            <Card className="bg-slate-800 border-slate-700">
+            <Card className="bg-white shadow-sm border-slate-200">
               <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
+                <CardTitle className="text-slate-900 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-primary" />
                   Análisis de Diversificación
                 </CardTitle>
-                <CardDescription className="text-slate-400">
+                <CardDescription className="text-slate-500">
                   Evaluación de la composición y riesgo de concentración de tu portafolio
                 </CardDescription>
               </CardHeader>
-              <CardContent className="text-slate-300 space-y-4">
+              <CardContent className="text-slate-700 space-y-4">
                 <div>
-                  <h4 className="font-semibold text-white mb-2">¿Por qué es importante la diversificación?</h4>
+                  <h4 className="font-semibold text-slate-900 mb-2">¿Por qué es importante la diversificación?</h4>
                   <p>
                     La diversificación es una estrategia fundamental para reducir el riesgo no sistemático. Al distribuir tu inversión entre múltiples activos con diferentes características, reduces la dependencia de un solo activo y proteges tu portafolio contra volatilidades específicas.
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-2">Matriz de Correlación</h4>
+                  <h4 className="font-semibold text-slate-900 mb-2">Matriz de Correlación</h4>
                   <p>
                     La matriz muestra cómo se mueven los activos entre sí. Correlaciones negativas (azul) indican que los activos se mueven en direcciones opuestas, lo que es beneficioso para la diversificación. Correlaciones positivas (rojo) significan que se mueven juntos, aumentando el riesgo.
                   </p>
@@ -172,50 +172,50 @@ export default function DiversificationAnalysis() {
             </Card>
 
             {/* Métricas de Riesgo */}
-            <Card className="bg-slate-800 border-slate-700">
+            <Card className="bg-white shadow-sm border-slate-200">
               <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
+                <CardTitle className="text-slate-900 flex items-center gap-2">
                   <AlertCircle className="w-5 h-5 text-orange-500" />
                   Métricas de Riesgo
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
-                    <p className="text-slate-400 text-sm mb-2">Número de Activos</p>
-                    <p className="text-2xl font-bold text-white">{displayAssets.length}</p>
-                    <p className="text-xs text-slate-400 mt-2">
+                  <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
+                    <p className="text-slate-500 text-sm mb-2">Número de Activos</p>
+                    <p className="text-2xl font-bold text-slate-900">{displayAssets.length}</p>
+                    <p className="text-xs text-slate-500 mt-2">
                       {displayAssets.length < 5
                         ? "Considera agregar más activos"
                         : "Buen número de activos"}
                     </p>
                   </div>
 
-                  <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
-                    <p className="text-slate-400 text-sm mb-2">Activo Más Grande</p>
-                    <p className="text-2xl font-bold text-white">
+                  <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
+                    <p className="text-slate-500 text-sm mb-2">Activo Más Grande</p>
+                    <p className="text-2xl font-bold text-slate-900">
                       {Math.max(...displayAssets.map((a) => a.weight * 100)).toFixed(1)}%
                     </p>
-                    <p className="text-xs text-slate-400 mt-2">
+                    <p className="text-xs text-slate-500 mt-2">
                       {Math.max(...displayAssets.map((a) => a.weight)) > 0.4
                         ? "Muy concentrado"
                         : "Adecuado"}
                     </p>
                   </div>
 
-                  <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
-                    <p className="text-slate-400 text-sm mb-2">Promedio de Pesos</p>
-                    <p className="text-2xl font-bold text-white">
+                  <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
+                    <p className="text-slate-500 text-sm mb-2">Promedio de Pesos</p>
+                    <p className="text-2xl font-bold text-slate-900">
                       {(100 / displayAssets.length).toFixed(1)}%
                     </p>
-                    <p className="text-xs text-slate-400 mt-2">
+                    <p className="text-xs text-slate-500 mt-2">
                       Peso equitativo ideal
                     </p>
                   </div>
 
-                  <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
-                    <p className="text-slate-400 text-sm mb-2">Desviación Estándar</p>
-                    <p className="text-2xl font-bold text-white">
+                  <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
+                    <p className="text-slate-500 text-sm mb-2">Desviación Estándar</p>
+                    <p className="text-2xl font-bold text-slate-900">
                       {(
                         Math.sqrt(
                           displayAssets.reduce(
@@ -226,7 +226,7 @@ export default function DiversificationAnalysis() {
                       ).toFixed(2)}
                       %
                     </p>
-                    <p className="text-xs text-slate-400 mt-2">
+                    <p className="text-xs text-slate-500 mt-2">
                       Variabilidad en pesos
                     </p>
                   </div>

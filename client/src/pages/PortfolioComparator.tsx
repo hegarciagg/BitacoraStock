@@ -109,13 +109,13 @@ export default function PortfolioComparator() {
               variant="outline"
               size="icon"
               onClick={() => navigate("/dashboard")}
-              className="border-slate-600"
+              className="border-slate-300"
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-white">Comparador de Portafolios</h1>
-              <p className="text-slate-400 mt-2">
+              <h1 className="text-3xl font-bold text-slate-900">Comparador de Portafolios</h1>
+              <p className="text-slate-500 mt-2">
                 Compara múltiples portafolios lado a lado para optimizar tu estrategia de inversión
               </p>
             </div>
@@ -123,9 +123,9 @@ export default function PortfolioComparator() {
         </div>
 
         {portfolios.isLoading ? (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-white shadow-sm border-slate-200">
             <CardContent className="pt-12 text-center">
-              <p className="text-slate-400">Cargando portafolios...</p>
+              <p className="text-slate-500">Cargando portafolios...</p>
             </CardContent>
           </Card>
         ) : portfolios.data && portfolios.data.length > 0 ? (
@@ -145,10 +145,10 @@ export default function PortfolioComparator() {
               />
 
               {/* Información Educativa */}
-              <Card className="bg-slate-800 border-slate-700 mt-6">
+              <Card className="bg-white shadow-sm border-slate-200 mt-6">
                 <CardContent className="pt-6">
-                  <h3 className="font-semibold text-white mb-3">Cómo Usar</h3>
-                  <ul className="text-sm text-slate-300 space-y-2">
+                  <h3 className="font-semibold text-slate-900 mb-3">Cómo Usar</h3>
+                  <ul className="text-sm text-slate-700 space-y-2">
                     <li className="flex items-start gap-2">
                       <span className="text-primary font-bold">1.</span>
                       <span>Selecciona hasta 4 portafolios</span>
@@ -173,21 +173,21 @@ export default function PortfolioComparator() {
             {/* Comparación de Portafolios */}
             <div className="lg:col-span-3">
               {isLoadingMetrics ? (
-                <Card className="bg-slate-800 border-slate-700">
+                <Card className="bg-white shadow-sm border-slate-200">
                   <CardContent className="pt-12 text-center">
-                    <p className="text-slate-400">Cargando métricas...</p>
+                    <p className="text-slate-500">Cargando métricas...</p>
                   </CardContent>
                 </Card>
               ) : selectedPortfolios.length > 0 ? (
                 <PortfolioComparison portfolios={portfolioMetrics} />
               ) : (
-                <Card className="bg-slate-800 border-slate-700">
+                <Card className="bg-white shadow-sm border-slate-200">
                   <CardContent className="pt-12 text-center">
                     <AlertCircle className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-white mb-2">
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">
                       Selecciona portafolios para comenzar
                     </h3>
-                    <p className="text-slate-400">
+                    <p className="text-slate-500">
                       Elige al menos 2 portafolios de la lista para ver la comparación
                     </p>
                   </CardContent>
@@ -196,11 +196,11 @@ export default function PortfolioComparator() {
             </div>
           </div>
         ) : (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-white shadow-sm border-slate-200">
             <CardContent className="pt-12 text-center">
               <AlertCircle className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">No hay portafolios</h3>
-              <p className="text-slate-400 mb-6">
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">No hay portafolios</h3>
+              <p className="text-slate-500 mb-6">
                 Crea portafolios en el dashboard para poder compararlos
               </p>
               <Button

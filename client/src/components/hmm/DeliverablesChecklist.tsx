@@ -71,9 +71,9 @@ const STATUS_CYCLE: Record<ItemStatus, ItemStatus> = {
 };
 
 const STATUS_STYLES: Record<ItemStatus, { badge: string; labelColor: string }> = {
-  pending: { badge: "bg-slate-600/50 text-slate-400 border-slate-500/30", labelColor: "text-slate-300" },
-  "in-progress": { badge: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30", labelColor: "text-white" },
-  done: { badge: "bg-green-500/15 text-green-400 border-green-500/30", labelColor: "text-white" },
+  pending: { badge: "bg-slate-600/50 text-slate-500 border-slate-500/30", labelColor: "text-slate-700" },
+  "in-progress": { badge: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30", labelColor: "text-slate-900" },
+  done: { badge: "bg-green-500/15 text-green-400 border-green-500/30", labelColor: "text-slate-900" },
 };
 
 const STATUS_LABELS: Record<ItemStatus, string> = {
@@ -99,28 +99,28 @@ export default function DeliverablesChecklist() {
   const progressPct = Math.round((doneCount / items.length) * 100);
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-slate-900 flex items-center gap-2">
             <ClipboardList className="w-5 h-5 text-green-400" />
             Checklist de Entregables
           </CardTitle>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-slate-400">{doneCount}/{items.length}</span>
-            <span className={`text-sm font-bold ${progressPct === 100 ? "text-green-400" : progressPct > 0 ? "text-yellow-400" : "text-slate-400"}`}>
+            <span className="text-sm text-slate-500">{doneCount}/{items.length}</span>
+            <span className={`text-sm font-bold ${progressPct === 100 ? "text-green-400" : progressPct > 0 ? "text-yellow-400" : "text-slate-500"}`}>
               {progressPct}%
             </span>
           </div>
         </div>
         {/* Progress bar */}
-        <div className="mt-3 h-1.5 w-full rounded-full bg-slate-700 overflow-hidden">
+        <div className="mt-3 h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
           <div
             className="h-full rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 transition-all duration-500"
             style={{ width: `${progressPct}%` }}
           />
         </div>
-        <p className="text-slate-400 text-xs mt-2">
+        <p className="text-slate-500 text-xs mt-2">
           Haz click en cualquier ítem para rotar su estado: Pendiente → En desarrollo → Completo
         </p>
       </CardHeader>
@@ -132,10 +132,10 @@ export default function DeliverablesChecklist() {
               <button
                 key={item.id}
                 onClick={() => toggle(item.id)}
-                className="w-full text-left p-4 rounded-xl border border-slate-700 hover:border-slate-600 bg-slate-700/20 hover:bg-slate-700/40 transition-all flex items-center gap-4 group"
+                className="w-full text-left p-4 rounded-xl border border-slate-200 hover:border-slate-300 bg-slate-100/20 hover:bg-slate-100/40 transition-all flex items-center gap-4 group"
               >
                 {/* Checkbox icon */}
-                <div className="flex-shrink-0 text-slate-500 group-hover:text-slate-300 transition-colors">
+                <div className="flex-shrink-0 text-slate-500 group-hover:text-slate-700 transition-colors">
                   {item.status === "done" ? (
                     <CheckSquare className="w-5 h-5 text-green-400" />
                   ) : (

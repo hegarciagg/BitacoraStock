@@ -24,41 +24,77 @@
     <!-- Plotly.js -->
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
-<body class="dark-theme has-nav">
+<body class="light-theme has-sidebar">
     <div class="glass-bg"></div>
     
-    <!-- Navigation -->
-    <nav class="app-nav">
-        <div class="container">
-            <a href="/dashboard" class="brand">
-                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#2ea043;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#238636;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <rect x="3" y="12" width="4" height="9" rx="1" fill="url(#logo-gradient)"/>
-                    <rect x="10" y="6" width="4" height="15" rx="1" fill="url(#logo-gradient)"/>
-                    <rect x="17" y="3" width="4" height="18" rx="1" fill="url(#logo-gradient)"/>
-                </svg>
-                <span class="brand-text">MAIN<span class="highlight">STOCK</span></span>
-            </a>
-            <div class="nav-links">
-                <div class="nav-links-inner">
-                    <a href="/dashboard" class="nav-link">📊 Dashboard</a>
-                    <a href="/analysis" class="nav-link">📈 Análisis</a>
-                    <a href="/compare" class="nav-link">📊 Comparador</a>
-                    <a href="/lp/index.html" class="nav-link">💧 Gestión LP</a>
-                    <a href="/stock/index.html" class="nav-link active">⚡ QuantEngine</a>
-                </div>
+    <!-- Navigation Sidebar -->
+<aside class="app-sidebar">
+    <div class="sidebar-header">
+        <a href="/dashboard" class="brand">
+            <div class="brand-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-weight="bold" font-size="22">ζ</text></svg>
             </div>
-            <div class="user-section">
-                <div class="user-avatar">U</div>
-                <span class="user-name">Usuario Hegarciagg</span>
+            <span class="brand-text">BlockStock</span>
+        </a>
+    </div>
+    
+    <div class="nav-links">
+        <div class="nav-links-inner">
+            <a href="/dashboard" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                Dashboard
+            </a>
+            <a href="/analysis" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                Análisis
+            </a>
+            <a href="/compare" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3L14 10L10 6L3 13"/><path d="M21 3L21 9"/><path d="M21 3L15 3"/></svg>
+                Comparador
+            </a>
+            <a href="/hmm-trading" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-9 5 18 3-9h5"/></svg>
+                HMM Trading
+            </a>
+            <a href="/lp/index.html" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-8.5c-0.5 4.5-2 6.9-4 8.5s-3 3.5-3 5.5a7 7 0 0 0 7 7z"/></svg>
+                Gestión LP
+            </a>
+            <a href="/stock/index.html" class="nav-link active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                QuantEngine
+            </a>
+        </div>
+    </div>
+    
+    <div class="nav-links-bottom">
+        <a href="#" class="nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            Application Settings
+        </a>
+        <a href="#" class="nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            User Settings
+        </a>
+        <a href="#" class="nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            Help
+        </a>
+    </div>
+    
+    <div class="user-section">
+        <div class="user-profile">
+            <div class="user-avatar">H</div>
+            <div class="user-details">
+                <span class="user-name">Hector</span>
+                <span class="user-email">hector@blockstock.com</span>
             </div>
         </div>
-    </nav>
+        <button class="logout-btn" title="Log out">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+        </button>
+    </div>
+</aside>
     
     <div class="app-container">
         <!-- Sidebar (Left): Selection & Config -->
@@ -226,8 +262,8 @@
                 <div class="footer-grid">
                     <div class="footer-section">
                         <div class="footer-brand">
-                            <span class="footer-brand-icon">📊</span>
-                            <span class="footer-brand-text">MAIN<span class="highlight">STOCK</span></span>
+                            <span class="footer-brand-icon" style="font-family: Georgia, serif; font-style: italic; font-weight: bold; font-size: 1.25em;">ζ</span>
+                            <span class="footer-brand-text">Block<span class="highlight">Stock</span></span>
                         </div>
                         <p class="footer-text">
                             &copy; 2024 Quantitative Analysis Engine.
@@ -238,29 +274,29 @@
                     </div>
                     
                     <div class="footer-section">
-                        <h4>Resources</h4>
+                        <h4>Recursos</h4>
                         <ul class="footer-links">
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms of Service</a></li>
-                            <li><a href="#">Documentation</a></li>
+                            <li><a href="#">Política de Privacidad</a></li>
+                            <li><a href="#">Términos de Servicio</a></li>
+                            <li><a href="#">Documentación</a></li>
                         </ul>
                     </div>
                     
                     <div class="footer-section">
-                        <h4>Institutional</h4>
+                        <h4>Institucional</h4>
                         <ul class="footer-links">
-                            <li><a href="#">Support</a></li>
-                            <li><a href="#">API Status</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Soporte</a></li>
+                            <li><a href="#">Estado de la API</a></li>
+                            <li><a href="#">Contacto</a></li>
                         </ul>
                     </div>
                     
                     <div class="footer-section">
                         <h4>Legal</h4>
                         <p class="footer-text">
-                            <strong>Disclaimer:</strong> Financial data is for informational purposes only. 
-                            The analysis generated by this engine is based on historical data and does not 
-                            guarantee future market performance. Always consult with a certified professional.
+                            <strong>Disclaimer:</strong> Los datos financieros son para fines informativos únicamente. 
+                            El análisis generado se basa en datos históricos y no garantiza el rendimiento futuro del mercado. 
+                            Consulta siempre con un profesional certificado.
                         </p>
                     </div>
                 </div>

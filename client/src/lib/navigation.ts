@@ -1,4 +1,3 @@
-
 import { 
   LayoutDashboard, 
   TrendingUp, 
@@ -6,22 +5,31 @@ import {
   Droplets, 
   Zap,
   BrainCircuit,
+  Settings,
+  User,
+  HelpCircle,
   LucideIcon
 } from "lucide-react";
 
 export type NavItem = {
-  emoji: string;
+  emoji?: string;
   label: string;
   path: string;
   isExternal?: boolean;
-  icon?: LucideIcon; // Optional Lucide icon for Sidebar if needed, though we use emojis primarily now
+  icon?: LucideIcon;
 };
 
 export const navItems: NavItem[] = [
-  { emoji: "📊", label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-  { emoji: "📈", label: "Análisis", path: "/analysis", icon: TrendingUp },
-  { emoji: "📊", label: "Comparador", path: "/compare", icon: BarChart3 },
-  { emoji: "🧠", label: "HMM Trading", path: "/hmm-trading", icon: BrainCircuit },
-  { emoji: "💧", label: "Gestión LP", path: "/lp/index.html", isExternal: true, icon: Droplets },
-  { emoji: "⚡", label: "QuantEngine", path: "/stock/index.html", isExternal: true, icon: Zap },
+  { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+  { label: "Análisis", path: "/analysis", icon: TrendingUp },
+  { label: "Comparador", path: "/compare", icon: BarChart3 },
+  { label: "HMM Trading", path: "/hmm-trading", icon: BrainCircuit },
+  { label: "Gestión LP", path: "/lp/index.html", isExternal: true, icon: Droplets },
+  { label: "QuantEngine", path: "/stock/index.html", isExternal: true, icon: Zap },
+];
+
+export const bottomNavItems: NavItem[] = [
+  { label: "Application Settings", path: "/settings/app", icon: Settings },
+  { label: "User Settings", path: "/settings/user", icon: User },
+  { label: "Help", path: "/help", icon: HelpCircle },
 ];

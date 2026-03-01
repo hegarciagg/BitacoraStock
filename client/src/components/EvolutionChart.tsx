@@ -22,9 +22,9 @@ interface EvolutionChartProps {
 export function EvolutionChart({ history, isLoading }: EvolutionChartProps) {
   if (isLoading) {
     return (
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardContent className="pt-12 text-center">
-          <p className="text-slate-400">Cargando gráfico...</p>
+          <p className="text-slate-500">Cargando gráfico...</p>
         </CardContent>
       </Card>
     );
@@ -45,9 +45,9 @@ export function EvolutionChart({ history, isLoading }: EvolutionChartProps) {
 
   if (chartData.length === 0) {
     return (
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardContent className="pt-12 text-center">
-          <p className="text-slate-400">Sin datos para mostrar gráfico de evolución</p>
+          <p className="text-slate-500">Sin datos para mostrar gráfico de evolución</p>
         </CardContent>
       </Card>
     );
@@ -63,9 +63,9 @@ export function EvolutionChart({ history, isLoading }: EvolutionChartProps) {
   const changePercent = values.length > 1 ? (change / values[0]) * 100 : 0;
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-slate-900 flex items-center gap-2">
           <TrendingUp className="w-5 h-5" />
           Evolución del Portafolio
         </CardTitle>
@@ -74,26 +74,26 @@ export function EvolutionChart({ history, isLoading }: EvolutionChartProps) {
         <div className="space-y-6">
           {/* Estadísticas */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-slate-700 p-4 rounded-lg">
-              <p className="text-slate-400 text-sm">Valor Actual</p>
-              <p className="text-white text-lg font-semibold">
+            <div className="bg-slate-100 p-4 rounded-lg">
+              <p className="text-slate-500 text-sm">Valor Actual</p>
+              <p className="text-slate-900 text-lg font-semibold">
                 ${currentValue.toLocaleString("es-ES", { maximumFractionDigits: 2 })}
               </p>
             </div>
-            <div className="bg-slate-700 p-4 rounded-lg">
-              <p className="text-slate-400 text-sm">Valor Mínimo</p>
-              <p className="text-white text-lg font-semibold">
+            <div className="bg-slate-100 p-4 rounded-lg">
+              <p className="text-slate-500 text-sm">Valor Mínimo</p>
+              <p className="text-slate-900 text-lg font-semibold">
                 ${minValue.toLocaleString("es-ES", { maximumFractionDigits: 2 })}
               </p>
             </div>
-            <div className="bg-slate-700 p-4 rounded-lg">
-              <p className="text-slate-400 text-sm">Valor Máximo</p>
-              <p className="text-white text-lg font-semibold">
+            <div className="bg-slate-100 p-4 rounded-lg">
+              <p className="text-slate-500 text-sm">Valor Máximo</p>
+              <p className="text-slate-900 text-lg font-semibold">
                 ${maxValue.toLocaleString("es-ES", { maximumFractionDigits: 2 })}
               </p>
             </div>
-            <div className="bg-slate-700 p-4 rounded-lg">
-              <p className="text-slate-400 text-sm">Cambio Total</p>
+            <div className="bg-slate-100 p-4 rounded-lg">
+              <p className="text-slate-500 text-sm">Cambio Total</p>
               <p className={`text-lg font-semibold ${change >= 0 ? "text-green-400" : "text-red-400"}`}>
                 {change >= 0 ? "+" : ""}{changePercent.toFixed(2)}%
               </p>
@@ -106,11 +106,11 @@ export function EvolutionChart({ history, isLoading }: EvolutionChartProps) {
               <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
               <XAxis
                 dataKey="date"
-                stroke="#94a3b8"
+                stroke="#64748b"
                 style={{ fontSize: "12px" }}
               />
               <YAxis
-                stroke="#94a3b8"
+                stroke="#64748b"
                 style={{ fontSize: "12px" }}
                 tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
               />

@@ -45,9 +45,9 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
 
   if (data.length === 0) {
     return (
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardContent className="pt-12 text-center">
-          <p className="text-slate-400">No hay simulaciones para mostrar</p>
+          <p className="text-slate-500">No hay simulaciones para mostrar</p>
         </CardContent>
       </Card>
     );
@@ -71,9 +71,9 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
     <div className="space-y-6">
       {/* Resumen de Cambios */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-slate-300">Retorno Esperado</CardTitle>
+            <CardTitle className="text-sm text-slate-700">Retorno Esperado</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-400">
@@ -87,9 +87,9 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-slate-300">Volatilidad</CardTitle>
+            <CardTitle className="text-sm text-slate-700">Volatilidad</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-orange-400">
@@ -103,9 +103,9 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-slate-300">Sharpe Ratio</CardTitle>
+            <CardTitle className="text-sm text-slate-700">Sharpe Ratio</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">
@@ -119,15 +119,15 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
           </CardContent>
         </Card>
 
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm text-slate-300">VaR 95%</CardTitle>
+            <CardTitle className="text-sm text-slate-700">VaR 95%</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-400">
               ${latestSim.valueAtRisk95.toFixed(2)}
             </div>
-            <p className="text-xs text-slate-400 mt-2">
+            <p className="text-xs text-slate-500 mt-2">
               Pérdida máxima esperada
             </p>
           </CardContent>
@@ -135,24 +135,24 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
       </div>
 
       {/* Gráfico de Evolución de Retorno y Volatilidad */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Evolución de Retorno y Volatilidad</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Evolución de Retorno y Volatilidad</CardTitle>
+          <CardDescription className="text-slate-500">
             Cómo han cambiado el retorno esperado y la volatilidad a lo largo del tiempo
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis
                 dataKey="date"
-                stroke="#94a3b8"
+                stroke="#64748b"
                 style={{ fontSize: "12px" }}
               />
-              <YAxis stroke="#94a3b8" yAxisId="left" />
-              <YAxis stroke="#94a3b8" yAxisId="right" orientation="right" />
+              <YAxis stroke="#64748b" yAxisId="left" />
+              <YAxis stroke="#64748b" yAxisId="right" orientation="right" />
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#1e293b",
@@ -185,10 +185,10 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
       </Card>
 
       {/* Gráfico de Evolución de Sharpe Ratio */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Evolución del Sharpe Ratio</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Evolución del Sharpe Ratio</CardTitle>
+          <CardDescription className="text-slate-500">
             Retorno ajustado por riesgo a lo largo del tiempo
           </CardDescription>
         </CardHeader>
@@ -201,9 +201,9 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
                   <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="date" stroke="#94a3b8" style={{ fontSize: "12px" }} />
-              <YAxis stroke="#94a3b8" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <XAxis dataKey="date" stroke="#64748b" style={{ fontSize: "12px" }} />
+              <YAxis stroke="#64748b" />
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#1e293b",
@@ -225,19 +225,19 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
       </Card>
 
       {/* Gráfico de Evolución de VaR */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Evolución del Value at Risk</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Evolución del Value at Risk</CardTitle>
+          <CardDescription className="text-slate-500">
             Pérdida máxima esperada en diferentes niveles de confianza
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="date" stroke="#94a3b8" style={{ fontSize: "12px" }} />
-              <YAxis stroke="#94a3b8" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <XAxis dataKey="date" stroke="#64748b" style={{ fontSize: "12px" }} />
+              <YAxis stroke="#64748b" />
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#1e293b",
@@ -269,32 +269,32 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
       </Card>
 
       {/* Tabla de Historial */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Historial Detallado de Simulaciones</CardTitle>
+          <CardTitle className="text-slate-900">Historial Detallado de Simulaciones</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-600">
-                  <th className="text-left py-3 px-4 text-slate-300">#</th>
-                  <th className="text-left py-3 px-4 text-slate-300">Fecha</th>
-                  <th className="text-right py-3 px-4 text-slate-300">Retorno (%)</th>
-                  <th className="text-right py-3 px-4 text-slate-300">Volatilidad (%)</th>
-                  <th className="text-right py-3 px-4 text-slate-300">Sharpe Ratio</th>
-                  <th className="text-right py-3 px-4 text-slate-300">VaR 95%</th>
-                  <th className="text-right py-3 px-4 text-slate-300">Valor Esperado</th>
+                <tr className="border-b border-slate-300">
+                  <th className="text-left py-3 px-4 text-slate-700">#</th>
+                  <th className="text-left py-3 px-4 text-slate-700">Fecha</th>
+                  <th className="text-right py-3 px-4 text-slate-700">Retorno (%)</th>
+                  <th className="text-right py-3 px-4 text-slate-700">Volatilidad (%)</th>
+                  <th className="text-right py-3 px-4 text-slate-700">Sharpe Ratio</th>
+                  <th className="text-right py-3 px-4 text-slate-700">VaR 95%</th>
+                  <th className="text-right py-3 px-4 text-slate-700">Valor Esperado</th>
                 </tr>
               </thead>
               <tbody>
                 {data.map((row, idx) => (
                   <tr
                     key={idx}
-                    className="border-b border-slate-700 hover:bg-slate-700/50 transition-colors"
+                    className="border-b border-slate-200 hover:bg-slate-50 border border-slate-200 transition-colors"
                   >
-                    <td className="py-3 px-4 text-slate-300">{row.index}</td>
-                    <td className="py-3 px-4 text-slate-300">{row.date}</td>
+                    <td className="py-3 px-4 text-slate-700">{row.index}</td>
+                    <td className="py-3 px-4 text-slate-700">{row.date}</td>
                     <td className="py-3 px-4 text-right text-green-400 font-semibold">
                       {row.expectedReturn.toFixed(2)}%
                     </td>
@@ -307,7 +307,7 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
                     <td className="py-3 px-4 text-right text-red-400 font-semibold">
                       ${row.valueAtRisk95.toFixed(2)}
                     </td>
-                    <td className="py-3 px-4 text-right text-white font-semibold">
+                    <td className="py-3 px-4 text-right text-slate-900 font-semibold">
                       ${row.meanFinalValue.toFixed(2)}
                     </td>
                   </tr>
@@ -323,7 +323,7 @@ export function SimulationMetricsEvolution({ simulations }: SimulationMetricsEvo
         <CardHeader>
           <CardTitle className="text-primary">Análisis de Tendencias</CardTitle>
         </CardHeader>
-        <CardContent className="text-slate-300 space-y-3 text-sm">
+        <CardContent className="text-slate-700 space-y-3 text-sm">
           {data.length > 1 && (
             <>
               <div>

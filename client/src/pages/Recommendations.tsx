@@ -58,31 +58,31 @@ export default function Recommendations() {
             variant="outline"
             size="icon"
             onClick={() => navigate(`/portfolio/${portfolioId}`)}
-            className="border-slate-600"
+            className="border-slate-300"
           >
             <ArrowLeft className="w-4 h-4" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-white">Recomendaciones Personalizadas</h1>
-            <p className="text-slate-400 mt-2">{portfolio.data?.name}</p>
+            <h1 className="text-3xl font-bold text-slate-900">Recomendaciones Personalizadas</h1>
+            <p className="text-slate-500 mt-2">{portfolio.data?.name}</p>
           </div>
         </div>
 
         {recommendations.isLoading ? (
           <div className="text-center py-12">
-            <p className="text-slate-400">Cargando recomendaciones...</p>
+            <p className="text-slate-500">Cargando recomendaciones...</p>
           </div>
         ) : recommendations.data && recommendations.data.length > 0 ? (
           <div className="space-y-4">
             {recommendations.data.map((rec) => (
-              <Card key={rec.id} className={`border-2 ${getPriorityColor(rec.priority || "medium")} bg-slate-800`}>
+              <Card key={rec.id} className={`border-2 ${getPriorityColor(rec.priority || "medium")} bg-white shadow-sm`}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-3">
                       {getPriorityIcon(rec.priority || "medium")}
                       <div>
-                        <CardTitle className="text-white">{rec.title}</CardTitle>
-                        <CardDescription className="text-slate-400 mt-1">
+                        <CardTitle className="text-slate-900">{rec.title}</CardTitle>
+                        <CardDescription className="text-slate-500 mt-1">
                           {getTypeLabel(rec.recommendationType)} • Prioridad: {rec.priority === "high" ? "Alta" : rec.priority === "medium" ? "Media" : "Baja"}
                         </CardDescription>
                       </div>
@@ -90,12 +90,12 @@ export default function Recommendations() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-slate-300">{rec.description}</p>
+                  <p className="text-slate-700">{rec.description}</p>
                   
                   {rec.suggestedActions && rec.suggestedActions !== null && (
                     <div>
-                      <h4 className="font-semibold text-white mb-2">Acciones Sugeridas:</h4>
-                      <p className="text-slate-300">Recomendaciones disponibles para optimizar tu portafolio.</p>
+                      <h4 className="font-semibold text-slate-900 mb-2">Acciones Sugeridas:</h4>
+                      <p className="text-slate-700">Recomendaciones disponibles para optimizar tu portafolio.</p>
                     </div>
                   ) as any}
 
@@ -103,7 +103,7 @@ export default function Recommendations() {
                     <Button size="sm" className="bg-primary hover:bg-primary/90">
                       Aplicar Recomendación
                     </Button>
-                    <Button size="sm" variant="outline" className="border-slate-600">
+                    <Button size="sm" variant="outline" className="border-slate-300">
                       Descartar
                     </Button>
                   </div>
@@ -112,27 +112,27 @@ export default function Recommendations() {
             ))}
           </div>
         ) : (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-white shadow-sm border-slate-200">
             <CardContent className="pt-12 text-center">
               <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">¡Portafolio Optimizado!</h3>
-              <p className="text-slate-400">
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">¡Portafolio Optimizado!</h3>
+              <p className="text-slate-500">
                 Tu portafolio está bien balanceado según tu perfil de riesgo. No hay recomendaciones en este momento.
               </p>
             </CardContent>
           </Card>
         )}
 
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+            <CardTitle className="text-slate-900 flex items-center gap-2">
               <Lightbulb className="w-5 h-5 text-yellow-500" />
               Cómo Usar las Recomendaciones
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-slate-300 space-y-4">
+          <CardContent className="text-slate-700 space-y-4">
             <div>
-              <h4 className="font-semibold text-white mb-2">Prioridades</h4>
+              <h4 className="font-semibold text-slate-900 mb-2">Prioridades</h4>
               <ul className="list-disc list-inside space-y-1">
                 <li><strong className="text-red-400">Alta:</strong> Requiere atención inmediata</li>
                 <li><strong className="text-yellow-400">Media:</strong> Considera implementar pronto</li>
@@ -140,7 +140,7 @@ export default function Recommendations() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-white mb-2">Tipos de Recomendaciones</h4>
+              <h4 className="font-semibold text-slate-900 mb-2">Tipos de Recomendaciones</h4>
               <ul className="list-disc list-inside space-y-1">
                 <li><strong>Rebalanceo:</strong> Ajusta pesos de activos</li>
                 <li><strong>Diversificación:</strong> Agrega nuevos activos</li>

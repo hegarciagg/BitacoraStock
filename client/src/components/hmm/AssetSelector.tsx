@@ -65,13 +65,13 @@ export default function AssetSelector({ value, onChange, disabled = false }: Ass
 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-      <label className="text-xs text-slate-400 whitespace-nowrap font-medium">Activo:</label>
+      <label className="text-xs text-slate-500 whitespace-nowrap font-medium">Activo:</label>
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
         disabled={disabled}
         className={`
-          bg-slate-800 border border-slate-600 text-white text-sm rounded-lg px-3 py-2
+          bg-white shadow-sm border border-slate-300 text-slate-900 text-sm rounded-lg px-3 py-2
           focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500
           disabled:opacity-40 disabled:cursor-not-allowed
           min-w-[220px]
@@ -81,13 +81,13 @@ export default function AssetSelector({ value, onChange, disabled = false }: Ass
           <optgroup
             key={group.label}
             label={`${group.emoji} ${group.label}`}
-            className="bg-slate-800 text-slate-300"
+            className="bg-white shadow-sm text-slate-700"
           >
             {group.assets.map(asset => (
               <option
                 key={asset.symbol}
                 value={asset.symbol}
-                className="bg-slate-800 text-white"
+                className="bg-white shadow-sm text-slate-900"
               >
                 {asset.symbol} — {asset.name}
               </option>

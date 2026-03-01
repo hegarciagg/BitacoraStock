@@ -16,18 +16,18 @@ export default function RegimeChart() {
   const { data, isLoading } = trpc.hmm.getEquityCurve.useQuery({ limit: 1000 });
 
   if (isLoading) return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardContent className="pt-6">
-        <div className="h-64 bg-slate-700/30 rounded-xl animate-pulse" />
+        <div className="h-64 bg-slate-100/30 rounded-xl animate-pulse" />
       </CardContent>
     </Card>
   );
 
   if (!data || data.length === 0) return (
-    <Card className="bg-slate-800 border-slate-700 border-dashed">
+    <Card className="bg-white shadow-sm border-slate-200 border-dashed">
       <CardContent className="py-16 text-center">
         <Activity className="w-8 h-8 text-slate-600 mx-auto mb-3" />
-        <p className="text-slate-400 text-sm">Sin datos de equity. Ejecuta un backtest.</p>
+        <p className="text-slate-500 text-sm">Sin datos de equity. Ejecuta un backtest.</p>
       </CardContent>
     </Card>
   );
@@ -45,9 +45,9 @@ export default function RegimeChart() {
   return (
     <div className="space-y-4">
       {/* Equity Curve */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white flex items-center justify-between">
+          <CardTitle className="text-slate-900 flex items-center justify-between">
             <span className="flex items-center gap-2">
               <Activity className="w-5 h-5 text-purple-400" />
               Curva de Equity
@@ -100,9 +100,9 @@ export default function RegimeChart() {
       </Card>
 
       {/* Drawdown Chart */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white text-sm">Drawdown (%)</CardTitle>
+          <CardTitle className="text-slate-900 text-sm">Drawdown (%)</CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={140}>

@@ -24,30 +24,30 @@ export default function SimulationHistory() {
               variant="outline"
               size="icon"
               onClick={() => navigate(`/portfolio/${portfolioId}`)}
-              className="border-slate-600"
+              className="border-slate-300"
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-white">Historial de Simulaciones</h1>
-              <p className="text-slate-400 mt-2">{portfolio.data?.name}</p>
+              <h1 className="text-3xl font-bold text-slate-900">Historial de Simulaciones</h1>
+              <p className="text-slate-500 mt-2">{portfolio.data?.name}</p>
             </div>
           </div>
         </div>
 
         {simulations.isLoading ? (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-white shadow-sm border-slate-200">
             <CardContent className="pt-12 text-center">
-              <div className="text-slate-400">Cargando historial de simulaciones...</div>
+              <div className="text-slate-500">Cargando historial de simulaciones...</div>
             </CardContent>
           </Card>
         ) : simulations.data && simulations.data.length > 0 ? (
           <>
             {/* Resumen General */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Card className="bg-slate-800 border-slate-700">
+              <Card className="bg-white shadow-sm border-slate-200">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm text-slate-300">Total de Simulaciones</CardTitle>
+                  <CardTitle className="text-sm text-slate-700">Total de Simulaciones</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold text-primary">
@@ -56,15 +56,15 @@ export default function SimulationHistory() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-slate-800 border-slate-700">
+              <Card className="bg-white shadow-sm border-slate-200">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm text-slate-300">Primera Simulación</CardTitle>
+                  <CardTitle className="text-sm text-slate-700">Primera Simulación</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-sm text-slate-300">
+                  <div className="text-sm text-slate-700">
                     {new Date(simulations.data[0].createdAt).toLocaleDateString("es-ES")}
                   </div>
-                  <p className="text-xs text-slate-400 mt-2">
+                  <p className="text-xs text-slate-500 mt-2">
                     Hace{" "}
                     {Math.floor(
                       (Date.now() - new Date(simulations.data[0].createdAt).getTime()) /
@@ -75,17 +75,17 @@ export default function SimulationHistory() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-slate-800 border-slate-700">
+              <Card className="bg-white shadow-sm border-slate-200">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm text-slate-300">Última Simulación</CardTitle>
+                  <CardTitle className="text-sm text-slate-700">Última Simulación</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-sm text-slate-300">
+                  <div className="text-sm text-slate-700">
                     {new Date(
                       simulations.data[simulations.data.length - 1].createdAt
                     ).toLocaleDateString("es-ES")}
                   </div>
-                  <p className="text-xs text-slate-400 mt-2">
+                  <p className="text-xs text-slate-500 mt-2">
                     Hace{" "}
                     {Math.floor(
                       (Date.now() -
@@ -99,9 +99,9 @@ export default function SimulationHistory() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-slate-800 border-slate-700">
+              <Card className="bg-white shadow-sm border-slate-200">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm text-slate-300">Promedio Sharpe Ratio</CardTitle>
+                  <CardTitle className="text-sm text-slate-700">Promedio Sharpe Ratio</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold text-purple-400">
@@ -131,16 +131,16 @@ export default function SimulationHistory() {
             />
 
             {/* Información Educativa */}
-            <Card className="bg-slate-800 border-slate-700">
+            <Card className="bg-white shadow-sm border-slate-200">
               <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
+                <CardTitle className="text-slate-900 flex items-center gap-2">
                   <Clock className="w-5 h-5 text-primary" />
                   Cómo Interpretar el Historial
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-slate-300 space-y-4">
+              <CardContent className="text-slate-700 space-y-4">
                 <div>
-                  <h4 className="font-semibold text-white mb-2">Tendencias Positivas</h4>
+                  <h4 className="font-semibold text-slate-900 mb-2">Tendencias Positivas</h4>
                   <ul className="list-disc list-inside space-y-1 text-sm">
                     <li>Retorno esperado en aumento: mejor perspectiva de ganancias</li>
                     <li>Volatilidad en disminución: portafolio más estable</li>
@@ -149,7 +149,7 @@ export default function SimulationHistory() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-2">Tendencias Negativas</h4>
+                  <h4 className="font-semibold text-slate-900 mb-2">Tendencias Negativas</h4>
                   <ul className="list-disc list-inside space-y-1 text-sm">
                     <li>Retorno esperado en disminución: requiere revisión</li>
                     <li>Volatilidad en aumento: portafolio más riesgoso</li>
@@ -158,7 +158,7 @@ export default function SimulationHistory() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-2">Acciones Recomendadas</h4>
+                  <h4 className="font-semibold text-slate-900 mb-2">Acciones Recomendadas</h4>
                   <ul className="list-disc list-inside space-y-1 text-sm">
                     <li>Revisa regularmente el historial para identificar tendencias</li>
                     <li>Compara simulaciones después de cambios en el portafolio</li>
@@ -170,11 +170,11 @@ export default function SimulationHistory() {
             </Card>
           </>
         ) : (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-white shadow-sm border-slate-200">
             <CardContent className="pt-12 text-center">
               <AlertCircle className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">Sin historial de simulaciones</h3>
-              <p className="text-slate-400 mb-6">
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Sin historial de simulaciones</h3>
+              <p className="text-slate-500 mb-6">
                 Ejecuta simulaciones de Monte Carlo para comenzar a rastrear la evolución del riesgo de tu portafolio.
               </p>
               <Button

@@ -238,21 +238,21 @@ export default function ScenarioAnalysis() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-white">Análisis de Escenarios</h1>
-          <p className="text-slate-400 mt-2">
+          <h1 className="text-3xl font-bold text-slate-900">Análisis de Escenarios</h1>
+          <p className="text-slate-500 mt-2">
             Modela el impacto de eventos de mercado específicos en tu portafolio
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Selector de Escenarios Predefinidos */}
-          <Card className="lg:col-span-1 bg-slate-800 border-slate-700">
+          <Card className="lg:col-span-1 bg-white shadow-sm border-slate-200">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-slate-900 flex items-center gap-2">
                 <Zap className="w-5 h-5 text-yellow-500" />
                 Escenarios Predefinidos
               </CardTitle>
-              <CardDescription className="text-slate-400">
+              <CardDescription className="text-slate-500">
                 Selecciona eventos de mercado para analizar
               </CardDescription>
             </CardHeader>
@@ -270,7 +270,7 @@ export default function ScenarioAnalysis() {
                   className={`w-full text-left p-3 rounded-lg border-2 transition-all ${
                     selectedScenarios.includes(scenario.id)
                       ? "border-blue-500 bg-blue-500/10"
-                      : "border-slate-600 bg-slate-700/50 hover:border-slate-500"
+                      : "border-slate-300 bg-slate-50 border border-slate-200 hover:border-slate-500"
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -279,8 +279,8 @@ export default function ScenarioAnalysis() {
                       style={{ backgroundColor: scenario.color }}
                     />
                     <div>
-                      <p className="font-semibold text-white">{scenario.name}</p>
-                      <p className="text-xs text-slate-400">{scenario.description}</p>
+                      <p className="font-semibold text-slate-900">{scenario.name}</p>
+                      <p className="text-xs text-slate-500">{scenario.description}</p>
                     </div>
                   </div>
                 </button>
@@ -289,22 +289,22 @@ export default function ScenarioAnalysis() {
           </Card>
 
           {/* Constructor de Escenario Personalizado */}
-          <Card className="lg:col-span-2 bg-slate-800 border-slate-700">
+          <Card className="lg:col-span-2 bg-white shadow-sm border-slate-200">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-slate-900 flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-primary" />
                 Constructor de Escenario Personalizado
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="flex items-center gap-4 p-3 bg-slate-700/50 rounded-lg">
+              <div className="flex items-center gap-4 p-3 bg-slate-50 border border-slate-200 rounded-lg">
                 <input
                   type="checkbox"
                   checked={useCustom}
                   onChange={(e) => setUseCustom(e.target.checked)}
                   className="w-4 h-4 cursor-pointer"
                 />
-                <label className="text-white cursor-pointer flex-1">
+                <label className="text-slate-900 cursor-pointer flex-1">
                   Crear escenario personalizado
                 </label>
               </div>
@@ -313,7 +313,7 @@ export default function ScenarioAnalysis() {
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between items-center mb-2">
-                      <Label className="text-white">Impacto en Acciones</Label>
+                      <Label className="text-slate-900">Impacto en Acciones</Label>
                       <span className="text-primary font-semibold">
                         {(customScenario.equity * 100).toFixed(1)}%
                       </span>
@@ -332,7 +332,7 @@ export default function ScenarioAnalysis() {
 
                   <div>
                     <div className="flex justify-between items-center mb-2">
-                      <Label className="text-white">Impacto en Bonos</Label>
+                      <Label className="text-slate-900">Impacto en Bonos</Label>
                       <span className="text-green-400 font-semibold">
                         {(customScenario.bond * 100).toFixed(1)}%
                       </span>
@@ -351,7 +351,7 @@ export default function ScenarioAnalysis() {
 
                   <div>
                     <div className="flex justify-between items-center mb-2">
-                      <Label className="text-white">Impacto en Criptomonedas</Label>
+                      <Label className="text-slate-900">Impacto en Criptomonedas</Label>
                       <span className="text-orange-400 font-semibold">
                         {(customScenario.crypto * 100).toFixed(1)}%
                       </span>
@@ -370,7 +370,7 @@ export default function ScenarioAnalysis() {
 
                   <div>
                     <div className="flex justify-between items-center mb-2">
-                      <Label className="text-white">Impacto en Commodities</Label>
+                      <Label className="text-slate-900">Impacto en Commodities</Label>
                       <span className="text-yellow-400 font-semibold">
                         {(customScenario.commodity * 100).toFixed(1)}%
                       </span>
@@ -396,16 +396,16 @@ export default function ScenarioAnalysis() {
         {(selectedScenarios.length > 0 || useCustom) && (
           <>
             {/* Gráfico de Comparación de Valores */}
-            <Card className="bg-slate-800 border-slate-700">
+            <Card className="bg-white shadow-sm border-slate-200">
               <CardHeader>
-                <CardTitle className="text-white">Comparación de Valores del Portafolio</CardTitle>
+                <CardTitle className="text-slate-900">Comparación de Valores del Portafolio</CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={comparisonData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
-                    <XAxis dataKey="name" stroke="#94a3b8" />
-                    <YAxis stroke="#94a3b8" />
+                    <XAxis dataKey="name" stroke="#64748b" />
+                    <YAxis stroke="#64748b" />
                     <Tooltip
                       contentStyle={{
                         backgroundColor: "#1e293b",
@@ -422,16 +422,16 @@ export default function ScenarioAnalysis() {
 
             {/* Gráfico de Sensibilidad */}
             {useCustom && (
-              <Card className="bg-slate-800 border-slate-700">
+              <Card className="bg-white shadow-sm border-slate-200">
                 <CardHeader>
-                  <CardTitle className="text-white">Análisis de Sensibilidad por Activo</CardTitle>
+                  <CardTitle className="text-slate-900">Análisis de Sensibilidad por Activo</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={sensitivityData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
-                      <XAxis dataKey="factor" stroke="#94a3b8" />
-                      <YAxis stroke="#94a3b8" />
+                      <XAxis dataKey="factor" stroke="#64748b" />
+                      <YAxis stroke="#64748b" />
                       <Tooltip
                         contentStyle={{
                           backgroundColor: "#1e293b",
@@ -448,9 +448,9 @@ export default function ScenarioAnalysis() {
             )}
 
             {/* Gráfico de Riesgo-Retorno */}
-            <Card className="bg-slate-800 border-slate-700">
+            <Card className="bg-white shadow-sm border-slate-200">
               <CardHeader>
-                <CardTitle className="text-white">Análisis Riesgo-Retorno de Escenarios</CardTitle>
+                <CardTitle className="text-slate-900">Análisis Riesgo-Retorno de Escenarios</CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
@@ -459,9 +459,9 @@ export default function ScenarioAnalysis() {
                     <XAxis
                       dataKey="return"
                       name="Retorno Esperado (%)"
-                      stroke="#94a3b8"
+                      stroke="#64748b"
                     />
-                    <YAxis dataKey="risk" name="Riesgo" stroke="#94a3b8" />
+                    <YAxis dataKey="risk" name="Riesgo" stroke="#64748b" />
                     <Tooltip
                       contentStyle={{
                         backgroundColor: "#1e293b",
@@ -481,25 +481,25 @@ export default function ScenarioAnalysis() {
             </Card>
 
             {/* Resumen de Resultados */}
-            <Card className="bg-slate-800 border-slate-700">
+            <Card className="bg-white shadow-sm border-slate-200">
               <CardHeader>
-                <CardTitle className="text-white">Resumen de Resultados</CardTitle>
+                <CardTitle className="text-slate-900">Resumen de Resultados</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {scenarioResults.map((result) => (
                     <div
                       key={result.name}
-                      className="p-4 bg-slate-700/50 rounded-lg border border-slate-600"
+                      className="p-4 bg-slate-50 border border-slate-200 rounded-lg border border-slate-300"
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-white">{result.name}</h4>
+                        <h4 className="font-semibold text-slate-900">{result.name}</h4>
                         <div
                           className="w-3 h-3 rounded-full"
                           style={{ backgroundColor: result.color }}
                         />
                       </div>
-                      <p className="text-sm text-slate-400 mb-3">
+                      <p className="text-sm text-slate-500 mb-3">
                         Impacto en portafolio
                       </p>
                       <div className="flex items-baseline gap-2">
@@ -510,7 +510,7 @@ export default function ScenarioAnalysis() {
                         >
                           {result.impact >= 0 ? "+" : ""}{result.impact.toFixed(2)}%
                         </span>
-                        <span className="text-slate-400">
+                        <span className="text-slate-500">
                           Nuevo valor: ${result.newValue.toFixed(0)}
                         </span>
                       </div>
@@ -518,12 +518,12 @@ export default function ScenarioAnalysis() {
                   ))}
 
                   {useCustom && (
-                    <div className="p-4 bg-slate-700/50 rounded-lg border border-slate-600">
+                    <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg border border-slate-300">
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-white">Escenario Personalizado</h4>
+                        <h4 className="font-semibold text-slate-900">Escenario Personalizado</h4>
                         <div className="w-3 h-3 rounded-full bg-blue-500" />
                       </div>
-                      <p className="text-sm text-slate-400 mb-3">
+                      <p className="text-sm text-slate-500 mb-3">
                         Impacto en portafolio
                       </p>
                       <div className="flex items-baseline gap-2">
@@ -534,7 +534,7 @@ export default function ScenarioAnalysis() {
                         >
                           {customImpact >= 0 ? "+" : ""}{(customImpact * 100).toFixed(2)}%
                         </span>
-                        <span className="text-slate-400">
+                        <span className="text-slate-500">
                           Nuevo valor: ${(portfolioValue * (1 + customImpact)).toFixed(0)}
                         </span>
                       </div>
@@ -552,13 +552,13 @@ export default function ScenarioAnalysis() {
         )}
 
         {selectedScenarios.length === 0 && !useCustom && (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-white shadow-sm border-slate-200">
             <CardContent className="pt-12 text-center">
               <AlertCircle className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">
                 Selecciona un escenario para comenzar
               </h3>
-              <p className="text-slate-400">
+              <p className="text-slate-500">
                 Elige uno o más escenarios predefinidos o crea uno personalizado para analizar
                 el impacto en tu portafolio.
               </p>

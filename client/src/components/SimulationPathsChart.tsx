@@ -52,10 +52,10 @@ export function SimulationPathsChart({
   ];
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white">Caminos de Simulación</CardTitle>
-        <CardDescription className="text-slate-400">
+        <CardTitle className="text-slate-900">Caminos de Simulación</CardTitle>
+        <CardDescription className="text-slate-500">
           Proyecciones de valor del portafolio a lo largo del tiempo
         </CardDescription>
       </CardHeader>
@@ -66,11 +66,11 @@ export function SimulationPathsChart({
               <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
               <XAxis 
                 dataKey="time" 
-                stroke="#94a3b8"
+                stroke="#64748b"
                 label={{ value: "Días", position: "insideBottomRight", offset: -5 }}
               />
               <YAxis 
-                stroke="#94a3b8"
+                stroke="#64748b"
                 label={{ value: "Valor ($)", angle: -90, position: "insideLeft" }}
               />
               <Tooltip 
@@ -81,7 +81,7 @@ export function SimulationPathsChart({
               {/* Líneas de referencia */}
               <ReferenceLine 
                 y={initialCapital} 
-                stroke="#94a3b8" 
+                stroke="#64748b" 
                 strokeDasharray="5 5" 
                 label={{ value: "Capital Inicial", position: "right", fill: "#94a3b8", fontSize: 12 }}
               />
@@ -123,8 +123,8 @@ export function SimulationPathsChart({
             </LineChart>
           </ResponsiveContainer>
         </div>
-        <div className="mt-4 p-4 bg-slate-700 rounded-lg border border-slate-600">
-          <p className="text-sm text-slate-400">
+        <div className="mt-4 p-4 bg-slate-100 rounded-lg border border-slate-300">
+          <p className="text-sm text-slate-500">
             Se muestran hasta 10 caminos de simulación de las {simulationPaths.length} simulaciones ejecutadas.
             Las líneas de referencia indican el capital inicial, valor esperado y percentiles de riesgo.
           </p>

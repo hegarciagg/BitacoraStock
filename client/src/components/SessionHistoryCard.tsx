@@ -45,15 +45,15 @@ export function SessionHistoryCard() {
 
   if (isLoading) {
     return (
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Sesiones Activas</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Sesiones Activas</CardTitle>
+          <CardDescription className="text-slate-500">
             Dispositivos conectados a tu cuenta
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-slate-400">Cargando sesiones...</p>
+          <p className="text-slate-500">Cargando sesiones...</p>
         </CardContent>
       </Card>
     );
@@ -61,30 +61,30 @@ export function SessionHistoryCard() {
 
   return (
     <>
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Sesiones Activas</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Sesiones Activas</CardTitle>
+          <CardDescription className="text-slate-500">
             Dispositivos conectados a tu cuenta
           </CardDescription>
         </CardHeader>
         <CardContent>
           {!sessions || sessions.length === 0 ? (
-            <p className="text-slate-400">No hay sesiones activas</p>
+            <p className="text-slate-500">No hay sesiones activas</p>
           ) : (
             <div className="space-y-3">
               {sessions.map((session) => (
                 <div
                   key={session.id}
-                  className="flex items-center justify-between p-3 bg-slate-700 rounded-lg border border-slate-600"
+                  className="flex items-center justify-between p-3 bg-slate-100 rounded-lg border border-slate-300"
                 >
                   <div className="flex items-center gap-3 flex-1">
                     {getDeviceIcon(session.deviceType)}
                     <div className="flex-1">
-                      <p className="text-white font-medium">
+                      <p className="text-slate-900 font-medium">
                         {session.browserName || "Navegador desconocido"}
                       </p>
-                      <p className="text-slate-400 text-sm">
+                      <p className="text-slate-500 text-sm">
                         {session.osName || "SO desconocido"}
                       </p>
                       <div className="flex items-center gap-1 text-slate-500 text-xs mt-1">
@@ -107,7 +107,7 @@ export function SessionHistoryCard() {
                     </Button>
                   )}
                   {session.isCurrentSession === 1 && (
-                    <span className="text-xs bg-green-600 text-white px-2 py-1 rounded">
+                    <span className="text-xs bg-green-600 text-slate-900 px-2 py-1 rounded">
                       Actual
                     </span>
                   )}
@@ -120,19 +120,19 @@ export function SessionHistoryCard() {
 
       {/* Diálogo de confirmación */}
       <AlertDialog open={!!sessionToDelete} onOpenChange={(open: boolean) => !open && setSessionToDelete(null)}>
-        <AlertDialogContent className="bg-slate-800 border-slate-700">
+        <AlertDialogContent className="bg-white shadow-sm border-slate-200">
           <DialogHeader>
-            <DialogTitle className="text-white">Cerrar Sesión</DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogTitle className="text-slate-900">Cerrar Sesión</DialogTitle>
+            <DialogDescription className="text-slate-500">
               ¿Estás seguro de que deseas cerrar esta sesión? Se cerrará el acceso desde ese dispositivo.
             </DialogDescription>
           </DialogHeader>
           <div className="flex gap-3">
-            <AlertDialogCancel className="bg-slate-700 border-slate-600 text-white hover:bg-slate-600">
+            <AlertDialogCancel className="bg-slate-100 border-slate-300 text-slate-900 hover:bg-slate-600">
               Cancelar
             </AlertDialogCancel>
             <AlertDialogAction
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-red-600 hover:bg-red-700 text-slate-900"
               onClick={() => {
                 if (sessionToDelete) {
                   closeSessionMutation.mutate({ sessionId: sessionToDelete });

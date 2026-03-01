@@ -33,9 +33,9 @@ export default function SentimentAnalysisDisplay({ data }: SentimentAnalysisDisp
   return (
     <div className="space-y-6">
       {/* Resumen de Sentimiento */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-slate-900 flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-primary" />
             Análisis de Sentimiento de Mercado
           </CardTitle>
@@ -44,51 +44,51 @@ export default function SentimentAnalysisDisplay({ data }: SentimentAnalysisDisp
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-3 gap-4">
             {/* Sentimiento General */}
-            <div className={`p-4 rounded-lg ${sentimentBg} border border-slate-700`}>
-              <div className="text-sm text-slate-400 mb-2">Sentimiento General</div>
+            <div className={`p-4 rounded-lg ${sentimentBg} border border-slate-200`}>
+              <div className="text-sm text-slate-500 mb-2">Sentimiento General</div>
               <div className={`text-2xl font-bold ${sentimentColor}`}>{sentimentLabel}</div>
-              <div className="text-xs text-slate-400 mt-2">Puntuación: {(data.overallSentiment * 100).toFixed(0)}</div>
+              <div className="text-xs text-slate-500 mt-2">Puntuación: {(data.overallSentiment * 100).toFixed(0)}</div>
             </div>
 
             {/* Confianza del Mercado */}
-            <div className="p-4 rounded-lg bg-blue-500/10 border border-slate-700">
-              <div className="text-sm text-slate-400 mb-2">Confianza del Mercado</div>
+            <div className="p-4 rounded-lg bg-blue-500/10 border border-slate-200">
+              <div className="text-sm text-slate-500 mb-2">Confianza del Mercado</div>
               <div className="text-2xl font-bold text-primary">{(data.marketConfidence * 100).toFixed(0)}%</div>
-              <div className="text-xs text-slate-400 mt-2">
+              <div className="text-xs text-slate-500 mt-2">
                 {data.marketConfidence > 0.7 ? 'Alta' : data.marketConfidence > 0.4 ? 'Moderada' : 'Baja'}
               </div>
             </div>
 
             {/* Acción Recomendada */}
-            <div className={`p-4 rounded-lg ${actionColor} border border-slate-700`}>
-              <div className="text-sm text-slate-400 mb-2 flex items-center gap-2">
+            <div className={`p-4 rounded-lg ${actionColor} border border-slate-200`}>
+              <div className="text-sm text-slate-500 mb-2 flex items-center gap-2">
                 {actionIcon}
                 Acción Recomendada
               </div>
               <div className="text-2xl font-bold capitalize">{data.recommendedAction}</div>
-              <div className="text-xs text-slate-400 mt-2">Basado en análisis actual</div>
+              <div className="text-xs text-slate-500 mt-2">Basado en análisis actual</div>
             </div>
           </div>
 
           {/* Explicación */}
-          <div className="p-4 rounded-lg bg-slate-700/50 border border-slate-600">
-            <div className="text-sm text-slate-300">{data.explanation}</div>
+          <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 border border-slate-300">
+            <div className="text-sm text-slate-700">{data.explanation}</div>
           </div>
         </CardContent>
       </Card>
 
       {/* Impacto por Activo */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Impacto Esperado por Activo</CardTitle>
+          <CardTitle className="text-slate-900">Impacto Esperado por Activo</CardTitle>
           <CardDescription>Movimiento esperado basado en sentimiento y correlación histórica</CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={data.correlations}>
               <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
-              <XAxis dataKey="asset" stroke="#94a3b8" />
-              <YAxis stroke="#94a3b8" />
+              <XAxis dataKey="asset" stroke="#64748b" />
+              <YAxis stroke="#64748b" />
               <Tooltip
                 contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569' }}
                 labelStyle={{ color: '#e2e8f0' }}
@@ -102,17 +102,17 @@ export default function SentimentAnalysisDisplay({ data }: SentimentAnalysisDisp
       </Card>
 
       {/* Matriz de Correlación */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Matriz de Correlación Sentimiento-Histórica</CardTitle>
+          <CardTitle className="text-slate-900">Matriz de Correlación Sentimiento-Histórica</CardTitle>
           <CardDescription>Relación entre sentimiento actual y movimientos históricos</CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
-              <XAxis type="number" dataKey="sentimentImpact" name="Impacto de Sentimiento" stroke="#94a3b8" />
-              <YAxis type="number" dataKey="historicalCorrelation" name="Correlación Histórica" stroke="#94a3b8" />
+              <XAxis type="number" dataKey="sentimentImpact" name="Impacto de Sentimiento" stroke="#64748b" />
+              <YAxis type="number" dataKey="historicalCorrelation" name="Correlación Histórica" stroke="#64748b" />
               <Tooltip
                 contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569' }}
                 labelStyle={{ color: '#e2e8f0' }}
@@ -125,34 +125,34 @@ export default function SentimentAnalysisDisplay({ data }: SentimentAnalysisDisp
       </Card>
 
       {/* Tabla Detallada */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Análisis Detallado por Activo</CardTitle>
+          <CardTitle className="text-slate-900">Análisis Detallado por Activo</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-700">
-                  <th className="text-left py-2 px-4 text-slate-400">Activo</th>
-                  <th className="text-right py-2 px-4 text-slate-400">Impacto Sentimiento</th>
-                  <th className="text-right py-2 px-4 text-slate-400">Correlación Histórica</th>
-                  <th className="text-right py-2 px-4 text-slate-400">Confianza</th>
-                  <th className="text-right py-2 px-4 text-slate-400">Movimiento Esperado</th>
+                <tr className="border-b border-slate-200">
+                  <th className="text-left py-2 px-4 text-slate-500">Activo</th>
+                  <th className="text-right py-2 px-4 text-slate-500">Impacto Sentimiento</th>
+                  <th className="text-right py-2 px-4 text-slate-500">Correlación Histórica</th>
+                  <th className="text-right py-2 px-4 text-slate-500">Confianza</th>
+                  <th className="text-right py-2 px-4 text-slate-500">Movimiento Esperado</th>
                 </tr>
               </thead>
               <tbody>
                 {data.correlations.map((corr, idx) => (
-                  <tr key={idx} className="border-b border-slate-700 hover:bg-slate-700/50">
-                    <td className="py-2 px-4 text-white font-medium">{corr.asset}</td>
+                  <tr key={idx} className="border-b border-slate-200 hover:bg-slate-50 border border-slate-200">
+                    <td className="py-2 px-4 text-slate-900 font-medium">{corr.asset}</td>
                     <td className="text-right py-2 px-4">
                       <span className={corr.sentimentImpact > 0 ? 'text-green-500' : 'text-red-500'}>
                         {(corr.sentimentImpact * 100).toFixed(1)}%
                       </span>
                     </td>
-                    <td className="text-right py-2 px-4 text-slate-300">{(corr.historicalCorrelation * 100).toFixed(0)}%</td>
+                    <td className="text-right py-2 px-4 text-slate-700">{(corr.historicalCorrelation * 100).toFixed(0)}%</td>
                     <td className="text-right py-2 px-4">
-                      <Badge variant="outline" className="bg-slate-700">
+                      <Badge variant="outline" className="bg-slate-100">
                         {(corr.confidence * 100).toFixed(0)}%
                       </Badge>
                     </td>
@@ -170,27 +170,27 @@ export default function SentimentAnalysisDisplay({ data }: SentimentAnalysisDisp
       </Card>
 
       {/* Ajuste de Riesgo */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Ajuste de Volatilidad</CardTitle>
+          <CardTitle className="text-slate-900">Ajuste de Volatilidad</CardTitle>
           <CardDescription>Factor de ajuste aplicado a simulaciones de Monte Carlo</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="p-4 rounded-lg bg-slate-700/50 border border-slate-600">
+          <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 border border-slate-300">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm text-slate-400 mb-2">Factor de Riesgo</div>
-                <div className="text-3xl font-bold text-white">{data.riskAdjustment.toFixed(2)}x</div>
-                <div className="text-xs text-slate-400 mt-2">
+                <div className="text-sm text-slate-500 mb-2">Factor de Riesgo</div>
+                <div className="text-3xl font-bold text-slate-900">{data.riskAdjustment.toFixed(2)}x</div>
+                <div className="text-xs text-slate-500 mt-2">
                   {data.riskAdjustment > 1.1 ? 'Mayor volatilidad esperada' : data.riskAdjustment < 0.9 ? 'Menor volatilidad esperada' : 'Volatilidad estable'}
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-sm text-slate-400 mb-2">Impacto</div>
+                <div className="text-sm text-slate-500 mb-2">Impacto</div>
                 <div className="text-lg font-semibold text-primary">
                   {((data.riskAdjustment - 1) * 100).toFixed(1)}%
                 </div>
-                <div className="text-xs text-slate-400 mt-2">Cambio en volatilidad</div>
+                <div className="text-xs text-slate-500 mt-2">Cambio en volatilidad</div>
               </div>
             </div>
           </div>

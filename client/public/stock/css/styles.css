@@ -13,6 +13,7 @@
     --border: #30363d;
     --error: #f85149;
     --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+    --card-shadow-hover: 0 12px 48px 0 rgba(0, 0, 0, 0.9);
     --glass-card-bg: rgba(22, 27, 34, 0.7);
     --input-bg: rgba(0, 0, 0, 0.3);
     
@@ -21,19 +22,20 @@
 }
 
 body.light-theme {
-    --bg-dark: #f8f9fa; /* Softer background */
-    --bg-panel: rgba(255, 255, 255, 0.85); /* Cleaner white with glass effect */
-    --glass-border: rgba(0, 0, 0, 0.05); /* Subtle borders */
-    --text-primary: #1a1d21; /* Deep gray-black for better contrast */
-    --text-secondary: #6c757d; /* Muted gray for secondary info */
-    --accent: #2c3e50; /* Professional slate-blue accent instead of plain green */
-    --accent-glow: rgba(44, 62, 80, 0.1);
-    --accent-hover: #34495e;
-    --border: #e9ecef; /* Lighter, cleaner borders */
-    --error: #dc3545; /* Standard professional error red */
-    --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.04); /* Soft, expansive shadow */
-    --glass-card-bg: rgba(255, 255, 255, 0.95);
-    --input-bg: #fdfdfd;
+    --bg-dark: #f8f9fa; /* BlockStock background */
+    --bg-panel: #ffffff; /* Solid white panels */
+    --glass-border: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --accent: #3b82f6; /* BlockStock blue */
+    --accent-glow: rgba(59, 130, 246, 0.2);
+    --accent-hover: #2563eb;
+    --border: #e2e8f0;
+    --error: #ef4444;
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --glass-card-bg: #ffffff;
+    --input-bg: #f8fafc;
 }
 
 * {
@@ -82,7 +84,7 @@ body.dark-theme, body.light-theme {
         "sidebar content right-sidebar"
         "footer footer footer";
     min-height: 100vh;
-    width: 100vw;
+    width: 100%;
     grid-template-rows: 1fr auto;
 }
 
@@ -105,13 +107,13 @@ body.dark-theme, body.light-theme {
 .app-footer { grid-area: footer; }
 
 /* Brand Customization */
-.brand {
+.main-content .brand {
     position: relative;
     margin-bottom: 2rem;
     flex-shrink: 0; /* Don't squash brand */
 }
 
-.logo-glow {
+.main-content .logo-glow {
     position: absolute;
     top: -20px;
     left: -20px;
@@ -122,19 +124,19 @@ body.dark-theme, body.light-theme {
     opacity: 0.3;
 }
 
-.brand h1 {
+.main-content .brand h1 {
     font-family: var(--font-heading);
     font-size: 1.6rem;
     font-weight: 700;
     letter-spacing: -1px;
 }
 
-.brand h1 span {
+.main-content .brand h1 span {
     color: var(--accent);
     margin-left: 2px;
 }
 
-.brand p {
+.main-content .brand p {
     color: var(--text-secondary);
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -912,8 +914,8 @@ body.light-theme ::-webkit-scrollbar-thumb:hover { background: #999; }
 }
 
 .glass-card:hover, .premium-card:hover {
-    transform: translateY(-4px) scale(1.005);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow-hover);
 }
 /* Footer Grid Integration — Stock page uses CSS Grid, shared nav-footer.css handles visual styles */
 .app-footer {

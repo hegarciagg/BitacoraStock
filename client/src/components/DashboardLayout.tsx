@@ -5,7 +5,6 @@ import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 import React from "react";
 import Footer from "./Footer";
-import TopNavigation from "./TopNavigation";
 import { useLocation } from "wouter";
 import {
   Sidebar,
@@ -22,16 +21,11 @@ import {
 } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/useMobile";
 import { PanelLeft, LogOut } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { navItems as menuItems } from "@/lib/navigation";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import ZetaLogo from "./ZetaLogo";
+import { navItems, bottomNavItems } from "@/lib/navigation";
 
-const MIN_WIDTH = 200;
+const MIN_WIDTH = 220;
 const MAX_WIDTH = 400;
 
 export default function DashboardLayout({
@@ -47,7 +41,7 @@ export default function DashboardLayout({
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-[#F8FAFC]">
         <div className="flex flex-col items-center gap-8 p-8 max-w-md w-full">
           <div className="flex flex-col items-center gap-6">
             <h1 className="text-2xl font-semibold tracking-tight text-center">
@@ -72,15 +66,19 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <TopNavigation />
-      <main className="flex-1 pt-16">
-        <div className="container mx-auto p-6">
-          {children}
-        </div>
-      </main>
-      <Footer />
-    </div>
+    <SidebarProvider
+      style={
+        {
+          "--sidebar": "#F4F7FC",
+          "--sidebar-border": "#e2e8f0",
+          "--sidebar-ring": "#3b82f6",
+        } as React.CSSProperties
+      }
+    >
+      <DashboardLayoutContent setSidebarWidth={() => {}}>
+        {children}
+      </DashboardLayoutContent>
+    </SidebarProvider>
   );
 }
 
@@ -99,7 +97,6 @@ function DashboardLayoutContent({
   const isCollapsed = state === "collapsed";
   const [isResizing, setIsResizing] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const activeMenuItem = menuItems.find(item => item.path === location);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -108,156 +105,136 @@ function DashboardLayoutContent({
     }
   }, [isCollapsed]);
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isResizing) return;
-
-      const sidebarLeft = sidebarRef.current?.getBoundingClientRect().left ?? 0;
-      const newWidth = e.clientX - sidebarLeft;
-      if (newWidth >= MIN_WIDTH && newWidth <= MAX_WIDTH) {
-        setSidebarWidth(newWidth);
-      }
-    };
-
-    const handleMouseUp = () => {
-      setIsResizing(false);
-    };
-
-    if (isResizing) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
-      document.body.style.cursor = "col-resize";
-      document.body.style.userSelect = "none";
-    }
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-      document.body.style.cursor = "";
-      document.body.style.userSelect = "";
-    };
-  }, [isResizing, setSidebarWidth]);
-
   return (
-    <>
-      <div className="relative" ref={sidebarRef}>
+    <div className="flex min-h-screen w-full bg-[#F4F7FC] overflow-hidden">
+      <div className="relative z-20 flex-shrink-0" ref={sidebarRef}>
         <Sidebar
           collapsible="icon"
-          className="border-r-0"
+          className="border-r border-slate-200 bg-[#F4F7FC]"
           disableTransition={isResizing}
         >
-          <SidebarHeader className="h-16 justify-center">
-            <div className="flex items-center gap-3 px-2 transition-all w-full">
-              <button
-                onClick={toggleSidebar}
-                className="h-8 w-8 flex items-center justify-center hover:bg-accent rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring shrink-0"
-                aria-label="Toggle navigation"
-              >
-                <PanelLeft className="h-4 w-4 text-muted-foreground" />
-              </button>
-              {!isCollapsed ? (
-                <div className="flex items-center gap-2 min-w-0">
-                  <span className="font-semibold tracking-tight truncate">
-                    Navigation
-                  </span>
+          <div className="flex flex-col h-full overflow-hidden">
+            <SidebarHeader className="h-20 justify-center">
+              <div className="flex items-center gap-3 px-4 transition-all w-full mt-4">
+                <div className="h-8 w-8 flex items-center justify-center shrink-0">
+                  <ZetaLogo className="h-6 w-6 text-slate-800" />
                 </div>
-              ) : null}
+                {!isCollapsed ? (
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-xl font-bold tracking-tight truncate text-slate-900">
+                      BlockStock
+                    </span>
+                  </div>
+                ) : null}
+              </div>
+            </SidebarHeader>
+
+            <SidebarContent className="flex-1 overflow-y-auto px-3 py-4">
+              <SidebarMenu className="gap-2">
+                {navItems.map(item => {
+                  const isActive = location === item.path || (location === "/" && item.path === "/dashboard");
+                  const Icon = item.icon;
+                  return (
+                    <SidebarMenuItem key={item.path}>
+                      <SidebarMenuButton
+                        isActive={isActive}
+                        onClick={() => {
+                          if (item.isExternal) {
+                            window.location.href = item.path;
+                          } else {
+                            setLocation(item.path);
+                          }
+                        }}
+                        tooltip={item.label}
+                        className={`h-11 transition-all rounded-full px-4 ${
+                          isActive 
+                            ? "bg-slate-50 text-slate-900 hover:bg-white shadow-sm hover:text-slate-900" 
+                            : "text-slate-600 hover:bg-slate-200/50 hover:text-slate-900 font-medium"
+                        }`}
+                      >
+                        {Icon && (
+                          <Icon
+                            className={`h-5 w-5 mr-3 ${isActive ? "text-slate-900" : "text-slate-500"}`}
+                          />
+                        )}
+                        <span className="text-sm">{item.label}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarContent>
+
+            <div className="px-3 pb-4">
+              <SidebarMenu className="gap-1 mb-6">
+                {bottomNavItems.map(item => {
+                  const Icon = item.icon;
+                  return (
+                    <SidebarMenuItem key={item.path}>
+                      <SidebarMenuButton
+                        onClick={() => setLocation(item.path)}
+                        tooltip={item.label}
+                        className="h-10 transition-all rounded-full px-4 text-slate-600 hover:bg-slate-200/50 hover:text-slate-900 font-medium"
+                      >
+                        {Icon && <Icon className="h-4 w-4 mr-3 text-slate-500" />}
+                        <span className="text-sm">{item.label}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
             </div>
-          </SidebarHeader>
 
-          <SidebarContent className="gap-0">
-            <SidebarMenu className="px-2 py-1">
-              {menuItems.map(item => {
-                const isActive = location === item.path;
-                const Icon = item.icon;
-                return (
-                  <SidebarMenuItem key={item.path}>
-                    <SidebarMenuButton
-                      isActive={isActive}
-                      onClick={() => {
-                        if (item.isExternal) {
-                          window.location.href = item.path;
-                        } else {
-                          setLocation(item.path);
-                        }
-                      }}
-                      tooltip={item.label}
-                      className={`h-10 transition-all font-normal`}
-                    >
-                      {Icon && (
-                        <Icon
-                          className={`h-4 w-4 ${isActive ? "text-primary" : ""}`}
-                        />
-                      )}
-                      <span>{item.label}</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarContent>
-
-          <SidebarFooter className="p-3">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-3 rounded-lg px-1 py-1 hover:bg-accent/50 transition-colors w-full text-left group-data-[collapsible=icon]:justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                  <Avatar className="h-9 w-9 border shrink-0">
-                    <AvatarFallback className="text-xs font-medium">
-                      {user?.name?.charAt(0).toUpperCase()}
+            <SidebarFooter className="p-4 mb-4">
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-9 w-9 bg-slate-200 text-slate-600 p-2 shrink-0">
+                    <AvatarFallback className="text-xs font-semibold bg-transparent">
+                      {user?.name?.charAt(0).toUpperCase() || 'H'}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-                    <p className="text-sm font-medium truncate leading-none">
-                      {user?.name || "-"}
-                    </p>
-                    <p className="text-xs text-muted-foreground truncate mt-1.5">
-                      {user?.email || "-"}
-                    </p>
-                  </div>
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem
-                  onClick={logout}
-                  className="cursor-pointer text-destructive focus:text-destructive"
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Sign out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarFooter>
+                  {!isCollapsed && (
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-slate-900 truncate flex items-center gap-1">
+                        {user?.name || "Hector"}
+                      </p>
+                      <p className="text-xs text-slate-500 truncate mt-0.5">
+                        {user?.email || "hector@blockstock.com"}
+                      </p>
+                    </div>
+                  )}
+                </div>
+                {!isCollapsed && (
+                  <button 
+                    onClick={logout} 
+                    className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 rounded-full transition-colors"
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+            </SidebarFooter>
+          </div>
         </Sidebar>
-        <div
-          className={`absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-primary/20 transition-colors ${isCollapsed ? "hidden" : ""}`}
-          onMouseDown={() => {
-            if (isCollapsed) return;
-            setIsResizing(true);
-          }}
-          style={{ zIndex: 50 }}
-        />
       </div>
 
-      <SidebarInset>
+      <SidebarInset className="bg-[#F4F7FC]">
         {isMobile && (
-          <div className="flex border-b h-14 items-center justify-between bg-background/95 px-2 backdrop-blur supports-[backdrop-filter]:backdrop-blur sticky top-0 z-40">
+          <div className="flex border-b h-14 items-center justify-between bg-white px-4 border-slate-200 sticky top-0 z-40">
             <div className="flex items-center gap-2">
-              <SidebarTrigger className="h-9 w-9 rounded-lg bg-background" />
-              <div className="flex items-center gap-3">
-                <div className="flex flex-col gap-1">
-                  <span className="tracking-tight text-foreground">
-                    {activeMenuItem?.label ?? "Menu"}
-                  </span>
-                </div>
+              <SidebarTrigger className="h-9 w-9 rounded-lg bg-slate-100" />
+              <div className="flex items-center gap-2 font-bold text-slate-900">
+                <ZetaLogo className="h-5 w-5" />
+                <span>BlockStock</span>
               </div>
             </div>
           </div>
         )}
-        <main className="flex-1 flex flex-col">
-          <div className="flex-1 p-4">{children}</div>
+        <main className="flex-1 overflow-y-auto pt-6 md:pt-10 px-4 md:px-8 pb-0 flex flex-col">
+          <div className="w-full max-w-7xl mx-auto flex-1">{children}</div>
           <Footer />
         </main>
       </SidebarInset>
-    </>
+    </div>
   );
 }

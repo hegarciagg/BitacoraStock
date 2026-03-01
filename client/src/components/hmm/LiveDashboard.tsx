@@ -41,8 +41,8 @@ export default function LiveDashboard() {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div>
-            <h2 className="text-xl font-bold text-white">Live Dashboard</h2>
-            <p className="text-slate-400 text-sm">Backtest sobre datos históricos 1H (730 días) — Yahoo Finance</p>
+            <h2 className="text-xl font-bold text-slate-900">Live Dashboard</h2>
+            <p className="text-slate-500 text-sm">Backtest sobre datos históricos 1H (730 días) — Yahoo Finance</p>
           </div>
           <div className="sm:ml-auto flex items-center gap-3">
             {/* Python service status */}
@@ -62,7 +62,7 @@ export default function LiveDashboard() {
             <Button
               onClick={handleRunBacktest}
               disabled={isRunning || !isOnline}
-              className="bg-purple-600 hover:bg-purple-700 text-white"
+              className="bg-purple-600 hover:bg-purple-700 text-slate-900"
               size="sm"
             >
               {isRunning
@@ -73,7 +73,7 @@ export default function LiveDashboard() {
         </div>
 
         {/* Asset selector row */}
-        <div className="flex items-center gap-4 p-3 bg-slate-800/50 rounded-xl border border-slate-700/50">
+        <div className="flex items-center gap-4 p-3 bg-white shadow-sm/50 rounded-xl border border-slate-200/50">
           <AssetSelector
             value={symbol}
             onChange={setSymbol}
@@ -90,8 +90,8 @@ export default function LiveDashboard() {
         <Card className="bg-amber-500/5 border-amber-500/30">
           <CardContent className="pt-4 pb-4">
             <p className="text-amber-400 text-sm font-medium">⚠️ Python HMM Microservice no disponible</p>
-            <p className="text-slate-400 text-xs mt-1">
-              Inicia el servicio: <code className="bg-slate-800 px-1 rounded">cd hmm-service &amp;&amp; python main.py</code>
+            <p className="text-slate-500 text-xs mt-1">
+              Inicia el servicio: <code className="bg-white shadow-sm px-1 rounded">cd hmm-service &amp;&amp; python main.py</code>
             </p>
           </CardContent>
         </Card>
@@ -120,7 +120,7 @@ export default function LiveDashboard() {
 
       {/* Signal — always shows the current selected symbol */}
       <section>
-        <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
+        <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">
           Señal Actual — <span className="text-purple-400">{symbol}</span>
         </h3>
         <SignalPanel symbol={symbol} />
@@ -128,19 +128,19 @@ export default function LiveDashboard() {
 
       {/* KPIs */}
       <section>
-        <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Métricas de Performance</h3>
+        <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Métricas de Performance</h3>
         <MetricsPanel />
       </section>
 
       {/* Charts */}
       <section>
-        <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Curva de Equity</h3>
+        <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Curva de Equity</h3>
         <RegimeChart />
       </section>
 
       {/* Trades */}
       <section>
-        <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Historial de Trades</h3>
+        <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Historial de Trades</h3>
         <TradesTable />
       </section>
     </div>

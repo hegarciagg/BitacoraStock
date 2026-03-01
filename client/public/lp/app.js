@@ -415,12 +415,12 @@ function renderPriceRangeChart(canvasId, dates, prices, pLow, pHigh) {
             },
             scales: {
                 x: {
-                    ticks: { color: '#94a3b8' },
-                    grid: { color: '#334155' }
+                    ticks: { color: '#64748b' },
+                    grid: { color: '#f1f5f9' }
                 },
                 y: {
-                    ticks: { color: '#94a3b8' },
-                    grid: { color: '#334155' }
+                    ticks: { color: '#64748b' },
+                    grid: { color: '#f1f5f9' }
                 }
             }
         }
@@ -488,12 +488,12 @@ function renderPerformanceChart(canvasId, dates, lpEquity, hodlEquity) {
             },
             scales: {
                 x: {
-                    ticks: { color: '#94a3b8' },
-                    grid: { color: '#334155' }
+                    ticks: { color: '#64748b' },
+                    grid: { color: '#f1f5f9' }
                 },
                 y: {
-                    ticks: { color: '#94a3b8' },
-                    grid: { color: '#334155' }
+                    ticks: { color: '#64748b' },
+                    grid: { color: '#f1f5f9' }
                 }
             }
         }
@@ -612,20 +612,20 @@ function renderILCurveChart(canvasId, ilData, Pa, Pb, currentPrice) {
             },
             scales: {
                 x: {
-                    ticks: { color: '#94a3b8', maxTicksLimit: 15 },
-                    grid: { color: '#334155' }
+                    ticks: { color: '#64748b', maxTicksLimit: 15 },
+                    grid: { color: '#f1f5f9' }
                 },
                 y: {
                     type: 'linear',
                     position: 'left',
-                    title: { display: true, text: 'IL (%)', color: '#94a3b8' },
+                    title: { display: true, text: 'IL (%)', color: '#64748b' },
                     ticks: { color: '#f43f5e', callback: v => v.toFixed(2) + '%' },
-                    grid: { color: '#334155' }
+                    grid: { color: '#f1f5f9' }
                 },
                 y1: {
                     type: 'linear',
                     position: 'right',
-                    title: { display: true, text: 'Value ($)', color: '#94a3b8' },
+                    title: { display: true, text: 'Value ($)', color: '#64748b' },
                     ticks: { color: '#22c55e', callback: v => '$' + v.toFixed(2) },
                     grid: { drawOnChartArea: false }
                 }

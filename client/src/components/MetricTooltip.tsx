@@ -24,8 +24,8 @@ export function MetricTooltip({
         <TooltipTrigger asChild>
           <div className={`flex items-center gap-2 cursor-help ${className}`}>
             <div className="flex-1">
-              <p className="text-sm text-slate-400">{metric}</p>
-              <p className="text-lg font-semibold text-white">
+              <p className="text-sm text-slate-500">{metric}</p>
+              <p className="text-lg font-semibold text-slate-900">
                 {value}
                 {unit && <span className="text-sm ml-1">{unit}</span>}
               </p>
@@ -33,14 +33,14 @@ export function MetricTooltip({
             <HelpCircle className="w-4 h-4 text-primary hover:text-primary transition-colors" />
           </div>
         </TooltipTrigger>
-        <TooltipContent className="bg-slate-900 border-slate-700 max-w-xs">
+        <TooltipContent className="bg-slate-50 border-slate-200 max-w-xs">
           <div className="space-y-2">
-            <p className="font-semibold text-white">{metric}</p>
-            <p className="text-sm text-slate-300">{description}</p>
+            <p className="font-semibold text-slate-900">{metric}</p>
+            <p className="text-sm text-slate-700">{description}</p>
             {interpretation && (
-              <div className="pt-2 border-t border-slate-700">
+              <div className="pt-2 border-t border-slate-200">
                 <p className="text-xs font-semibold text-primary mb-1">Interpretación:</p>
-                <p className="text-xs text-slate-300">{interpretation}</p>
+                <p className="text-xs text-slate-700">{interpretation}</p>
               </div>
             )}
           </div>

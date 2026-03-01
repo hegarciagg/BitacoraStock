@@ -45,22 +45,22 @@ export function MonteCarloSummary({
   return (
     <div className="space-y-6">
       {/* Resumen Ejecutivo */}
-      <Card className="bg-gradient-to-r from-slate-800 to-slate-700 border-slate-600">
+      <Card className="bg-gradient-to-r from-slate-800 to-slate-700 border-slate-300">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-slate-900 flex items-center gap-2">
             <Zap className="w-5 h-5 text-yellow-400" />
             Resumen de Simulación
           </CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardDescription className="text-slate-500">
             Proyecciones basadas en análisis de Monte Carlo
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Valor Esperado */}
-            <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
+            <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-slate-400 text-sm">Valor Esperado</p>
+                <p className="text-slate-500 text-sm">Valor Esperado</p>
                 <TrendingUp className="w-4 h-4 text-green-400" />
               </div>
               <p className="text-2xl font-bold text-green-400">
@@ -72,9 +72,9 @@ export function MonteCarloSummary({
             </div>
 
             {/* Volatilidad */}
-            <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
+            <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-slate-400 text-sm">Volatilidad</p>
+                <p className="text-slate-500 text-sm">Volatilidad</p>
                 <Shield className="w-4 h-4 text-orange-400" />
               </div>
               <p className="text-2xl font-bold text-orange-400">
@@ -84,23 +84,23 @@ export function MonteCarloSummary({
             </div>
 
             {/* Sharpe Ratio */}
-            <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
+            <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-slate-400 text-sm">Sharpe Ratio</p>
+                <p className="text-slate-500 text-sm">Sharpe Ratio</p>
                 <Target className="w-4 h-4 text-primary" />
               </div>
               <p className="text-2xl font-bold text-primary">
                 {sharpeRatio.toFixed(2)}
               </p>
-              <Badge className={`mt-2 ${riskLevel.color} text-white`}>
+              <Badge className={`mt-2 ${riskLevel.color} text-slate-900`}>
                 {riskLevel.level}
               </Badge>
             </div>
 
             {/* Relación Riesgo-Recompensa */}
-            <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
+            <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-slate-400 text-sm">Riesgo/Recompensa</p>
+                <p className="text-slate-500 text-sm">Riesgo/Recompensa</p>
                 <TrendingDown className="w-4 h-4 text-purple-400" />
               </div>
               <p className="text-2xl font-bold text-purple-400">
@@ -113,13 +113,13 @@ export function MonteCarloSummary({
       </Card>
 
       {/* Análisis de Riesgo */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-slate-900 flex items-center gap-2">
             <AlertCircle className="w-5 h-5 text-red-400" />
             Análisis de Riesgo
           </CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardDescription className="text-slate-500">
             Escenarios de pérdida y ganancia
           </CardDescription>
         </CardHeader>
@@ -162,17 +162,17 @@ export function MonteCarloSummary({
       </Card>
 
       {/* Value at Risk */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Value at Risk (VaR)</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Value at Risk (VaR)</CardTitle>
+          <CardDescription className="text-slate-500">
             Pérdida máxima esperada en escenarios adversos
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
-              <p className="text-slate-400 text-sm mb-2">VaR 95% (Confianza)</p>
+            <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
+              <p className="text-slate-500 text-sm mb-2">VaR 95% (Confianza)</p>
               <p className="text-2xl font-bold text-orange-400">
                 ${valueAtRisk95.toFixed(0)}
               </p>
@@ -181,8 +181,8 @@ export function MonteCarloSummary({
               </p>
             </div>
 
-            <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
-              <p className="text-slate-400 text-sm mb-2">VaR 99% (Confianza)</p>
+            <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
+              <p className="text-slate-500 text-sm mb-2">VaR 99% (Confianza)</p>
               <p className="text-2xl font-bold text-red-400">
                 ${valueAtRisk99.toFixed(0)}
               </p>
@@ -199,7 +199,7 @@ export function MonteCarloSummary({
         <CardHeader>
           <CardTitle className="text-primary">Interpretación de Resultados</CardTitle>
         </CardHeader>
-        <CardContent className="text-slate-300 space-y-2 text-sm">
+        <CardContent className="text-slate-700 space-y-2 text-sm">
           <p>
             • <strong>Retorno Esperado:</strong> Ganancia promedio proyectada del portafolio
           </p>

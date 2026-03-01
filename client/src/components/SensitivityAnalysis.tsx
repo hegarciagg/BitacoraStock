@@ -44,10 +44,10 @@ export function SensitivityAnalysis({
   return (
     <div className="space-y-6">
       {/* Sensibilidad a Volatilidad */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Sensibilidad a Volatilidad</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Sensibilidad a Volatilidad</CardTitle>
+          <CardDescription className="text-slate-500">
             Impacto de cambios en la volatilidad del portafolio
           </CardDescription>
         </CardHeader>
@@ -58,11 +58,11 @@ export function SensitivityAnalysis({
                 <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
                 <XAxis 
                   dataKey="volatility" 
-                  stroke="#94a3b8"
+                  stroke="#64748b"
                   label={{ value: "Volatilidad (%)", position: "insideBottomRight", offset: -5 }}
                 />
                 <YAxis 
-                  stroke="#94a3b8"
+                  stroke="#64748b"
                   label={{ value: "Sharpe Ratio", angle: -90, position: "insideLeft" }}
                 />
                 <Tooltip 
@@ -80,8 +80,8 @@ export function SensitivityAnalysis({
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-4 p-4 bg-slate-700 rounded-lg border border-slate-600">
-            <p className="text-sm text-slate-400">
+          <div className="mt-4 p-4 bg-slate-100 rounded-lg border border-slate-300">
+            <p className="text-sm text-slate-500">
               A mayor volatilidad, menor es el Sharpe Ratio (peor relación riesgo-retorno).
               Esto muestra la importancia de controlar el riesgo del portafolio.
             </p>
@@ -90,10 +90,10 @@ export function SensitivityAnalysis({
       </Card>
 
       {/* Sensibilidad a Retorno */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Sensibilidad a Retorno Esperado</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Sensibilidad a Retorno Esperado</CardTitle>
+          <CardDescription className="text-slate-500">
             Impacto de cambios en el retorno esperado del portafolio
           </CardDescription>
         </CardHeader>
@@ -104,11 +104,11 @@ export function SensitivityAnalysis({
                 <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
                 <XAxis 
                   dataKey="return" 
-                  stroke="#94a3b8"
+                  stroke="#64748b"
                   label={{ value: "Retorno Esperado (%)", position: "insideBottomRight", offset: -5 }}
                 />
                 <YAxis 
-                  stroke="#94a3b8"
+                  stroke="#64748b"
                   label={{ value: "Sharpe Ratio", angle: -90, position: "insideLeft" }}
                 />
                 <Tooltip 
@@ -126,8 +126,8 @@ export function SensitivityAnalysis({
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-4 p-4 bg-slate-700 rounded-lg border border-slate-600">
-            <p className="text-sm text-slate-400">
+          <div className="mt-4 p-4 bg-slate-100 rounded-lg border border-slate-300">
+            <p className="text-sm text-slate-500">
               A mayor retorno esperado, mayor es el Sharpe Ratio (mejor relación riesgo-retorno).
               Esto demuestra el beneficio de buscar mayores rendimientos.
             </p>
@@ -136,10 +136,10 @@ export function SensitivityAnalysis({
       </Card>
 
       {/* Matriz de Sensibilidad */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Matriz de Sensibilidad</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Matriz de Sensibilidad</CardTitle>
+          <CardDescription className="text-slate-500">
             Sharpe Ratio bajo diferentes combinaciones de retorno y volatilidad
           </CardDescription>
         </CardHeader>
@@ -147,10 +147,10 @@ export function SensitivityAnalysis({
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-slate-600">
-                  <th className="text-left p-2 text-slate-400">Volatilidad ↓ / Retorno →</th>
+                <tr className="border-b border-slate-300">
+                  <th className="text-left p-2 text-slate-500">Volatilidad ↓ / Retorno →</th>
                   {[0.5, 0.75, 1.0, 1.25, 1.5].map((factor) => (
-                    <th key={factor} className="text-right p-2 text-slate-400">
+                    <th key={factor} className="text-right p-2 text-slate-500">
                       {(baseReturn * factor * 100).toFixed(1)}%
                     </th>
                   ))}
@@ -158,8 +158,8 @@ export function SensitivityAnalysis({
               </thead>
               <tbody>
                 {[0.5, 0.75, 1.0, 1.25, 1.5].map((volFactor) => (
-                  <tr key={volFactor} className="border-b border-slate-700">
-                    <td className="p-2 text-slate-400">
+                  <tr key={volFactor} className="border-b border-slate-200">
+                    <td className="p-2 text-slate-500">
                       {(baseVolatility * volFactor * 100).toFixed(1)}%
                     </td>
                     {[0.5, 0.75, 1.0, 1.25, 1.5].map((retFactor) => {
@@ -172,7 +172,7 @@ export function SensitivityAnalysis({
                         sharpe > 0.5 ? "bg-yellow-900" :
                         "bg-red-900";
                       return (
-                        <td key={`${volFactor}-${retFactor}`} className={`text-right p-2 ${bgColor} text-white`}>
+                        <td key={`${volFactor}-${retFactor}`} className={`text-right p-2 ${bgColor} text-slate-900`}>
                           {sharpe.toFixed(2)}
                         </td>
                       );
@@ -182,8 +182,8 @@ export function SensitivityAnalysis({
               </tbody>
             </table>
           </div>
-          <div className="mt-4 p-4 bg-slate-700 rounded-lg border border-slate-600">
-            <p className="text-sm text-slate-400">
+          <div className="mt-4 p-4 bg-slate-100 rounded-lg border border-slate-300">
+            <p className="text-sm text-slate-500">
               Verde (Sharpe &gt; 1.5) = Excelente | Azul (Sharpe &gt; 1) = Bueno | 
               Amarillo (Sharpe &gt; 0.5) = Moderado | Rojo (Sharpe ≤ 0.5) = Bajo
             </p>

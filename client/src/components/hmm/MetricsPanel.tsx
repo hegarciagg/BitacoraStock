@@ -12,15 +12,15 @@ interface MetricCardProps {
 
 function MetricCard({ label, value, icon, color, sub }: MetricCardProps) {
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardContent className="pt-5 pb-5">
         <div className="flex items-start justify-between gap-2">
           <div>
-            <p className="text-xs text-slate-400 mb-1">{label}</p>
+            <p className="text-xs text-slate-500 mb-1">{label}</p>
             <p className={`text-3xl font-black ${color}`}>{value}</p>
             {sub && <p className="text-xs text-slate-500 mt-1">{sub}</p>}
           </div>
-          <div className="w-10 h-10 rounded-xl bg-slate-700/50 flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center flex-shrink-0">
             {icon}
           </div>
         </div>
@@ -35,9 +35,9 @@ export default function MetricsPanel() {
   if (isLoading) return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {Array.from({ length: 4 }).map((_, i) => (
-        <Card key={i} className="bg-slate-800 border-slate-700">
+        <Card key={i} className="bg-white shadow-sm border-slate-200">
           <CardContent className="pt-5 pb-5">
-            <div className="h-12 bg-slate-700/50 rounded-lg animate-pulse" />
+            <div className="h-12 bg-slate-50 border border-slate-200 rounded-lg animate-pulse" />
           </CardContent>
         </Card>
       ))}
@@ -45,10 +45,10 @@ export default function MetricsPanel() {
   );
 
   if (!data) return (
-    <Card className="bg-slate-800 border-slate-700 border-dashed">
+    <Card className="bg-white shadow-sm border-slate-200 border-dashed">
       <CardContent className="py-8 text-center">
         <BarChart2 className="w-8 h-8 text-slate-600 mx-auto mb-3" />
-        <p className="text-slate-400 text-sm">Sin datos. Ejecuta un backtest primero.</p>
+        <p className="text-slate-500 text-sm">Sin datos. Ejecuta un backtest primero.</p>
       </CardContent>
     </Card>
   );

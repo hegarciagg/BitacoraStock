@@ -94,13 +94,13 @@ export default function SimulationAnalysis() {
               variant="outline"
               size="icon"
               onClick={() => navigate(`/portfolio/${portfolioId}`)}
-              className="border-slate-600"
+              className="border-slate-300"
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-white">Análisis de Simulación</h1>
-              <p className="text-slate-400 mt-2">{portfolio.data?.name}</p>
+              <h1 className="text-3xl font-bold text-slate-900">Análisis de Simulación</h1>
+              <p className="text-slate-500 mt-2">{portfolio.data?.name}</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -117,20 +117,20 @@ export default function SimulationAnalysis() {
                   Ejecutar Simulación
                 </Button>
               </DialogTrigger>
-            <DialogContent className="bg-slate-800 border-slate-700 max-w-3xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="bg-white shadow-sm border-slate-200 max-w-3xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle className="text-white">Configurar y Ejecutar Simulación</DialogTitle>
-                <DialogDescription className="text-slate-400">
+                <DialogTitle className="text-slate-900">Configurar y Ejecutar Simulación</DialogTitle>
+                <DialogDescription className="text-slate-500">
                   Personaliza el portafolio y los parámetros de simulación.
                 </DialogDescription>
               </DialogHeader>
 
               <Tabs defaultValue="portfolio" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 bg-slate-700 border-slate-600">
-                  <TabsTrigger value="portfolio" className="text-slate-300 data-[state=active]:text-white">
+                <TabsList className="grid w-full grid-cols-2 bg-slate-100 border-slate-300">
+                  <TabsTrigger value="portfolio" className="text-slate-700 data-[state=active]:text-slate-900">
                     Portafolio
                   </TabsTrigger>
-                  <TabsTrigger value="parameters" className="text-slate-300 data-[state=active]:text-white">
+                  <TabsTrigger value="parameters" className="text-slate-700 data-[state=active]:text-slate-900">
                     Parámetros
                   </TabsTrigger>
                 </TabsList>
@@ -143,38 +143,38 @@ export default function SimulationAnalysis() {
                 </TabsContent>
 
                 <TabsContent value="parameters" className="space-y-4">
-                  <Card className="bg-slate-800 border-slate-700">
+                  <Card className="bg-white shadow-sm border-slate-200">
                     <CardHeader>
-                      <CardTitle className="text-white">Parámetros de Simulación</CardTitle>
+                      <CardTitle className="text-slate-900">Parámetros de Simulación</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
-                        <Label className="text-white">Número de Simulaciones</Label>
+                        <Label className="text-slate-900">Número de Simulaciones</Label>
                         <Input
                           type="number"
                           value={simParams.numSimulations}
                           onChange={(e) => setSimParams({ ...simParams, numSimulations: e.target.value })}
-                          className="bg-slate-700 border-slate-600 text-white mt-2"
+                          className="bg-slate-100 border-slate-300 text-slate-900 mt-2"
                         />
-                        <p className="text-xs text-slate-400 mt-2">
+                        <p className="text-xs text-slate-500 mt-2">
                           Más simulaciones = resultados más precisos pero más lento. Recomendado: 10,000
                         </p>
                       </div>
                       <div>
-                        <Label className="text-white">Horizonte Temporal (días)</Label>
+                        <Label className="text-slate-900">Horizonte Temporal (días)</Label>
                         <Input
                           type="number"
                           value={simParams.timeHorizonDays}
                           onChange={(e) => setSimParams({ ...simParams, timeHorizonDays: e.target.value })}
-                          className="bg-slate-700 border-slate-600 text-white mt-2"
+                          className="bg-slate-100 border-slate-300 text-slate-900 mt-2"
                         />
-                        <p className="text-xs text-slate-400 mt-2">
+                        <p className="text-xs text-slate-500 mt-2">
                           Período de proyección. Recomendado: 365 días (1 año)
                         </p>
                       </div>
                       <div className="p-4 bg-blue-900 bg-opacity-30 rounded-lg border border-blue-700">
                         <h4 className="text-primary font-semibold mb-2">Información</h4>
-                        <ul className="text-sm text-slate-300 space-y-1 list-disc list-inside">
+                        <ul className="text-sm text-slate-700 space-y-1 list-disc list-inside">
                           <li>Más simulaciones aumentan precisión pero tiempo de cálculo</li>
                           <li>Horizonte temporal afecta la volatilidad proyectada</li>
                           <li>Típicamente se usa 1 año (365 días) para análisis anual</li>
@@ -189,7 +189,7 @@ export default function SimulationAnalysis() {
                 <Button
                   onClick={() => setIsOpen(false)}
                   variant="outline"
-                  className="flex-1 border-slate-600"
+                  className="flex-1 border-slate-300"
                 >
                   Cancelar
                 </Button>
@@ -251,11 +251,11 @@ export default function SimulationAnalysis() {
             )}
           </>
         ) : (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-white shadow-sm border-slate-200">
             <CardContent className="pt-12 text-center">
               <AlertCircle className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">Sin simulaciones</h3>
-              <p className="text-slate-400 mb-6">Ejecuta una simulación de Monte Carlo para ver los resultados.</p>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Sin simulaciones</h3>
+              <p className="text-slate-500 mb-6">Ejecuta una simulación de Monte Carlo para ver los resultados.</p>
               <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogTrigger asChild>
                   <Button className="bg-primary hover:bg-primary/90">
@@ -263,20 +263,20 @@ export default function SimulationAnalysis() {
                     Ejecutar Simulación
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="bg-slate-800 border-slate-700 max-w-3xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="bg-white shadow-sm border-slate-200 max-w-3xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
-                    <DialogTitle className="text-white">Configurar y Ejecutar Simulación</DialogTitle>
-                    <DialogDescription className="text-slate-400">
+                    <DialogTitle className="text-slate-900">Configurar y Ejecutar Simulación</DialogTitle>
+                    <DialogDescription className="text-slate-500">
                       Personaliza el portafolio y los parámetros de simulación.
                     </DialogDescription>
                   </DialogHeader>
 
                   <Tabs defaultValue="portfolio" className="w-full">
-                    <TabsList className="grid w-full grid-cols-2 bg-slate-700 border-slate-600">
-                      <TabsTrigger value="portfolio" className="text-slate-300 data-[state=active]:text-white">
+                    <TabsList className="grid w-full grid-cols-2 bg-slate-100 border-slate-300">
+                      <TabsTrigger value="portfolio" className="text-slate-700 data-[state=active]:text-slate-900">
                         Portafolio
                       </TabsTrigger>
-                      <TabsTrigger value="parameters" className="text-slate-300 data-[state=active]:text-white">
+                      <TabsTrigger value="parameters" className="text-slate-700 data-[state=active]:text-slate-900">
                         Parámetros
                       </TabsTrigger>
                     </TabsList>
@@ -289,32 +289,32 @@ export default function SimulationAnalysis() {
                     </TabsContent>
 
                     <TabsContent value="parameters" className="space-y-4">
-                      <Card className="bg-slate-800 border-slate-700">
+                      <Card className="bg-white shadow-sm border-slate-200">
                         <CardHeader>
-                          <CardTitle className="text-white">Parámetros de Simulación</CardTitle>
+                          <CardTitle className="text-slate-900">Parámetros de Simulación</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
                           <div>
-                            <Label className="text-white">Número de Simulaciones</Label>
+                            <Label className="text-slate-900">Número de Simulaciones</Label>
                             <Input
                               type="number"
                               value={simParams.numSimulations}
                               onChange={(e) => setSimParams({ ...simParams, numSimulations: e.target.value })}
-                              className="bg-slate-700 border-slate-600 text-white mt-2"
+                              className="bg-slate-100 border-slate-300 text-slate-900 mt-2"
                             />
-                            <p className="text-xs text-slate-400 mt-2">
+                            <p className="text-xs text-slate-500 mt-2">
                               Más simulaciones = resultados más precisos pero más lento. Recomendado: 10,000
                             </p>
                           </div>
                           <div>
-                            <Label className="text-white">Horizonte Temporal (días)</Label>
+                            <Label className="text-slate-900">Horizonte Temporal (días)</Label>
                             <Input
                               type="number"
                               value={simParams.timeHorizonDays}
                               onChange={(e) => setSimParams({ ...simParams, timeHorizonDays: e.target.value })}
-                              className="bg-slate-700 border-slate-600 text-white mt-2"
+                              className="bg-slate-100 border-slate-300 text-slate-900 mt-2"
                             />
-                            <p className="text-xs text-slate-400 mt-2">
+                            <p className="text-xs text-slate-500 mt-2">
                               Período de proyección. Recomendado: 365 días (1 año)
                             </p>
                           </div>
@@ -327,7 +327,7 @@ export default function SimulationAnalysis() {
                     <Button
                       onClick={() => setIsOpen(false)}
                       variant="outline"
-                      className="flex-1 border-slate-600"
+                      className="flex-1 border-slate-300"
                     >
                       Cancelar
                     </Button>
@@ -345,22 +345,22 @@ export default function SimulationAnalysis() {
           </Card>
         )}
 
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+            <CardTitle className="text-slate-900 flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-primary" />
               Información de la Simulación
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-slate-300 space-y-4">
+          <CardContent className="text-slate-700 space-y-4">
             <div>
-              <h4 className="font-semibold text-white mb-2">¿Qué es la Simulación de Monte Carlo?</h4>
+              <h4 className="font-semibold text-slate-900 mb-2">¿Qué es la Simulación de Monte Carlo?</h4>
               <p>
                 La simulación de Monte Carlo es una técnica estadística que utiliza números aleatorios para modelar la incertidumbre en los mercados financieros. Ejecuta miles de simulaciones para proyectar posibles resultados futuros de tu portafolio.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-white mb-2">Métricas Clave</h4>
+              <h4 className="font-semibold text-slate-900 mb-2">Métricas Clave</h4>
               <ul className="list-disc list-inside space-y-1">
                 <li><strong>Retorno Esperado:</strong> Ganancia promedio proyectada</li>
                 <li><strong>Volatilidad:</strong> Medida de riesgo o variabilidad</li>

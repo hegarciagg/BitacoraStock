@@ -107,10 +107,10 @@ export function DistributionHistogram({ simData }: { simData: SimulationData }) 
   const data = generateHistogramData(simData);
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white">Distribución de Probabilidades</CardTitle>
-        <CardDescription className="text-slate-400">
+        <CardTitle className="text-slate-900">Distribución de Probabilidades</CardTitle>
+        <CardDescription className="text-slate-500">
           Histograma de valores finales proyectados del portafolio
         </CardDescription>
       </CardHeader>
@@ -118,8 +118,8 @@ export function DistributionHistogram({ simData }: { simData: SimulationData }) 
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
-            <XAxis dataKey="range" stroke="#94a3b8" />
-            <YAxis stroke="#94a3b8" />
+            <XAxis dataKey="range" stroke="#64748b" />
+            <YAxis stroke="#64748b" />
             <Tooltip
               contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #475569" }}
               labelStyle={{ color: "#e2e8f0" }}
@@ -139,10 +139,10 @@ export function CumulativeDistribution({ simData }: { simData: SimulationData })
   const data = generateCumulativeData(simData);
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white">Función de Distribución Acumulativa</CardTitle>
-        <CardDescription className="text-slate-400">
+        <CardTitle className="text-slate-900">Función de Distribución Acumulativa</CardTitle>
+        <CardDescription className="text-slate-500">
           Probabilidad acumulada de alcanzar cada valor de portafolio
         </CardDescription>
       </CardHeader>
@@ -152,10 +152,10 @@ export function CumulativeDistribution({ simData }: { simData: SimulationData })
             <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
             <XAxis
               dataKey="percentile"
-              stroke="#94a3b8"
+              stroke="#64748b"
               label={{ value: "Percentil", position: "insideBottomRight", offset: -5 }}
             />
-            <YAxis stroke="#94a3b8" label={{ value: "Probabilidad (%)", angle: -90, position: "insideLeft" }} />
+            <YAxis stroke="#64748b" label={{ value: "Probabilidad (%)", angle: -90, position: "insideLeft" }} />
             <Tooltip
               contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #475569" }}
               labelStyle={{ color: "#e2e8f0" }}
@@ -183,10 +183,10 @@ export function PercentileAnalysis({ simData }: { simData: SimulationData }) {
   const data = generatePercentileData(simData);
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white">Análisis de Percentiles</CardTitle>
-        <CardDescription className="text-slate-400">
+        <CardTitle className="text-slate-900">Análisis de Percentiles</CardTitle>
+        <CardDescription className="text-slate-500">
           Valores proyectados en diferentes escenarios de probabilidad
         </CardDescription>
       </CardHeader>
@@ -194,8 +194,8 @@ export function PercentileAnalysis({ simData }: { simData: SimulationData }) {
         <ResponsiveContainer width="100%" height={300}>
           <ComposedChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
-            <XAxis dataKey="percentile" stroke="#94a3b8" />
-            <YAxis stroke="#94a3b8" label={{ value: "Valor ($)", angle: -90, position: "insideLeft" }} />
+            <XAxis dataKey="percentile" stroke="#64748b" />
+            <YAxis stroke="#64748b" label={{ value: "Valor ($)", angle: -90, position: "insideLeft" }} />
             <Tooltip
               contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #475569" }}
               labelStyle={{ color: "#e2e8f0" }}
@@ -208,8 +208,8 @@ export function PercentileAnalysis({ simData }: { simData: SimulationData }) {
 
         <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-4">
           {data.map((item, idx) => (
-            <div key={idx} className="bg-slate-700 rounded-lg p-3 text-center">
-              <p className="text-xs text-slate-400 mb-1">{item.label}</p>
+            <div key={idx} className="bg-slate-100 rounded-lg p-3 text-center">
+              <p className="text-xs text-slate-500 mb-1">{item.label}</p>
               <p className="text-lg font-bold text-primary">${(item.value / 1000).toFixed(1)}k</p>
               <p className="text-xs text-slate-500">{item.percentile}</p>
             </div>
@@ -248,10 +248,10 @@ export function ScenarioComparison({ simData }: { simData: SimulationData }) {
   const maxValue = Math.max(...scenarios.map((s) => s.value));
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white">Comparación de Escenarios</CardTitle>
-        <CardDescription className="text-slate-400">
+        <CardTitle className="text-slate-900">Comparación de Escenarios</CardTitle>
+        <CardDescription className="text-slate-500">
           Análisis de tres escenarios principales de proyección
         </CardDescription>
       </CardHeader>
@@ -260,14 +260,14 @@ export function ScenarioComparison({ simData }: { simData: SimulationData }) {
           <div key={idx}>
             <div className="flex items-center justify-between mb-2">
               <div>
-                <p className="font-semibold text-white">{scenario.name}</p>
-                <p className="text-sm text-slate-400">{scenario.description}</p>
+                <p className="font-semibold text-slate-900">{scenario.name}</p>
+                <p className="text-sm text-slate-500">{scenario.description}</p>
               </div>
               <p className="text-xl font-bold" style={{ color: scenario.color }}>
                 ${(scenario.value / 1000).toFixed(1)}k
               </p>
             </div>
-            <div className="w-full bg-slate-700 rounded-full h-2">
+            <div className="w-full bg-slate-100 rounded-full h-2">
               <div
                 className="h-2 rounded-full"
                 style={{
@@ -279,23 +279,23 @@ export function ScenarioComparison({ simData }: { simData: SimulationData }) {
           </div>
         ))}
 
-        <div className="mt-6 pt-6 border-t border-slate-700">
+        <div className="mt-6 pt-6 border-t border-slate-200">
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
-              <p className="text-xs text-slate-400 mb-1">Rango de Valores</p>
-              <p className="text-sm font-semibold text-white">
+              <p className="text-xs text-slate-500 mb-1">Rango de Valores</p>
+              <p className="text-sm font-semibold text-slate-900">
                 ${((simData.percentile95 - simData.percentile5) / 1000).toFixed(1)}k
               </p>
             </div>
             <div className="text-center">
-              <p className="text-xs text-slate-400 mb-1">Volatilidad</p>
-              <p className="text-sm font-semibold text-white">
+              <p className="text-xs text-slate-500 mb-1">Volatilidad</p>
+              <p className="text-sm font-semibold text-slate-900">
                 {(simData.volatility * 100).toFixed(2)}%
               </p>
             </div>
             <div className="text-center">
-              <p className="text-xs text-slate-400 mb-1">Sharpe Ratio</p>
-              <p className="text-sm font-semibold text-white">
+              <p className="text-xs text-slate-500 mb-1">Sharpe Ratio</p>
+              <p className="text-sm font-semibold text-slate-900">
                 {simData.sharpeRatio.toFixed(2)}
               </p>
             </div>

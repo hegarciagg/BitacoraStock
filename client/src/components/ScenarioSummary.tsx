@@ -31,7 +31,7 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
       case "critical":
         return "text-red-400";
       default:
-        return "text-slate-400";
+        return "text-slate-500";
     }
   };
 
@@ -61,7 +61,7 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
       case "critical":
         return <AlertTriangle className="w-5 h-5 text-red-400" />;
       default:
-        return <Shield className="w-5 h-5 text-slate-400" />;
+        return <Shield className="w-5 h-5 text-slate-500" />;
     }
   };
 
@@ -85,11 +85,11 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
       {/* Encabezado de Resumen */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Portafolio Actual */}
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-slate-400 text-sm mb-2">Valor del Portafolio</p>
-              <p className="text-2xl font-bold text-white">
+              <p className="text-slate-500 text-sm mb-2">Valor del Portafolio</p>
+              <p className="text-2xl font-bold text-slate-900">
                 ${(data.portfolioValue / 1000).toFixed(1)}K
               </p>
             </div>
@@ -97,10 +97,10 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
         </Card>
 
         {/* Escenarios Analizados */}
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-slate-400 text-sm mb-2">Escenarios Analizados</p>
+              <p className="text-slate-500 text-sm mb-2">Escenarios Analizados</p>
               <p className="text-2xl font-bold text-primary">
                 {data.selectedScenariosCount}
               </p>
@@ -109,10 +109,10 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
         </Card>
 
         {/* Impacto Promedio */}
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-slate-400 text-sm mb-2">Impacto Promedio</p>
+              <p className="text-slate-500 text-sm mb-2">Impacto Promedio</p>
               <p
                 className={`text-2xl font-bold ${
                   data.averageImpact >= 0 ? "text-green-400" : "text-red-400"
@@ -125,10 +125,10 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
         </Card>
 
         {/* Puntuación de Resiliencia */}
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-slate-400 text-sm mb-2">Resiliencia</p>
+              <p className="text-slate-500 text-sm mb-2">Resiliencia</p>
               <p className="text-2xl font-bold text-purple-400">
                 {(data.resilienceScore * 100).toFixed(0)}%
               </p>
@@ -142,7 +142,7 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
         {/* Nivel de Riesgo */}
         <Card className={`border-2 ${getRiskBgColor(data.riskLevel)}`}>
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+            <CardTitle className="text-slate-900 flex items-center gap-2">
               {getRiskIcon(data.riskLevel)}
               Nivel de Riesgo del Portafolio
             </CardTitle>
@@ -152,7 +152,7 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
               <p className={`text-3xl font-bold ${getRiskColor(data.riskLevel)}`}>
                 {getRiskLabel(data.riskLevel)}
               </p>
-              <p className="text-slate-400 text-sm mt-2">
+              <p className="text-slate-500 text-sm mt-2">
                 {data.riskLevel === "low" &&
                   "Tu portafolio es resiliente ante la mayoría de escenarios de mercado."}
                 {data.riskLevel === "medium" &&
@@ -167,19 +167,19 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
         </Card>
 
         {/* Rango de Impacto */}
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader>
-            <CardTitle className="text-white">Rango de Impacto Esperado</CardTitle>
+            <CardTitle className="text-slate-900">Rango de Impacto Esperado</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-slate-400">Mejor Caso</span>
+                <span className="text-slate-500">Mejor Caso</span>
                 <span className="text-green-400 font-bold">
                   +{(data.bestCaseImpact * 100).toFixed(2)}%
                 </span>
               </div>
-              <div className="w-full bg-slate-700 rounded-full h-2">
+              <div className="w-full bg-slate-100 rounded-full h-2">
                 <div
                   className="bg-green-500 h-2 rounded-full"
                   style={{
@@ -191,12 +191,12 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
 
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-slate-400">Peor Caso</span>
+                <span className="text-slate-500">Peor Caso</span>
                 <span className="text-red-400 font-bold">
                   {(data.worstCaseImpact * 100).toFixed(2)}%
                 </span>
               </div>
-              <div className="w-full bg-slate-700 rounded-full h-2">
+              <div className="w-full bg-slate-100 rounded-full h-2">
                 <div
                   className="bg-red-500 h-2 rounded-full"
                   style={{
@@ -208,12 +208,12 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
 
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <span className="text-slate-400">Volatilidad de Impactos</span>
+                <span className="text-slate-500">Volatilidad de Impactos</span>
                 <span className="text-primary font-bold">
                   {(data.volatilityOfImpacts * 100).toFixed(2)}%
                 </span>
               </div>
-              <div className="w-full bg-slate-700 rounded-full h-2">
+              <div className="w-full bg-slate-100 rounded-full h-2">
                 <div
                   className="bg-blue-500 h-2 rounded-full"
                   style={{
@@ -227,38 +227,38 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
       </div>
 
       {/* Métricas Clave */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Métricas Clave de Riesgo</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Métricas Clave de Riesgo</CardTitle>
+          <CardDescription className="text-slate-500">
             Indicadores principales de desempeño bajo estrés
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="p-4 bg-slate-700/50 rounded-lg">
-              <p className="text-slate-400 text-sm mb-2">Máxima Pérdida</p>
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+              <p className="text-slate-500 text-sm mb-2">Máxima Pérdida</p>
               <p className="text-xl font-bold text-red-400">
                 {(data.keyMetrics.maxDrawdown * 100).toFixed(2)}%
               </p>
             </div>
 
-            <div className="p-4 bg-slate-700/50 rounded-lg">
-              <p className="text-slate-400 text-sm mb-2">Tiempo de Recuperación</p>
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+              <p className="text-slate-500 text-sm mb-2">Tiempo de Recuperación</p>
               <p className="text-xl font-bold text-primary">
                 {data.keyMetrics.recoveryTime}
               </p>
             </div>
 
-            <div className="p-4 bg-slate-700/50 rounded-lg">
-              <p className="text-slate-400 text-sm mb-2">Ratio de Sharpe</p>
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+              <p className="text-slate-500 text-sm mb-2">Ratio de Sharpe</p>
               <p className="text-xl font-bold text-green-400">
                 {data.keyMetrics.sharpeRatio.toFixed(2)}
               </p>
             </div>
 
-            <div className="p-4 bg-slate-700/50 rounded-lg">
-              <p className="text-slate-400 text-sm mb-2">VaR (95%)</p>
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+              <p className="text-slate-500 text-sm mb-2">VaR (95%)</p>
               <p className="text-xl font-bold text-orange-400">
                 ${(data.keyMetrics.valueAtRisk / 1000).toFixed(1)}K
               </p>
@@ -268,13 +268,13 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
       </Card>
 
       {/* Recomendaciones */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-slate-900 flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-primary" />
             Recomendaciones Basadas en Análisis
           </CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardDescription className="text-slate-500">
             Acciones sugeridas para optimizar tu portafolio
           </CardDescription>
         </CardHeader>
@@ -284,18 +284,18 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
               data.recommendations.map((rec, idx) => (
                 <div
                   key={idx}
-                  className="flex gap-3 p-3 bg-slate-700/50 rounded-lg border border-slate-600"
+                  className="flex gap-3 p-3 bg-slate-50 border border-slate-200 rounded-lg border border-slate-300"
                 >
                   <div className="flex-shrink-0 mt-1">
                     <div className="flex items-center justify-center h-5 w-5 rounded-full bg-blue-500/20">
                       <span className="text-primary text-xs font-bold">{idx + 1}</span>
                     </div>
                   </div>
-                  <p className="text-slate-300 text-sm">{rec}</p>
+                  <p className="text-slate-700 text-sm">{rec}</p>
                 </div>
               ))
             ) : (
-              <p className="text-slate-400 text-center py-4">
+              <p className="text-slate-500 text-center py-4">
                 Selecciona escenarios para obtener recomendaciones personalizadas
               </p>
             )}
@@ -306,12 +306,12 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
       {/* Insights Adicionales */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Fortalezas */}
-        <Card className="bg-slate-800 border-slate-700 border-l-4 border-l-green-500">
+        <Card className="bg-white shadow-sm border-slate-200 border-l-4 border-l-green-500">
           <CardHeader>
-            <CardTitle className="text-white text-sm">Fortalezas del Portafolio</CardTitle>
+            <CardTitle className="text-slate-900 text-sm">Fortalezas del Portafolio</CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-2 text-sm text-slate-300">
+            <ul className="space-y-2 text-sm text-slate-700">
               {data.resilienceScore > 0.7 && (
                 <li className="flex items-start gap-2">
                   <span className="text-green-400 mt-1">✓</span>
@@ -341,12 +341,12 @@ export default function ScenarioSummary({ data }: { data: ScenarioSummaryData })
         </Card>
 
         {/* Áreas de Mejora */}
-        <Card className="bg-slate-800 border-slate-700 border-l-4 border-l-orange-500">
+        <Card className="bg-white shadow-sm border-slate-200 border-l-4 border-l-orange-500">
           <CardHeader>
-            <CardTitle className="text-white text-sm">Áreas de Mejora</CardTitle>
+            <CardTitle className="text-slate-900 text-sm">Áreas de Mejora</CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-2 text-sm text-slate-300">
+            <ul className="space-y-2 text-sm text-slate-700">
               {data.riskLevel === "high" || data.riskLevel === "critical" && (
                 <li className="flex items-start gap-2">
                   <span className="text-orange-400 mt-1">!</span>

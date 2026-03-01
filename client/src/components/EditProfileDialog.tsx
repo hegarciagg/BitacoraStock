@@ -79,16 +79,16 @@ export function EditProfileDialog({ user, onSuccess }: EditProfileDialogProps) {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="w-full border-slate-600 text-slate-300 hover:bg-slate-700"
+          className="w-full border-slate-300 text-slate-700 hover:bg-slate-100"
         >
           <Edit2 className="w-4 h-4 mr-2" />
           Editar Perfil
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-slate-800 border-slate-700">
+      <DialogContent className="bg-white shadow-sm border-slate-200">
         <DialogHeader>
-          <DialogTitle className="text-white">Editar Perfil</DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogTitle className="text-slate-900">Editar Perfil</DialogTitle>
+          <DialogDescription className="text-slate-500">
             Actualiza tu nombre y perfil de riesgo
           </DialogDescription>
         </DialogHeader>
@@ -101,12 +101,12 @@ export function EditProfileDialog({ user, onSuccess }: EditProfileDialogProps) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-slate-300">Nombre</FormLabel>
+                  <FormLabel className="text-slate-700">Nombre</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Tu nombre completo"
                       {...field}
-                      className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-500"
+                      className="bg-slate-100 border-slate-300 text-slate-900 placeholder:text-slate-500"
                     />
                   </FormControl>
                   <FormDescription className="text-slate-500">
@@ -123,21 +123,21 @@ export function EditProfileDialog({ user, onSuccess }: EditProfileDialogProps) {
               name="riskProfile"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-slate-300">Perfil de Riesgo</FormLabel>
+                  <FormLabel className="text-slate-700">Perfil de Riesgo</FormLabel>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <FormControl>
-                      <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                      <SelectTrigger className="bg-slate-100 border-slate-300 text-slate-900">
                         <SelectValue placeholder="Selecciona tu perfil de riesgo" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="bg-slate-700 border-slate-600">
-                      <SelectItem value="conservative" className="text-white hover:bg-slate-600">
+                    <SelectContent className="bg-slate-100 border-slate-300">
+                      <SelectItem value="conservative" className="text-slate-900 hover:bg-slate-600">
                         Conservador - Bajo riesgo, retornos estables
                       </SelectItem>
-                      <SelectItem value="moderate" className="text-white hover:bg-slate-600">
+                      <SelectItem value="moderate" className="text-slate-900 hover:bg-slate-600">
                         Moderado - Riesgo equilibrado
                       </SelectItem>
-                      <SelectItem value="aggressive" className="text-white hover:bg-slate-600">
+                      <SelectItem value="aggressive" className="text-slate-900 hover:bg-slate-600">
                         Agresivo - Alto riesgo, retornos potenciales
                       </SelectItem>
                     </SelectContent>
@@ -155,7 +155,7 @@ export function EditProfileDialog({ user, onSuccess }: EditProfileDialogProps) {
               <Button
                 type="button"
                 variant="outline"
-                className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700"
+                className="flex-1 border-slate-300 text-slate-700 hover:bg-slate-100"
                 onClick={() => setOpen(false)}
               >
                 Cancelar

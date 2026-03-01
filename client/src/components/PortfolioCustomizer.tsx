@@ -101,10 +101,10 @@ export function PortfolioCustomizer({
 
   return (
     <div className="space-y-6">
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Personalizar Portafolio</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Personalizar Portafolio</CardTitle>
+          <CardDescription className="text-slate-500">
             Ajusta la composición, retornos esperados y volatilidades de los activos
           </CardDescription>
         </CardHeader>
@@ -112,9 +112,9 @@ export function PortfolioCustomizer({
           {/* Activos existentes */}
           <div className="space-y-4">
             {assets.map((asset, index) => (
-              <div key={index} className="p-4 bg-slate-700 rounded-lg border border-slate-600 space-y-4">
+              <div key={index} className="p-4 bg-slate-100 rounded-lg border border-slate-300 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-white font-semibold">{asset.symbol}</h4>
+                  <h4 className="text-slate-900 font-semibold">{asset.symbol}</h4>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -128,8 +128,8 @@ export function PortfolioCustomizer({
                 {/* Peso del activo */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label className="text-slate-300">Peso en el Portafolio</Label>
-                    <span className="text-white font-semibold">{(asset.weight * 100).toFixed(1)}%</span>
+                    <Label className="text-slate-700">Peso en el Portafolio</Label>
+                    <span className="text-slate-900 font-semibold">{(asset.weight * 100).toFixed(1)}%</span>
                   </div>
                   <Slider
                     value={[asset.weight * 100]}
@@ -143,7 +143,7 @@ export function PortfolioCustomizer({
 
                 {/* Retorno esperado */}
                 <div className="space-y-2">
-                  <Label className="text-slate-300">Retorno Esperado Anual (%)</Label>
+                  <Label className="text-slate-700">Retorno Esperado Anual (%)</Label>
                   <Input
                     type="number"
                     value={(asset.expectedReturn * 100).toFixed(2)}
@@ -151,16 +151,16 @@ export function PortfolioCustomizer({
                     step={0.1}
                     min={-50}
                     max={100}
-                    className="bg-slate-600 border-slate-500 text-white"
+                    className="bg-slate-600 border-slate-500 text-slate-900"
                   />
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-500">
                     Retorno promedio esperado del activo en un año
                   </p>
                 </div>
 
                 {/* Volatilidad */}
                 <div className="space-y-2">
-                  <Label className="text-slate-300">Volatilidad Anual (%)</Label>
+                  <Label className="text-slate-700">Volatilidad Anual (%)</Label>
                   <Input
                     type="number"
                     value={(asset.volatility * 100).toFixed(2)}
@@ -168,9 +168,9 @@ export function PortfolioCustomizer({
                     step={0.1}
                     min={0}
                     max={200}
-                    className="bg-slate-600 border-slate-500 text-white"
+                    className="bg-slate-600 border-slate-500 text-slate-900"
                   />
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-500">
                     Medida de riesgo o variabilidad del activo
                   </p>
                 </div>
@@ -179,15 +179,15 @@ export function PortfolioCustomizer({
           </div>
 
           {/* Agregar nuevo activo */}
-          <div className="p-4 bg-slate-700 rounded-lg border border-slate-600 space-y-3">
-            <Label className="text-white">Agregar Nuevo Activo</Label>
+          <div className="p-4 bg-slate-100 rounded-lg border border-slate-300 space-y-3">
+            <Label className="text-slate-900">Agregar Nuevo Activo</Label>
             <div className="flex gap-2">
               <Input
                 placeholder="Ej: AAPL, BTC, EUR"
                 value={newAssetSymbol}
                 onChange={(e) => setNewAssetSymbol(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleAddAsset()}
-                className="bg-slate-600 border-slate-500 text-white placeholder-slate-400"
+                className="bg-slate-600 border-slate-500 text-slate-900 placeholder-slate-400"
               />
               <Button
                 onClick={handleAddAsset}
@@ -199,9 +199,9 @@ export function PortfolioCustomizer({
           </div>
 
           {/* Resumen y acciones */}
-          <div className="p-4 bg-slate-700 rounded-lg border border-slate-600 space-y-3">
+          <div className="p-4 bg-slate-100 rounded-lg border border-slate-300 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-slate-300">Peso Total:</span>
+              <span className="text-slate-700">Peso Total:</span>
               <span className={`font-semibold ${isValidPortfolio ? "text-green-400" : "text-red-400"}`}>
                 {(totalWeight * 100).toFixed(1)}%
               </span>
@@ -214,7 +214,7 @@ export function PortfolioCustomizer({
             <Button
               onClick={handleNormalizeWeights}
               variant="outline"
-              className="w-full border-slate-500 text-slate-300 hover:bg-slate-600"
+              className="w-full border-slate-500 text-slate-700 hover:bg-slate-600"
             >
               Normalizar Pesos Equitativamente
             </Button>
@@ -223,7 +223,7 @@ export function PortfolioCustomizer({
           {/* Información educativa */}
           <div className="p-4 bg-blue-900 bg-opacity-30 rounded-lg border border-blue-700 space-y-2">
             <h4 className="text-primary font-semibold">Consejos para Personalizar</h4>
-            <ul className="text-sm text-slate-300 space-y-1 list-disc list-inside">
+            <ul className="text-sm text-slate-700 space-y-1 list-disc list-inside">
               <li>Los pesos deben sumar 100% para una simulación válida</li>
               <li>Retorno esperado: histórico promedio del activo (ej: acciones 8%, bonos 3%)</li>
               <li>Volatilidad: desviación estándar histórica (ej: acciones 18%, bonos 5%)</li>

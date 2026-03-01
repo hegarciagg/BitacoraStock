@@ -71,7 +71,7 @@ const MODULES: Module[] = [
 ];
 
 const STATUS_STYLES: Record<ModuleStatus, string> = {
-  Pendiente: "bg-slate-600/50 text-slate-300 border-slate-500/40",
+  Pendiente: "bg-slate-600/50 text-slate-700 border-slate-500/40",
   "En desarrollo": "bg-yellow-500/15 text-yellow-400 border-yellow-500/30",
   Completo: "bg-green-500/15 text-green-400 border-green-500/30",
 };
@@ -84,31 +84,31 @@ const STATUS_DOT: Record<ModuleStatus, string> = {
 
 export default function ModulesGrid() {
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-slate-900 flex items-center gap-2">
           <Layers className="w-5 h-5 text-blue-400" />
           Módulos del Sistema
         </CardTitle>
-        <p className="text-slate-400 text-sm">8 módulos independientes — arquitectura desacoplada</p>
+        <p className="text-slate-500 text-sm">8 módulos independientes — arquitectura desacoplada</p>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
           {MODULES.map((mod) => (
             <div
               key={mod.name}
-              className="p-4 rounded-xl bg-slate-700/40 border border-slate-600 hover:border-slate-500 transition-colors flex flex-col gap-3"
+              className="p-4 rounded-xl bg-slate-100/40 border border-slate-300 hover:border-slate-500 transition-colors flex flex-col gap-3"
             >
               {/* Header */}
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">{mod.emoji}</span>
-                  <span className="text-sm font-bold text-white leading-tight">{mod.name}</span>
+                  <span className="text-sm font-bold text-slate-900 leading-tight">{mod.name}</span>
                 </div>
               </div>
 
               {/* Description */}
-              <p className="text-xs text-slate-400 leading-relaxed flex-1">{mod.description}</p>
+              <p className="text-xs text-slate-500 leading-relaxed flex-1">{mod.description}</p>
 
               {/* Stack + Status */}
               <div className="flex flex-col gap-2">

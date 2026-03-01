@@ -31,17 +31,17 @@ export function PortfolioSelector({
   const canAddMore = selectedPortfolios.length < maxPortfolios;
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white">Portafolios Seleccionados</CardTitle>
-        <CardDescription className="text-slate-400">
+        <CardTitle className="text-slate-900">Portafolios Seleccionados</CardTitle>
+        <CardDescription className="text-slate-500">
           Selecciona {maxPortfolios} portafolios como máximo para comparar
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Portafolios Seleccionados */}
         <div className="space-y-2">
-          <h4 className="text-sm font-semibold text-slate-300">
+          <h4 className="text-sm font-semibold text-slate-700">
             Comparando ({selectedPortfolios.length}/{maxPortfolios})
           </h4>
           {selectedPortfolios.length > 0 ? (
@@ -63,7 +63,7 @@ export function PortfolioSelector({
               ))}
             </div>
           ) : (
-            <p className="text-sm text-slate-400 italic">
+            <p className="text-sm text-slate-500 italic">
               Selecciona portafolios para comenzar la comparación
             </p>
           )}
@@ -71,8 +71,8 @@ export function PortfolioSelector({
 
         {/* Portafolios Disponibles */}
         {canAddMore && availablePortfolios.length > 0 && (
-          <div className="space-y-2 pt-4 border-t border-slate-700">
-            <h4 className="text-sm font-semibold text-slate-300">
+          <div className="space-y-2 pt-4 border-t border-slate-200">
+            <h4 className="text-sm font-semibold text-slate-700">
               Portafolios Disponibles
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-40 overflow-y-auto">
@@ -80,13 +80,13 @@ export function PortfolioSelector({
                 <button
                   key={portfolio.id}
                   onClick={() => onAdd(portfolio)}
-                  className="text-left p-3 rounded-lg bg-slate-700 hover:bg-slate-600 transition-colors border border-slate-600 hover:border-blue-500"
+                  className="text-left p-3 rounded-lg bg-slate-100 hover:bg-slate-600 transition-colors border border-slate-300 hover:border-blue-500"
                 >
-                  <div className="font-medium text-white text-sm">
+                  <div className="font-medium text-slate-900 text-sm">
                     {portfolio.name}
                   </div>
                   {portfolio.description && (
-                    <div className="text-xs text-slate-400 mt-1">
+                    <div className="text-xs text-slate-500 mt-1">
                       {portfolio.description}
                     </div>
                   )}
@@ -105,7 +105,7 @@ export function PortfolioSelector({
 
         {/* Mensaje cuando no hay portafolios disponibles */}
         {availablePortfolios.length === 0 && selectedPortfolios.length > 0 && (
-          <div className="p-3 rounded-lg bg-slate-700 border border-slate-600 text-slate-300 text-sm">
+          <div className="p-3 rounded-lg bg-slate-100 border border-slate-300 text-slate-700 text-sm">
             <p>No hay más portafolios disponibles para agregar.</p>
           </div>
         )}

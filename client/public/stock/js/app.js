@@ -266,7 +266,7 @@ class App {
     }
 
     loadTheme() {
-        const theme = localStorage.getItem('quant-theme') || 'dark';
+        const theme = localStorage.getItem('quant-theme') || 'light';
         if (theme === 'light') {
             document.body.classList.remove('dark-theme');
             document.body.classList.add('light-theme');

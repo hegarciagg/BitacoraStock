@@ -11,13 +11,13 @@ interface AccordionItemProps {
 function AccordionItem({ title, badge, children }: AccordionItemProps) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-slate-700 rounded-xl overflow-hidden">
+    <div className="border border-slate-200 rounded-xl overflow-hidden">
       <button
-        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-700/30 transition-colors"
+        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-100/30 transition-colors"
         onClick={() => setOpen(!open)}
       >
         <div className="flex items-center gap-3">
-          <span className="font-semibold text-white text-sm">{title}</span>
+          <span className="font-semibold text-slate-900 text-sm">{title}</span>
           {badge && (
             <span className="px-2 py-0.5 rounded-full text-xs bg-purple-500/15 text-purple-400 border border-purple-500/30">
               {badge}
@@ -25,13 +25,13 @@ function AccordionItem({ title, badge, children }: AccordionItemProps) {
           )}
         </div>
         {open ? (
-          <ChevronUp className="w-4 h-4 text-slate-400 flex-shrink-0" />
+          <ChevronUp className="w-4 h-4 text-slate-500 flex-shrink-0" />
         ) : (
-          <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
+          <ChevronDown className="w-4 h-4 text-slate-500 flex-shrink-0" />
         )}
       </button>
       {open && (
-        <div className="px-5 pb-5 border-t border-slate-700/50 bg-slate-700/20">
+        <div className="px-5 pb-5 border-t border-slate-200/50 bg-slate-100/20">
           {children}
         </div>
       )}
@@ -41,7 +41,7 @@ function AccordionItem({ title, badge, children }: AccordionItemProps) {
 
 function CodeBlock({ children }: { children: string }) {
   return (
-    <pre className="mt-3 p-4 rounded-lg bg-slate-900/70 border border-slate-700 text-xs font-mono text-slate-300 overflow-x-auto leading-relaxed whitespace-pre">
+    <pre className="mt-3 p-4 rounded-lg bg-slate-50/70 border border-slate-200 text-xs font-mono text-slate-700 overflow-x-auto leading-relaxed whitespace-pre">
       {children}
     </pre>
   );
@@ -52,17 +52,17 @@ function TableSpec({ headers, rows }: { headers: string[]; rows: string[][] }) {
     <div className="mt-3 overflow-x-auto">
       <table className="w-full text-xs text-left">
         <thead>
-          <tr className="border-b border-slate-700">
+          <tr className="border-b border-slate-200">
             {headers.map((h) => (
-              <th key={h} className="py-2 px-3 text-slate-400 font-semibold">{h}</th>
+              <th key={h} className="py-2 px-3 text-slate-500 font-semibold">{h}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={i} className="border-b border-slate-700/50 hover:bg-slate-700/20">
+            <tr key={i} className="border-b border-slate-200/50 hover:bg-slate-100/20">
               {row.map((cell, j) => (
-                <td key={j} className="py-2 px-3 text-slate-300 font-mono">{cell}</td>
+                <td key={j} className="py-2 px-3 text-slate-700 font-mono">{cell}</td>
               ))}
             </tr>
           ))}
@@ -85,13 +85,13 @@ const VOTING_RULES = [
 
 export default function TechnicalSpecs() {
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-slate-900 flex items-center gap-2">
           <FileCode2 className="w-5 h-5 text-cyan-400" />
           Especificaciones Técnicas
         </CardTitle>
-        <p className="text-slate-400 text-sm">Expandir cada sección para ver los detalles de implementación</p>
+        <p className="text-slate-500 text-sm">Expandir cada sección para ver los detalles de implementación</p>
       </CardHeader>
       <CardContent className="space-y-3">
 
@@ -125,8 +125,8 @@ bearState = argmin(mean_return_per_state)
         {/* B. Voting Rules */}
         <AccordionItem title="B. Sistema de Votación Institucional" badge="8 Confirmaciones">
           <div className="mt-3">
-            <p className="text-xs text-slate-400 mb-3">
-              Entrada LONG solo si: <span className="text-white font-mono">state == bullState AND votingScore ≥ 7 AND now &gt; cooldownUntil</span>
+            <p className="text-xs text-slate-500 mb-3">
+              Entrada LONG solo si: <span className="text-slate-900 font-mono">state == bullState AND votingScore ≥ 7 AND now &gt; cooldownUntil</span>
             </p>
             <TableSpec
               headers={["#", "Condición", "Descripción"]}
@@ -167,7 +167,7 @@ capital(t+1) = capital(t) + PnL(t)
         <AccordionItem title="D. Esquema de Base de Datos" badge="MySQL">
           <div className="mt-3 space-y-4">
             <div>
-              <p className="text-xs font-semibold text-slate-300 mb-2">Tabla: <code className="text-orange-400">trades</code></p>
+              <p className="text-xs font-semibold text-slate-700 mb-2">Tabla: <code className="text-orange-400">trades</code></p>
               <TableSpec
                 headers={["Campo", "Tipo", "Descripción"]}
                 rows={[
@@ -184,7 +184,7 @@ capital(t+1) = capital(t) + PnL(t)
               />
             </div>
             <div>
-              <p className="text-xs font-semibold text-slate-300 mb-2">Tabla: <code className="text-orange-400">equity_curve</code></p>
+              <p className="text-xs font-semibold text-slate-700 mb-2">Tabla: <code className="text-orange-400">equity_curve</code></p>
               <TableSpec
                 headers={["Campo", "Tipo", "Descripción"]}
                 rows={[

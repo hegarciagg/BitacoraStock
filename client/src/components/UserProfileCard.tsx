@@ -21,10 +21,10 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
   });
 
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white">Perfil de Usuario</CardTitle>
-        <CardDescription className="text-slate-400">
+        <CardTitle className="text-slate-900">Perfil de Usuario</CardTitle>
+        <CardDescription className="text-slate-500">
           Información de tu cuenta
         </CardDescription>
       </CardHeader>
@@ -33,23 +33,23 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
         <div className="flex items-center space-x-4">
           <Avatar className="w-16 h-16">
             <AvatarImage src={user.profilePicture || undefined} alt={user.name || "Usuario"} />
-            <AvatarFallback className="bg-primary text-white text-lg">
+            <AvatarFallback className="bg-primary text-slate-900 text-lg">
               {initials}
             </AvatarFallback>
           </Avatar>
           <div>
-            <h3 className="text-lg font-semibold text-white">{user.name || "Usuario"}</h3>
-            <p className="text-sm text-slate-400">{user.loginMethod || "Manus OAuth"}</p>
+            <h3 className="text-lg font-semibold text-slate-900">{user.name || "Usuario"}</h3>
+            <p className="text-sm text-slate-500">{user.loginMethod || "Manus OAuth"}</p>
           </div>
         </div>
 
         {/* Información de contacto */}
-        <div className="space-y-3 border-t border-slate-700 pt-4">
+        <div className="space-y-3 border-t border-slate-200 pt-4">
           <div className="flex items-center space-x-3">
             <Mail className="w-4 h-4 text-primary" />
             <div>
               <p className="text-xs text-slate-500">Correo Electrónico</p>
-              <p className="text-sm text-white">{user.email || "No especificado"}</p>
+              <p className="text-sm text-slate-900">{user.email || "No especificado"}</p>
             </div>
           </div>
 
@@ -57,7 +57,7 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
             <Shield className="w-4 h-4 text-primary" />
             <div>
               <p className="text-xs text-slate-500">Rol</p>
-              <p className="text-sm text-white capitalize">{user.role}</p>
+              <p className="text-sm text-slate-900 capitalize">{user.role}</p>
             </div>
           </div>
 
@@ -65,16 +65,16 @@ export function UserProfileCard({ user }: UserProfileCardProps) {
             <Calendar className="w-4 h-4 text-primary" />
             <div>
               <p className="text-xs text-slate-500">Miembro desde</p>
-              <p className="text-sm text-white">{createdDate}</p>
+              <p className="text-sm text-slate-900">{createdDate}</p>
             </div>
           </div>
         </div>
 
         {/* Perfil de riesgo */}
         {user.riskProfile && (
-          <div className="border-t border-slate-700 pt-4">
+          <div className="border-t border-slate-200 pt-4">
             <p className="text-xs text-slate-500 mb-2">Perfil de Riesgo</p>
-            <div className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-primary text-white capitalize">
+            <div className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-primary text-slate-900 capitalize">
               {user.riskProfile}
             </div>
           </div>

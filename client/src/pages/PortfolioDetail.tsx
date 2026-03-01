@@ -92,7 +92,7 @@ export default function PortfolioDetail() {
     return (
       <DashboardLayout>
         <div className="text-center py-12">
-          <p className="text-slate-400">Cargando portafolio...</p>
+          <p className="text-slate-500">Cargando portafolio...</p>
         </div>
       </DashboardLayout>
     );
@@ -101,10 +101,10 @@ export default function PortfolioDetail() {
   if (!portfolio.data) {
     return (
       <DashboardLayout>
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardContent className="pt-12 text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-white mb-2">Portafolio no encontrado</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Portafolio no encontrado</h3>
             <Button onClick={() => navigate("/dashboard")} className="mt-4">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Volver al Dashboard
@@ -124,13 +124,13 @@ export default function PortfolioDetail() {
               variant="outline"
               size="icon"
               onClick={() => navigate("/dashboard")}
-              className="border-slate-600"
+              className="border-slate-300"
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-white">{portfolio.data.name}</h1>
-              <p className="text-slate-400 mt-2">{portfolio.data.description || "Sin descripción"}</p>
+              <h1 className="text-3xl font-bold text-slate-900">{portfolio.data.name}</h1>
+              <p className="text-slate-500 mt-2">{portfolio.data.description || "Sin descripción"}</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -181,39 +181,39 @@ export default function PortfolioDetail() {
                   Agregar Inversión
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-slate-800 border-slate-700 max-w-2xl">
+              <DialogContent className="bg-white shadow-sm border-slate-200 max-w-2xl">
               <DialogHeader>
-                <DialogTitle className="text-white">Agregar Nueva Inversión</DialogTitle>
-                <DialogDescription className="text-slate-400">
+                <DialogTitle className="text-slate-900">Agregar Nueva Inversión</DialogTitle>
+                <DialogDescription className="text-slate-500">
                   Registra una nueva operación de inversión en tu portafolio.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label className="text-white">Símbolo</Label>
+                  <Label className="text-slate-900">Símbolo</Label>
                   <Input
                     placeholder="AAPL"
                     value={formData.symbol}
                     onChange={(e) => setFormData({ ...formData, symbol: e.target.value })}
-                    className="bg-slate-700 border-slate-600 text-white"
+                    className="bg-slate-100 border-slate-300 text-slate-900"
                   />
                 </div>
                 <div>
-                  <Label className="text-white">Nombre del Activo</Label>
+                  <Label className="text-slate-900">Nombre del Activo</Label>
                   <Input
                     placeholder="Apple Inc."
                     value={formData.assetName}
                     onChange={(e) => setFormData({ ...formData, assetName: e.target.value })}
-                    className="bg-slate-700 border-slate-600 text-white"
+                    className="bg-slate-100 border-slate-300 text-slate-900"
                   />
                 </div>
                 <div>
-                  <Label className="text-white">Tipo de Activo</Label>
+                  <Label className="text-slate-900">Tipo de Activo</Label>
                   <Select value={formData.assetType} onValueChange={(value: any) => setFormData({ ...formData, assetType: value })}>
-                    <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                    <SelectTrigger className="bg-slate-100 border-slate-300 text-slate-900">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-700 border-slate-600">
+                    <SelectContent className="bg-slate-100 border-slate-300">
                       <SelectItem value="stock">Acción</SelectItem>
                       <SelectItem value="etf">ETF</SelectItem>
                       <SelectItem value="bond">Bono</SelectItem>
@@ -224,12 +224,12 @@ export default function PortfolioDetail() {
                   </Select>
                 </div>
                 <div>
-                  <Label className="text-white">Tipo de Acción</Label>
+                  <Label className="text-slate-900">Tipo de Acción</Label>
                   <Select value={formData.action} onValueChange={(value: any) => setFormData({ ...formData, action: value })}>
-                    <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                    <SelectTrigger className="bg-slate-100 border-slate-300 text-slate-900">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-700 border-slate-600">
+                    <SelectContent className="bg-slate-100 border-slate-300">
                       <SelectItem value="buy">Compra</SelectItem>
                       <SelectItem value="sell">Venta</SelectItem>
                       <SelectItem value="dividend">Dividendo</SelectItem>
@@ -237,60 +237,60 @@ export default function PortfolioDetail() {
                   </Select>
                 </div>
                 <div>
-                  <Label className="text-white">Cantidad</Label>
+                  <Label className="text-slate-900">Cantidad</Label>
                   <Input
                     type="number"
                     placeholder="10"
                     value={formData.quantity}
                     onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                    className="bg-slate-700 border-slate-600 text-white"
+                    className="bg-slate-100 border-slate-300 text-slate-900"
                   />
                 </div>
                 <div>
-                  <Label className="text-white">Precio Unitario</Label>
+                  <Label className="text-slate-900">Precio Unitario</Label>
                   <Input
                     type="number"
                     placeholder="150.50"
                     value={formData.unitPrice}
                     onChange={(e) => setFormData({ ...formData, unitPrice: e.target.value })}
-                    className="bg-slate-700 border-slate-600 text-white"
+                    className="bg-slate-100 border-slate-300 text-slate-900"
                   />
                 </div>
                 <div>
-                  <Label className="text-white">Comisión</Label>
+                  <Label className="text-slate-900">Comisión</Label>
                   <Input
                     type="number"
                     placeholder="0"
                     value={formData.commission}
                     onChange={(e) => setFormData({ ...formData, commission: e.target.value })}
-                    className="bg-slate-700 border-slate-600 text-white"
+                    className="bg-slate-100 border-slate-300 text-slate-900"
                   />
                 </div>
                 <div>
-                  <Label className="text-white">Fecha de Transacción</Label>
+                  <Label className="text-slate-900">Fecha de Transacción</Label>
                   <Input
                     type="date"
                     value={formData.transactionDate}
                     onChange={(e) => setFormData({ ...formData, transactionDate: e.target.value })}
-                    className="bg-slate-700 border-slate-600 text-white"
+                    className="bg-slate-100 border-slate-300 text-slate-900"
                   />
                 </div>
                 <div className="col-span-2">
-                  <Label className="text-white">Comentarios (opcional)</Label>
+                  <Label className="text-slate-900">Comentarios (opcional)</Label>
                   <Textarea
                     placeholder="Notas sobre esta inversión..."
                     value={formData.comments}
                     onChange={(e) => setFormData({ ...formData, comments: e.target.value })}
-                    className="bg-slate-700 border-slate-600 text-white"
+                    className="bg-slate-100 border-slate-300 text-slate-900"
                   />
                 </div>
                 <div className="col-span-2">
-                  <Label className="text-white">Motivo de Compra (opcional)</Label>
+                  <Label className="text-slate-900">Motivo de Compra (opcional)</Label>
                   <Textarea
                     placeholder="¿Por qué compraste este activo? Estrategia, análisis..."
                     value={formData.purchaseReason}
                     onChange={(e) => setFormData({ ...formData, purchaseReason: e.target.value })}
-                    className="bg-slate-700 border-slate-600 text-white"
+                    className="bg-slate-100 border-slate-300 text-slate-900"
                   />
                 </div>
               </div>
@@ -308,12 +308,12 @@ export default function PortfolioDetail() {
 
         {investments.isLoading ? (
           <div className="text-center py-12">
-            <p className="text-slate-400">Cargando inversiones...</p>
+            <p className="text-slate-500">Cargando inversiones...</p>
           </div>
         ) : investments.data && investments.data.length > 0 ? (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-white shadow-sm border-slate-200">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-slate-900 flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-primary" />
                 Operaciones de Inversión
               </CardTitle>
@@ -322,17 +322,17 @@ export default function PortfolioDetail() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-slate-700">
-                      <th className="text-left py-3 px-4 text-slate-300">Símbolo</th>
-                      <th className="text-left py-3 px-4 text-slate-300">Tipo</th>
-                      <th className="text-left py-3 px-4 text-slate-300">Acción</th>
-                      <th className="text-right py-3 px-4 text-slate-300">Cantidad</th>
-                      <th className="text-right py-3 px-4 text-slate-300">Precio Compra</th>
-                      <th className="text-right py-3 px-4 text-slate-300">Precio Actual</th>
-                      <th className="text-right py-3 px-4 text-slate-300">Total</th>
-                      <th className="text-right py-3 px-4 text-slate-300">Retorno</th>
-                      <th className="text-left py-3 px-4 text-slate-300">Fecha</th>
-                      <th className="text-center py-3 px-4 text-slate-300">Acciones</th>
+                    <tr className="border-b border-slate-200">
+                      <th className="text-left py-3 px-4 text-slate-700">Símbolo</th>
+                      <th className="text-left py-3 px-4 text-slate-700">Tipo</th>
+                      <th className="text-left py-3 px-4 text-slate-700">Acción</th>
+                      <th className="text-right py-3 px-4 text-slate-700">Cantidad</th>
+                      <th className="text-right py-3 px-4 text-slate-700">Precio Compra</th>
+                      <th className="text-right py-3 px-4 text-slate-700">Precio Actual</th>
+                      <th className="text-right py-3 px-4 text-slate-700">Total</th>
+                      <th className="text-right py-3 px-4 text-slate-700">Retorno</th>
+                      <th className="text-left py-3 px-4 text-slate-700">Fecha</th>
+                      <th className="text-center py-3 px-4 text-slate-700">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -354,20 +354,20 @@ export default function PortfolioDetail() {
                       }
 
                       return (
-                      <tr key={inv.id} className="border-b border-slate-700 hover:bg-slate-700/50">
-                        <td className="py-3 px-4 text-white font-semibold">{inv.symbol}</td>
-                        <td className="py-3 px-4 text-slate-300">{inv.assetType}</td>
+                      <tr key={inv.id} className="border-b border-slate-200 hover:bg-slate-50 border border-slate-200">
+                        <td className="py-3 px-4 text-slate-900 font-semibold">{inv.symbol}</td>
+                        <td className="py-3 px-4 text-slate-700">{inv.assetType}</td>
                         <td className="py-3 px-4">
                           <span className={inv.action === "buy" ? "text-green-400" : inv.action === "sell" ? "text-red-400" : "text-blue-400"}>
                             {inv.action === "buy" ? "Compra" : inv.action === "sell" ? "Venta" : "Dividendo"}
                           </span>
                         </td>
-                        <td className="py-3 px-4 text-right text-slate-300">{quantity.toFixed(2)}</td>
-                        <td className="py-3 px-4 text-right text-slate-300">${purchasePrice.toFixed(2)}</td>
-                        <td className="py-3 px-4 text-right text-slate-300">
+                        <td className="py-3 px-4 text-right text-slate-700">{quantity.toFixed(2)}</td>
+                        <td className="py-3 px-4 text-right text-slate-700">${purchasePrice.toFixed(2)}</td>
+                        <td className="py-3 px-4 text-right text-slate-700">
                           {currentPrice ? `$${currentPrice.toFixed(2)}` : "-"}
                         </td>
-                        <td className="py-3 px-4 text-right text-white font-semibold">${totalValue.toFixed(2)}</td>
+                        <td className="py-3 px-4 text-right text-slate-900 font-semibold">${totalValue.toFixed(2)}</td>
                         <td className="py-3 px-4 text-right">
                           {currentPrice ? (
                             <span className={returnVal >= 0 ? "text-green-400" : "text-red-400"}>
@@ -375,7 +375,7 @@ export default function PortfolioDetail() {
                             </span>
                           ) : "-"}
                         </td>
-                        <td className="py-3 px-4 text-slate-300">{new Date(inv.transactionDate).toLocaleDateString("es-ES")}</td>
+                        <td className="py-3 px-4 text-slate-700">{new Date(inv.transactionDate).toLocaleDateString("es-ES")}</td>
                         <td className="py-3 px-4 text-center">
                           <Button 
                             variant="ghost" 
@@ -385,7 +385,7 @@ export default function PortfolioDetail() {
                           >
                             <MessageSquare className="w-4 h-4 text-primary" />
                             {(inv as any).commentCount > 0 && (
-                              <span className="text-xs font-medium text-slate-300">{(inv as any).commentCount}</span>
+                              <span className="text-xs font-medium text-slate-700">{(inv as any).commentCount}</span>
                             )}
                           </Button>
                         </td>
@@ -398,11 +398,11 @@ export default function PortfolioDetail() {
             </CardContent>
           </Card>
         ) : (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-white shadow-sm border-slate-200">
             <CardContent className="pt-12 text-center">
               <AlertCircle className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">No hay inversiones</h3>
-              <p className="text-slate-400 mb-6">Comienza a registrar tus operaciones de inversión.</p>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">No hay inversiones</h3>
+              <p className="text-slate-500 mb-6">Comienza a registrar tus operaciones de inversión.</p>
               <Button
                 onClick={() => setIsAddingInvestment(true)}
                 className="bg-primary hover:bg-primary/90"
@@ -417,7 +417,7 @@ export default function PortfolioDetail() {
         {/* Sección de Historial */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+            <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
               <Clock className="w-6 h-6" />
               Historial y Evolución
             </h2>

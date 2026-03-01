@@ -66,13 +66,13 @@ const LAYERS = [
 
 export default function ArchitectureDiagram() {
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-slate-900 flex items-center gap-2">
           <GitBranch className="w-5 h-5 text-purple-400" />
           Arquitectura del Sistema
         </CardTitle>
-        <p className="text-slate-400 text-sm">Flujo de datos desacoplado — microservicios independientes</p>
+        <p className="text-slate-500 text-sm">Flujo de datos desacoplado — microservicios independientes</p>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col items-center gap-0">
@@ -91,12 +91,12 @@ export default function ArchitectureDiagram() {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-bold text-white text-sm">{layer.name}</span>
+                    <span className="font-bold text-slate-900 text-sm">{layer.name}</span>
                     <span className={`text-xs px-2 py-0.5 rounded-full ${layer.badge}`}>
                       {layer.tech}
                     </span>
                   </div>
-                  <p className="text-slate-400 text-xs mt-0.5">{layer.description}</p>
+                  <p className="text-slate-500 text-xs mt-0.5">{layer.description}</p>
                 </div>
               </div>
 
@@ -113,8 +113,8 @@ export default function ArchitectureDiagram() {
         </div>
 
         {/* Port info */}
-        <div className="mt-6 p-3 rounded-lg bg-slate-700/50 border border-slate-600">
-          <p className="text-xs text-slate-400 font-mono text-center">
+        <div className="mt-6 p-3 rounded-lg bg-slate-50 border border-slate-200 border border-slate-300">
+          <p className="text-xs text-slate-500 font-mono text-center">
             <span className="text-cyan-400">React :3000</span>
             {" "}→{" "}
             <span className="text-blue-400">Express :4000</span>

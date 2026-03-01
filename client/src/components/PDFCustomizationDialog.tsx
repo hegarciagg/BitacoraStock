@@ -126,17 +126,17 @@ export function PDFCustomizationDialog({
           Descargar PDF
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-slate-800 border-slate-700 max-w-md">
+      <DialogContent className="bg-white shadow-sm border-slate-200 max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-white">Personalizar Informe PDF</DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogTitle className="text-slate-900">Personalizar Informe PDF</DialogTitle>
+          <DialogDescription className="text-slate-500">
             Selecciona las secciones que deseas incluir en tu informe
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           {/* Secciones */}
-          <div className="space-y-3 border-b border-slate-700 pb-4">
+          <div className="space-y-3 border-b border-slate-200 pb-4">
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="generalInfo"
@@ -144,7 +144,7 @@ export function PDFCustomizationDialog({
                 onCheckedChange={() => handleSectionChange("generalInfo")}
                 className="border-slate-500"
               />
-              <Label htmlFor="generalInfo" className="text-slate-200 cursor-pointer font-normal">
+              <Label htmlFor="generalInfo" className="text-slate-800 cursor-pointer font-normal">
                 Información General
               </Label>
             </div>
@@ -158,7 +158,7 @@ export function PDFCustomizationDialog({
               />
               <Label
                 htmlFor="simulationParameters"
-                className="text-slate-200 cursor-pointer font-normal"
+                className="text-slate-800 cursor-pointer font-normal"
               >
                 Parámetros de Simulación
               </Label>
@@ -173,7 +173,7 @@ export function PDFCustomizationDialog({
               />
               <Label
                 htmlFor="portfolioComposition"
-                className="text-slate-200 cursor-pointer font-normal"
+                className="text-slate-800 cursor-pointer font-normal"
               >
                 Composición del Portafolio
               </Label>
@@ -186,7 +186,7 @@ export function PDFCustomizationDialog({
                 onCheckedChange={() => handleSectionChange("mainMetrics")}
                 className="border-slate-500"
               />
-              <Label htmlFor="mainMetrics" className="text-slate-200 cursor-pointer font-normal">
+              <Label htmlFor="mainMetrics" className="text-slate-800 cursor-pointer font-normal">
                 Métricas Principales
               </Label>
             </div>
@@ -198,7 +198,7 @@ export function PDFCustomizationDialog({
                 onCheckedChange={() => handleSectionChange("riskAnalysis")}
                 className="border-slate-500"
               />
-              <Label htmlFor="riskAnalysis" className="text-slate-200 cursor-pointer font-normal">
+              <Label htmlFor="riskAnalysis" className="text-slate-800 cursor-pointer font-normal">
                 Análisis de Riesgo
               </Label>
             </div>
@@ -210,7 +210,7 @@ export function PDFCustomizationDialog({
                 onCheckedChange={() => handleSectionChange("interpretation")}
                 className="border-slate-500"
               />
-              <Label htmlFor="interpretation" className="text-slate-200 cursor-pointer font-normal">
+              <Label htmlFor="interpretation" className="text-slate-800 cursor-pointer font-normal">
                 Interpretación
               </Label>
             </div>
@@ -222,7 +222,7 @@ export function PDFCustomizationDialog({
               onClick={selectAll}
               variant="outline"
               size="sm"
-              className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700"
+              className="flex-1 border-slate-300 text-slate-700 hover:bg-slate-100"
             >
               Seleccionar Todo
             </Button>
@@ -230,7 +230,7 @@ export function PDFCustomizationDialog({
               onClick={deselectAll}
               variant="outline"
               size="sm"
-              className="flex-1 border-slate-600 text-slate-300 hover:bg-slate-700"
+              className="flex-1 border-slate-300 text-slate-700 hover:bg-slate-100"
             >
               Deseleccionar Todo
             </Button>

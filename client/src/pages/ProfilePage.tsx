@@ -22,7 +22,7 @@ export default function ProfilePage() {
   if (!isAuthenticated || !user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-slate-400">Cargando...</p>
+        <p className="text-slate-500">Cargando...</p>
       </div>
     );
   }
@@ -39,13 +39,13 @@ export default function ProfilePage() {
         <div className="flex items-center justify-between mb-8">
           <Button
             variant="ghost"
-            className="text-slate-400 hover:text-white"
+            className="text-slate-500 hover:text-slate-900"
             onClick={() => navigate("/")}
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Volver
           </Button>
-          <h1 className="text-3xl font-bold text-white">Mi Perfil</h1>
+          <h1 className="text-3xl font-bold text-slate-900">Mi Perfil</h1>
           <div className="w-10" />
         </div>
 
@@ -56,10 +56,10 @@ export default function ProfilePage() {
             <UserProfileCard user={user} />
 
             {/* Acciones */}
-            <Card className="bg-slate-800 border-slate-700 mt-6">
+            <Card className="bg-white shadow-sm border-slate-200 mt-6">
               <CardHeader>
-                <CardTitle className="text-white">Acciones</CardTitle>
-                <CardDescription className="text-slate-400">
+                <CardTitle className="text-slate-900">Acciones</CardTitle>
+                <CardDescription className="text-slate-500">
                   Gestiona tu cuenta
                 </CardDescription>
               </CardHeader>
@@ -67,7 +67,7 @@ export default function ProfilePage() {
                 <EditProfileDialog user={user} />
                 <Button
                   variant="outline"
-                  className="w-full border-slate-600 text-slate-300 hover:bg-slate-700"
+                  className="w-full border-slate-300 text-slate-700 hover:bg-slate-100"
                   disabled
                 >
                   Cambiar Contraseña (Próximamente)
@@ -87,9 +87,9 @@ export default function ProfilePage() {
           {/* Panel lateral */}
           <div className="space-y-6">
             {/* Estadísticas */}
-            <Card className="bg-slate-800 border-slate-700">
+            <Card className="bg-white shadow-sm border-slate-200">
               <CardHeader>
-                <CardTitle className="text-white text-lg">Estadísticas</CardTitle>
+                <CardTitle className="text-slate-900 text-lg">Estadísticas</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -108,14 +108,14 @@ export default function ProfilePage() {
             </Card>
 
             {/* Información de seguridad */}
-            <Card className="bg-slate-800 border-slate-700">
+            <Card className="bg-white shadow-sm border-slate-200">
               <CardHeader>
-                <CardTitle className="text-white text-lg">Seguridad</CardTitle>
+                <CardTitle className="text-slate-900 text-lg">Seguridad</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-400">Autenticación</span>
-                  <span className="text-xs bg-green-600 text-white px-2 py-1 rounded">
+                  <span className="text-sm text-slate-500">Autenticación</span>
+                  <span className="text-xs bg-green-600 text-slate-900 px-2 py-1 rounded">
                     Activa
                   </span>
                 </div>

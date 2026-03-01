@@ -120,25 +120,25 @@ export default function AnalysisHub() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-white">Centro de Análisis</h1>
-          <p className="text-slate-400 mt-2">
+          <h1 className="text-3xl font-bold text-slate-900">Centro de Análisis</h1>
+          <p className="text-slate-500 mt-2">
             Backtesting histórico y análisis de sentimiento de mercado en un solo lugar
           </p>
         </div>
 
         {/* Tabs */}
         <Tabs defaultValue="backtesting" className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-2 bg-slate-800 border border-slate-700">
+          <TabsList className="grid w-full max-w-md grid-cols-2 bg-white shadow-sm border border-slate-200 p-1 rounded-lg">
             <TabsTrigger
               value="backtesting"
-              className="data-[state=active]:bg-primary data-[state=active]:text-white text-slate-400 gap-2"
+              className="py-2 data-[state=active]:bg-primary data-[state=active]:text-white text-slate-500 gap-2 rounded-md"
             >
               <Calendar className="w-4 h-4" />
               Backtesting
             </TabsTrigger>
             <TabsTrigger
               value="sentiment"
-              className="data-[state=active]:bg-primary data-[state=active]:text-white text-slate-400 gap-2"
+              className="py-2 data-[state=active]:bg-primary data-[state=active]:text-white text-slate-500 gap-2 rounded-md"
             >
               <TrendingUp className="w-4 h-4" />
               Sentimiento
@@ -254,15 +254,15 @@ function BacktestingTab() {
         {/* Panel de Configuración */}
         <div className="lg:col-span-1 space-y-6">
           {/* Asignación de Activos */}
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-white shadow-sm border-slate-200">
             <CardHeader>
-              <CardTitle className="text-white text-sm">Asignación de Portafolio</CardTitle>
+              <CardTitle className="text-slate-900 text-sm">Asignación de Portafolio</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {Object.entries(allocation).map(([asset, value]) => (
                 <div key={asset}>
                   <div className="flex justify-between mb-2">
-                    <label className="text-slate-300 capitalize text-sm">{asset}</label>
+                    <label className="text-slate-700 capitalize text-sm">{asset}</label>
                     <span className="text-primary font-bold">{value}%</span>
                   </div>
                   <input
@@ -273,12 +273,12 @@ function BacktestingTab() {
                     onChange={(e) =>
                       updateAllocation(asset as keyof PortfolioAllocation, parseInt(e.target.value))
                     }
-                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                    className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer"
                   />
                 </div>
               ))}
-              <div className="pt-2 border-t border-slate-700">
-                <p className="text-slate-400 text-xs">
+              <div className="pt-2 border-t border-slate-200">
+                <p className="text-slate-500 text-xs">
                   Total:{" "}
                   <span className="text-primary">
                     {Object.values(allocation).reduce((a, b) => a + b, 0)}%
@@ -289,10 +289,10 @@ function BacktestingTab() {
           </Card>
 
           {/* Selección de Eventos */}
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-white shadow-sm border-slate-200">
             <CardHeader>
-              <CardTitle className="text-white text-sm">Eventos Históricos</CardTitle>
-              <CardDescription className="text-slate-400 text-xs">
+              <CardTitle className="text-slate-900 text-sm">Eventos Históricos</CardTitle>
+              <CardDescription className="text-slate-500 text-xs">
                 Selecciona eventos para backtesting
               </CardDescription>
             </CardHeader>
@@ -307,7 +307,7 @@ function BacktestingTab() {
                   />
                   <label
                     htmlFor={event.id}
-                    className="flex-1 cursor-pointer text-slate-300 text-sm"
+                    className="flex-1 cursor-pointer text-slate-700 text-sm"
                   >
                     <p className="font-medium">{event.name}</p>
                     <p className="text-xs text-slate-500">{event.date}</p>
@@ -321,19 +321,19 @@ function BacktestingTab() {
         {/* Panel de Resultados */}
         <div className="lg:col-span-2 space-y-6">
           {selectedEvents.length === 0 ? (
-            <Card className="bg-slate-800 border-slate-700 border-dashed">
+            <Card className="bg-white shadow-sm border-slate-200 border-dashed">
               <CardContent className="pt-12 pb-12 text-center">
                 <Calendar className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                <p className="text-slate-400">Selecciona eventos históricos para comenzar</p>
+                <p className="text-slate-500">Selecciona eventos históricos para comenzar</p>
               </CardContent>
             </Card>
           ) : (
             <>
               {/* Estadísticas Generales */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Card className="bg-slate-800 border-slate-700">
+                <Card className="bg-white shadow-sm border-slate-200">
                   <CardContent className="pt-6">
-                    <p className="text-slate-400 text-xs mb-2">Retorno Promedio</p>
+                    <p className="text-slate-500 text-xs mb-2">Retorno Promedio</p>
                     <p
                       className={`text-2xl font-bold ${
                         stats.avgReturn >= 0 ? "text-green-400" : "text-red-400"
@@ -344,27 +344,27 @@ function BacktestingTab() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-slate-800 border-slate-700">
+                <Card className="bg-white shadow-sm border-slate-200">
                   <CardContent className="pt-6">
-                    <p className="text-slate-400 text-xs mb-2">Mejor Evento</p>
+                    <p className="text-slate-500 text-xs mb-2">Mejor Evento</p>
                     <p className="text-2xl font-bold text-green-400">
                       +{(stats.bestReturn * 100).toFixed(2)}%
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-slate-800 border-slate-700">
+                <Card className="bg-white shadow-sm border-slate-200">
                   <CardContent className="pt-6">
-                    <p className="text-slate-400 text-xs mb-2">Peor Evento</p>
+                    <p className="text-slate-500 text-xs mb-2">Peor Evento</p>
                     <p className="text-2xl font-bold text-red-400">
                       {(stats.worstReturn * 100).toFixed(2)}%
                     </p>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-slate-800 border-slate-700">
+                <Card className="bg-white shadow-sm border-slate-200">
                   <CardContent className="pt-6">
-                    <p className="text-slate-400 text-xs mb-2">Drawdown Promedio</p>
+                    <p className="text-slate-500 text-xs mb-2">Drawdown Promedio</p>
                     <p className="text-2xl font-bold text-orange-400">
                       {(stats.avgDrawdown * 100).toFixed(2)}%
                     </p>
@@ -373,16 +373,16 @@ function BacktestingTab() {
               </div>
 
               {/* Gráfico de Comparación */}
-              <Card className="bg-slate-800 border-slate-700">
+              <Card className="bg-white shadow-sm border-slate-200">
                 <CardHeader>
-                  <CardTitle className="text-white">Retornos por Evento</CardTitle>
+                  <CardTitle className="text-slate-900">Retornos por Evento</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={comparisonData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                      <XAxis dataKey="event" stroke="#94a3b8" />
-                      <YAxis stroke="#94a3b8" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                      <XAxis dataKey="event" stroke="#64748b" />
+                      <YAxis stroke="#64748b" />
                       <Tooltip
                         contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #475569" }}
                         formatter={(value) => `${value}%`}
@@ -394,19 +394,19 @@ function BacktestingTab() {
               </Card>
 
               {/* Tabla de Resultados Detallados */}
-              <Card className="bg-slate-800 border-slate-700">
+              <Card className="bg-white shadow-sm border-slate-200">
                 <CardHeader>
-                  <CardTitle className="text-white">Resultados Detallados</CardTitle>
+                  <CardTitle className="text-slate-900">Resultados Detallados</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {backtestResults.map((result, idx) => (
                       <div
                         key={idx}
-                        className="p-4 bg-slate-700/50 rounded-lg border border-slate-600"
+                        className="p-4 bg-slate-50 border border-slate-200 rounded-lg"
                       >
                         <div className="flex justify-between items-start mb-2">
-                          <h4 className="text-white font-medium">{result?.eventName}</h4>
+                          <h4 className="text-slate-900 font-medium">{result?.eventName}</h4>
                           <span
                             className={`text-lg font-bold ${
                               result!.return >= 0 ? "text-green-400" : "text-red-400"
@@ -418,19 +418,19 @@ function BacktestingTab() {
                         </div>
                         <div className="grid grid-cols-3 gap-4 text-sm">
                           <div>
-                            <p className="text-slate-400">Valor Final</p>
-                            <p className="text-slate-200 font-semibold">
+                            <p className="text-slate-500">Valor Final</p>
+                            <p className="text-slate-800 font-semibold">
                               ${(result!.endValue / 1000).toFixed(1)}K
                             </p>
                           </div>
                           <div>
-                            <p className="text-slate-400">Máxima Pérdida</p>
+                            <p className="text-slate-500">Máxima Pérdida</p>
                             <p className="text-orange-400 font-semibold">
                               {(result!.maxDrawdown * 100).toFixed(2)}%
                             </p>
                           </div>
                           <div>
-                            <p className="text-slate-400">Recuperación</p>
+                            <p className="text-slate-500">Recuperación</p>
                             <p className="text-primary font-semibold">
                               ~{result!.recoveryDays} días
                             </p>
@@ -448,14 +448,14 @@ function BacktestingTab() {
 
       {/* Insights */}
       {selectedEvents.length > 0 && (
-        <Card className="bg-slate-800 border-slate-700 border-l-4 border-l-blue-500">
+        <Card className="bg-white shadow-sm border-slate-200 border-l-4 border-l-blue-500">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+            <CardTitle className="text-slate-900 flex items-center gap-2">
               <Zap className="w-5 h-5 text-primary" />
               Insights del Backtesting
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-slate-300 text-sm">
+          <CardContent className="space-y-3 text-slate-700 text-sm">
             {stats.avgReturn < 0 && (
               <p>
                 ⚠️ Tu portafolio tiene retorno promedio negativo en eventos históricos. Considera
@@ -509,7 +509,7 @@ function SentimentTab() {
         <Button
           onClick={handleRefreshAnalysis}
           disabled={isLoading}
-          className="bg-primary hover:bg-primary/90"
+          className="bg-primary hover:bg-primary/90 text-white"
         >
           {isLoading ? (
             <>
@@ -526,30 +526,30 @@ function SentimentTab() {
       </div>
 
       {/* Información de Contexto */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Cómo Funciona el Análisis de Sentimiento</CardTitle>
+          <CardTitle className="text-slate-900">Cómo Funciona el Análisis de Sentimiento</CardTitle>
           <CardDescription>Metodología de correlación con movimientos históricos</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-lg bg-slate-700/50 border border-slate-600">
-              <div className="font-semibold text-white mb-2">1. Análisis de Noticias</div>
-              <div className="text-sm text-slate-300">
+            <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <div className="font-semibold text-slate-900 mb-2">1. Análisis de Noticias</div>
+              <div className="text-sm text-slate-700">
                 Se analizan noticias financieras en tiempo real usando procesamiento de lenguaje
                 natural para identificar sentimiento positivo, negativo o neutral.
               </div>
             </div>
-            <div className="p-4 rounded-lg bg-slate-700/50 border border-slate-600">
-              <div className="font-semibold text-white mb-2">2. Correlación Histórica</div>
-              <div className="text-sm text-slate-300">
+            <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <div className="font-semibold text-slate-900 mb-2">2. Correlación Histórica</div>
+              <div className="text-sm text-slate-700">
                 Se correlaciona el sentimiento actual con patrones históricos de movimientos de
                 mercado para cada activo específico.
               </div>
             </div>
-            <div className="p-4 rounded-lg bg-slate-700/50 border border-slate-600">
-              <div className="font-semibold text-white mb-2">3. Predicción Ajustada</div>
-              <div className="text-sm text-slate-300">
+            <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
+              <div className="font-semibold text-slate-900 mb-2">3. Predicción Ajustada</div>
+              <div className="text-sm text-slate-700">
                 Las simulaciones de Monte Carlo se ajustan con factores de riesgo basados en
                 sentimiento para mejorar precisión de proyecciones.
               </div>
@@ -562,15 +562,15 @@ function SentimentTab() {
       <SentimentAnalysisDisplay data={sentimentData} />
 
       {/* Recomendaciones */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Recomendaciones Basadas en Sentimiento</CardTitle>
+          <CardTitle className="text-slate-900">Recomendaciones Basadas en Sentimiento</CardTitle>
           <CardDescription>Acciones sugeridas según análisis actual</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20">
             <div className="font-semibold text-green-500 mb-2">✓ Oportunidad de Compra</div>
-            <div className="text-sm text-slate-300">
+            <div className="text-sm text-slate-700">
               El sentimiento positivo del mercado y las correlaciones históricas sugieren una
               oportunidad de compra en activos tecnológicos y de amplio mercado. Se recomienda
               aumentar exposición gradualmente.
@@ -578,14 +578,14 @@ function SentimentTab() {
           </div>
           <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
             <div className="font-semibold text-primary mb-2">ℹ Consideraciones de Riesgo</div>
-            <div className="text-sm text-slate-300">
+            <div className="text-sm text-slate-700">
               La volatilidad ajustada es 1.15x, indicando mayor variabilidad esperada. Se
               recomienda mantener posiciones de cobertura y revisar límites de pérdida.
             </div>
           </div>
           <div className="p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
             <div className="font-semibold text-yellow-500 mb-2">⚠ Monitoreo Continuo</div>
-            <div className="text-sm text-slate-300">
+            <div className="text-sm text-slate-700">
               Mantén vigilancia sobre cambios en sentimiento de mercado. Un cambio significativo
               en noticias podría revertir estas recomendaciones rápidamente.
             </div>

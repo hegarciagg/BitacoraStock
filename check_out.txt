@@ -1,0 +1,9 @@
+client/src/components/TopNavigation.tsx(58,68): error TS2339: Property 'emoji' does not exist on type 'NavItem'.
+server/sync.ts(9,39): error TS2345: Argument of type '{ req: Request<{}, any, any, QueryString.ParsedQs, Record<string, any>>; res: Response<any, Record<string, any>, number>; }' is not assignable to parameter of type 'CreateExpressContextOptions'.
+  Property 'info' is missing in type '{ req: Request<{}, any, any, QueryString.ParsedQs, Record<string, any>>; res: Response<any, Record<string, any>, number>; }' but required in type 'CreateExpressContextOptions'.
+server/sync.ts(19,9): error TS2322: Type 'MySqlRawQueryResult' is not assignable to type '{ id: number; userId: number; name: string; description: string | null; createdAt: Date; updatedAt: Date; }'.
+server/sync.ts(34,58): error TS2339: Property 'id' does not exist on type 'MySqlRawQueryResult'.
+server/sync.ts(44,39): error TS2345: Argument of type '{ req: Request<{}, any, any, QueryString.ParsedQs, Record<string, any>>; res: Response<any, Record<string, any>, number>; }' is not assignable to parameter of type 'CreateExpressContextOptions'.
+  Property 'info' is missing in type '{ req: Request<{}, any, any, QueryString.ParsedQs, Record<string, any>>; res: Response<any, Record<string, any>, number>; }' but required in type 'CreateExpressContextOptions'.
+server/sync.ts(54,9): error TS2322: Type 'MySqlRawQueryResult' is not assignable to type '{ id: number; userId: number; name: string; description: string | null; createdAt: Date; updatedAt: Date; }'.
+server/sync.ts(58,38): error TS18048: 'portfolio' is possibly 'undefined'.

@@ -62,45 +62,45 @@ export function ConcentrationAnalysis({ assets }: ConcentrationAnalysisProps) {
   return (
     <div className="space-y-6">
       {/* Resumen de Diversificación */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-slate-900 flex items-center gap-2">
             {diversificationIcon}
             Análisis de Diversificación
           </CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardDescription className="text-slate-500">
             Evaluación de concentración y riesgo de concentración
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Puntuación de Diversificación */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
-              <p className="text-slate-400 text-sm mb-2">Puntuación de Diversificación</p>
+            <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
+              <p className="text-slate-500 text-sm mb-2">Puntuación de Diversificación</p>
               <div className={`text-3xl font-bold ${diversificationColor}`}>
                 {diversificationScore.toFixed(1)}%
               </div>
-              <p className="text-xs text-slate-400 mt-2 capitalize">
+              <p className="text-xs text-slate-500 mt-2 capitalize">
                 Nivel: {diversificationLevel}
               </p>
             </div>
 
-            <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
-              <p className="text-slate-400 text-sm mb-2">Índice de Herfindahl</p>
+            <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
+              <p className="text-slate-500 text-sm mb-2">Índice de Herfindahl</p>
               <div className="text-3xl font-bold text-primary">
                 {herfindahlIndex.toFixed(4)}
               </div>
-              <p className="text-xs text-slate-400 mt-2">
+              <p className="text-xs text-slate-500 mt-2">
                 Rango: 0 (perfecta) a 1 (concentrada)
               </p>
             </div>
 
-            <div className="p-4 bg-slate-700 rounded-lg border border-slate-600">
-              <p className="text-slate-400 text-sm mb-2">Top 3 Activos</p>
+            <div className="p-4 bg-slate-100 rounded-lg border border-slate-300">
+              <p className="text-slate-500 text-sm mb-2">Top 3 Activos</p>
               <div className="text-3xl font-bold text-purple-400">
                 {top3Concentration.toFixed(1)}%
               </div>
-              <p className="text-xs text-slate-400 mt-2">
+              <p className="text-xs text-slate-500 mt-2">
                 Concentración en 3 mayores
               </p>
             </div>
@@ -150,19 +150,19 @@ export function ConcentrationAnalysis({ assets }: ConcentrationAnalysisProps) {
       {/* Gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Gráfico de Barras */}
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader>
-            <CardTitle className="text-white">Distribución de Pesos</CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardTitle className="text-slate-900">Distribución de Pesos</CardTitle>
+            <CardDescription className="text-slate-500">
               Porcentaje de cada activo en el portafolio
             </CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={concentrationData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                <XAxis dataKey="name" stroke="#94a3b8" />
-                <YAxis stroke="#94a3b8" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="name" stroke="#64748b" />
+                <YAxis stroke="#64748b" />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "#1e293b",
@@ -182,10 +182,10 @@ export function ConcentrationAnalysis({ assets }: ConcentrationAnalysisProps) {
         </Card>
 
         {/* Gráfico de Pastel */}
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-white shadow-sm border-slate-200">
           <CardHeader>
-            <CardTitle className="text-white">Composición del Portafolio</CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardTitle className="text-slate-900">Composición del Portafolio</CardTitle>
+            <CardDescription className="text-slate-500">
               Proporción de cada activo
             </CardDescription>
           </CardHeader>
@@ -221,10 +221,10 @@ export function ConcentrationAnalysis({ assets }: ConcentrationAnalysisProps) {
       </div>
 
       {/* Tabla de Detalles */}
-      <Card className="bg-slate-800 border-slate-700">
+      <Card className="bg-white shadow-sm border-slate-200">
         <CardHeader>
-          <CardTitle className="text-white">Detalles de Activos</CardTitle>
-          <CardDescription className="text-slate-400">
+          <CardTitle className="text-slate-900">Detalles de Activos</CardTitle>
+          <CardDescription className="text-slate-500">
             Análisis detallado de cada posición
           </CardDescription>
         </CardHeader>
@@ -232,11 +232,11 @@ export function ConcentrationAnalysis({ assets }: ConcentrationAnalysisProps) {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-slate-600">
-                  <th className="text-left py-3 px-4 text-slate-300 font-semibold">Activo</th>
-                  <th className="text-right py-3 px-4 text-slate-300 font-semibold">Peso</th>
-                  <th className="text-right py-3 px-4 text-slate-300 font-semibold">Porcentaje</th>
-                  <th className="text-left py-3 px-4 text-slate-300 font-semibold">Evaluación</th>
+                <tr className="border-b border-slate-300">
+                  <th className="text-left py-3 px-4 text-slate-700 font-semibold">Activo</th>
+                  <th className="text-right py-3 px-4 text-slate-700 font-semibold">Peso</th>
+                  <th className="text-right py-3 px-4 text-slate-700 font-semibold">Porcentaje</th>
+                  <th className="text-left py-3 px-4 text-slate-700 font-semibold">Evaluación</th>
                 </tr>
               </thead>
               <tbody>
@@ -252,19 +252,19 @@ export function ConcentrationAnalysis({ assets }: ConcentrationAnalysisProps) {
                     evaluationColor = "text-yellow-400";
                   } else if (asset.value < 5) {
                     evaluation = "Muy Pequeño";
-                    evaluationColor = "text-slate-400";
+                    evaluationColor = "text-slate-500";
                   }
 
                   return (
                     <tr
                       key={`row-${index}`}
-                      className="border-b border-slate-700 hover:bg-slate-700 transition-colors"
+                      className="border-b border-slate-200 hover:bg-slate-100 transition-colors"
                     >
-                      <td className="py-3 px-4 text-slate-300">{asset.name}</td>
-                      <td className="py-3 px-4 text-right text-slate-300">
+                      <td className="py-3 px-4 text-slate-700">{asset.name}</td>
+                      <td className="py-3 px-4 text-right text-slate-700">
                         {asset.weight.toFixed(4)}
                       </td>
-                      <td className="py-3 px-4 text-right text-slate-300">
+                      <td className="py-3 px-4 text-right text-slate-700">
                         {asset.value.toFixed(2)}%
                       </td>
                       <td className={`py-3 px-4 text-sm font-semibold ${evaluationColor}`}>
@@ -284,7 +284,7 @@ export function ConcentrationAnalysis({ assets }: ConcentrationAnalysisProps) {
         <CardHeader>
           <CardTitle className="text-primary">Recomendaciones de Diversificación</CardTitle>
         </CardHeader>
-        <CardContent className="text-slate-300 space-y-2 text-sm">
+        <CardContent className="text-slate-700 space-y-2 text-sm">
           <ul className="list-disc list-inside space-y-2">
             <li>
               Idealmente, ningún activo debe representar más del 30% del portafolio

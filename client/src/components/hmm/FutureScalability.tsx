@@ -48,13 +48,13 @@ const FUTURE_ITEMS = [
 
 export default function FutureScalability() {
   return (
-    <Card className="bg-slate-800 border-slate-700">
+    <Card className="bg-white shadow-sm border-slate-200">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-slate-900 flex items-center gap-2">
           <Rocket className="w-5 h-5 text-yellow-400" />
           Escalabilidad Futura
         </CardTitle>
-        <p className="text-slate-400 text-sm">Arquitectura diseñada para evolucionar — roadmap de features avanzados</p>
+        <p className="text-slate-500 text-sm">Arquitectura diseñada para evolucionar — roadmap de features avanzados</p>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -65,9 +65,9 @@ export default function FutureScalability() {
             >
               <div className="flex items-center gap-2">
                 <span className="text-xl">{item.emoji}</span>
-                <span className="text-sm font-bold text-white">{item.title}</span>
+                <span className="text-sm font-bold text-slate-900">{item.title}</span>
               </div>
-              <p className="text-xs text-slate-400 leading-relaxed">{item.description}</p>
+              <p className="text-xs text-slate-500 leading-relaxed">{item.description}</p>
               <div className={`text-xs px-2 py-0.5 rounded-full border w-fit font-semibold ${item.badge}`}>
                 Roadmap
               </div>
