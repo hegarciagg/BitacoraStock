@@ -38,14 +38,14 @@ export interface SignalDecision {
 let cooldownUntil: Date | null = null;
 
 export function getCooldownUntil(): Date | null { return cooldownUntil; }
-export function setCooldown(): void {
-  cooldownUntil = new Date(Date.now() + 48 * 60 * 60 * 1000);
+export function setCooldown(currentTime: Date = new Date()): void {
+  cooldownUntil = new Date(currentTime.getTime() + 48 * 60 * 60 * 1000);
 }
 export function clearCooldown(): void {
   cooldownUntil = null;
 }
-export function isInCooldown(): boolean {
-  return cooldownUntil !== null && new Date() < cooldownUntil;
+export function isInCooldown(currentTime: Date = new Date()): boolean {
+  return cooldownUntil !== null && currentTime < cooldownUntil;
 }
 
 // ── Voting engine ─────────────────────────────────────────────────────────────
@@ -58,16 +58,14 @@ export function evaluateVoting(
   price: number,
   ind: TechnicalIndicators,
 ): VotingResult {
-  const safe = (v: number | undefined) => (v === undefined || isNaN(v) ? 0 : v);
-
-  const rsiOk        = safe(ind.rsi[i])       < 90;
-  const momentumOk   = safe(ind.momentum[i])  > 1;
-  const volatilityOk = safe(ind.volatility[i])< 0.06;   // expressed as pct (std of returns)
-  const volumeOk     = safe(ind.volumeSMA[i]) > 0;       // we compare actual vol vs sma below
-  const adxOk        = safe(ind.adx[i])       > 25;
-  const ema50Ok      = !isNaN(ind.ema50[i])   && price > ind.ema50[i];
-  const ema200Ok     = !isNaN(ind.ema200[i])  && price > ind.ema200[i];
-  const macdOk       = !isNaN(ind.macd[i]) && !isNaN(ind.signal[i]) && ind.macd[i] > ind.signal[i];
+  const rsiOk        = !!ind.rsi[i] && ind.rsi[i] < 90;
+  const momentumOk   = !!ind.momentum[i] && ind.momentum[i] > 1;
+  const volatilityOk = !!ind.volatility[i] && ind.volatility[i] < 0.06;
+  const volumeOk     = !!ind.volumeSMA[i] && ind.volumeSMA[i] > 0;
+  const adxOk        = !!ind.adx[i] && ind.adx[i] > 25;
+  const ema50Ok      = !!ind.ema50[i] && price > ind.ema50[i];
+  const ema200Ok     = !!ind.ema200[i] && price > ind.ema200[i];
+  const macdOk       = !!ind.macd[i] && !!ind.signal[i] && ind.macd[i] > ind.signal[i];
 
   const checks = { rsiOk, momentumOk, volatilityOk, volumeOk, adxOk, ema50Ok, ema200Ok, macdOk };
   const score  = Object.values(checks).filter(Boolean).length;
@@ -81,13 +79,15 @@ export function generateSignal(
   bullState:    number,
   bearState:    number,
   voting:       VotingResult,
+  inPosition:   boolean = false,
+  currentTime:  Date = new Date()
 ): SignalDecision {
   const isBull = currentState === bullState;
   const isBear = currentState === bearState;
 
   // Priority 1: exit if bear regime
   if (isBear) {
-    setCooldown();
+    setCooldown(currentTime);
     return {
       signal:        "CASH",
       regime:        currentState,
@@ -96,12 +96,12 @@ export function generateSignal(
       votingScore:   voting.score,
       checks:        voting.checks,
       cooldownUntil,
-      reason:        "Bear regime detected — exit and cooldown 48h",
+      reason:        "Bear regime detected — exit and cooldown",
     };
   }
 
   // Priority 2: cooldown active
-  if (isInCooldown()) {
+  if (isInCooldown(currentTime)) {
     return {
       signal:        "CASH",
       regime:        currentState,
@@ -114,8 +114,22 @@ export function generateSignal(
     };
   }
 
-  // Priority 3: bull regime + sufficient voting score
-  if (isBull && voting.score >= 7) {
+  // Priority 3: Maintain position if we are in it and things aren't terrible
+  if (inPosition && !isBear && voting.score >= 3) {
+    return {
+      signal:        "LONG",
+      regime:        currentState,
+      bullState,
+      bearState,
+      votingScore:   voting.score,
+      checks:        voting.checks,
+      cooldownUntil: null,
+      reason:        `Holding position (${voting.score}/8 confirmations)`,
+    };
+  }
+
+  // Priority 4: enter new position
+  if (isBull && voting.score >= 5) {
     return {
       signal:        "LONG",
       regime:        currentState,
@@ -137,7 +151,7 @@ export function generateSignal(
     checks:        voting.checks,
     cooldownUntil: null,
     reason:        isBull
-      ? `Bull regime but only ${voting.score}/8 confirmations (need ≥7)`
-      : `Neutral regime (state ${currentState})`,
+      ? `Bull regime but weak signal: ${voting.score}/8 confirmations`
+      : `Neutral regime (state ${currentState}) without strong signal`,
   };
 }

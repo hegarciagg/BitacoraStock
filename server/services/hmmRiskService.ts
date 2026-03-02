@@ -85,7 +85,7 @@ export function runBacktest(
     const price  = bar.close;
     const state  = states[i];
     const voting = evaluateVoting(barIdx, price, indicators);
-    const decision = generateSignal(state, bullState, bearState, voting);
+    const decision = generateSignal(state, bullState, bearState, voting, inPosition, bar.time);
 
     if (!inPosition && decision.signal === "LONG") {
       // Enter position
@@ -117,7 +117,7 @@ export function runBacktest(
       inPosition = false;
 
       // Trigger cooldown if bearish exit
-      if (state === bearState) setCooldown();
+      if (state === bearState) setCooldown(bar.time);
     }
 
     // Equity curve snapshot

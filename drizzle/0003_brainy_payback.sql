@@ -1,0 +1,1 @@
+ALTER TABLE `hmm_trades` MODIFY COLUMN `leverage` decimal(4,2) DEFAULT '1.3';
