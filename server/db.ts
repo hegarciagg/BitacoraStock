@@ -109,6 +109,18 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+export async function getUserByEmail(email: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const { desc } = await import("drizzle-orm");
+  const result = await db.select()
+    .from(users)
+    .where(eq(users.email, email))
+    .orderBy(desc(users.id))
+    .limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
 export async function getUserById(userId: number) {
   const db = await getDb();
   if (!db) {
@@ -119,6 +131,57 @@ export async function getUserById(userId: number) {
   const result = await db.select().from(users).where(eq(users.id, userId)).limit(1);
 
   return result.length > 0 ? result[0] : undefined;
+}
+
+// OTP Queries
+export async function createOtpCode(userId: number, code: string, type: "email_verification" | "password_reset", expiryMinutes: number = 15) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { otpCodes } = await import("../drizzle/schema");
+  
+  const expiresAt = new Date();
+  expiresAt.setMinutes(expiresAt.getMinutes() + expiryMinutes);
+
+  return db.insert(otpCodes).values({
+    userId,
+    code,
+    type,
+    expiresAt,
+    used: 0,
+  });
+}
+
+export async function getValidOtpCode(userId: number, code: string, type: "email_verification" | "password_reset") {
+  const db = await getDb();
+  if (!db) return undefined;
+  const { otpCodes } = await import("../drizzle/schema");
+  const { and, eq, gt } = await import("drizzle-orm");
+
+  const result = await db.select().from(otpCodes).where(
+    and(
+      eq(otpCodes.userId, userId),
+      eq(otpCodes.code, code),
+      eq(otpCodes.type, type),
+      eq(otpCodes.used, 0),
+      gt(otpCodes.expiresAt, new Date())
+    )
+  ).limit(1);
+  
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function markOtpAsUsed(otpId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const { otpCodes } = await import("../drizzle/schema");
+  const { eq } = await import("drizzle-orm");
+  return db.update(otpCodes).set({ used: 1 }).where(eq(otpCodes.id, otpId));
+}
+
+export async function updateUserEmailVerified(userId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  return db.update(users).set({ isEmailVerified: 1 }).where(eq(users.id, userId));
 }
 
 // Portfolio queries

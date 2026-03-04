@@ -1,4 +1,4 @@
-import { COOKIE_NAME } from "@shared/const";
+import { COOKIE_NAME } from "../shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
@@ -14,6 +14,138 @@ export const appRouter = router({
   hmm: hmmRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
+
+    register: publicProcedure
+      .input(z.object({
+        name: z.string().min(2),
+        email: z.string().email(),
+        password: z.string().min(8),
+      }))
+      .mutation(async ({ input }) => {
+        const existingUser = await db.getUserByEmail(input.email);
+        if (existingUser) {
+          throw new TRPCError({ code: "CONFLICT", message: "Email ya está en uso" });
+        }
+        
+        const bcrypt = await import("bcryptjs");
+        const salt = await bcrypt.genSalt(10);
+        const passwordHash = await bcrypt.hash(input.password, salt);
+        const openId = `local_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+
+        await db.upsertUser({
+          openId,
+          name: input.name,
+          email: input.email,
+          loginMethod: "email",
+        });
+
+        const { users } = await import("../drizzle/schema");
+        const { getDb } = await import("./db");
+        const dbClient = await getDb();
+        if (dbClient) {
+           const { eq } = await import("drizzle-orm");
+           await dbClient.update(users)
+              .set({ passwordHash, isEmailVerified: 0 })
+              .where(eq(users.openId, openId));
+        }
+
+        const newUser = await db.getUserByEmail(input.email);
+        if (!newUser) {
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Error al crear usuario" });
+        }
+
+        // Generate OTP
+        const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+        await db.createOtpCode(newUser.id, otpCode, "email_verification");
+        
+        // Mock email sending
+        console.log(`\n======================================================`);
+        console.log(`MOCK EMAIL SENT TO: ${input.email}`);
+        console.log(`SUBJECT: Tu código de verificación`);
+        console.log(`CODIGO OTP: ${otpCode}`);
+        console.log(`======================================================\n`);
+
+        return { success: true, message: "Usuario registrado. Revisa tu correo para el código OTP." };
+      }),
+
+    login: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        password: z.string(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const user = await db.getUserByEmail(input.email);
+        if (!user || !user.passwordHash) {
+          throw new TRPCError({ code: "UNAUTHORIZED", message: "Credenciales invalidas" });
+        }
+
+        const bcrypt = await import("bcryptjs");
+        const isValid = await bcrypt.compare(input.password, user.passwordHash);
+        if (!isValid) {
+          throw new TRPCError({ code: "UNAUTHORIZED", message: "Credenciales invalidas" });
+        }
+
+        if (user.isEmailVerified === 0) {
+          // Si no está verificado, generamos un nuevo OTP para que pueda verificar
+          const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+          await db.createOtpCode(user.id, otpCode, "email_verification");
+          
+          console.log(`\n======================================================`);
+          console.log(`MOCK EMAIL SENT TO: ${user.email}`);
+          console.log(`SUBJECT: Tu nuevo código de verificación`);
+          console.log(`CODIGO OTP: ${otpCode}`);
+          console.log(`======================================================\n`);
+
+          return { success: false, requireVerification: true, message: "Debes verificar tu correo electrónico" };
+        }
+
+        const { sdk } = await import("./_core/sdk");
+        const { ONE_YEAR_MS } = await import("../shared/const");
+        
+        const sessionToken = await sdk.createSessionToken(user.openId, {
+          name: user.name || "",
+          expiresInMs: ONE_YEAR_MS,
+        });
+
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+
+        return { success: true };
+      }),
+
+    verifyOtp: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        code: z.string().length(6),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const user = await db.getUserByEmail(input.email);
+        if (!user) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Usuario no encontrado" });
+        }
+
+        const validOtp = await db.getValidOtpCode(user.id, input.code, "email_verification");
+        if (!validOtp) {
+          throw new TRPCError({ code: "BAD_REQUEST", message: "Código inválido o expirado" });
+        }
+
+        await db.markOtpAsUsed(validOtp.id);
+        await db.updateUserEmailVerified(user.id);
+
+        const { sdk } = await import("./_core/sdk");
+        const { ONE_YEAR_MS } = await import("../shared/const");
+        
+        const sessionToken = await sdk.createSessionToken(user.openId, {
+          name: user.name || "",
+          expiresInMs: ONE_YEAR_MS,
+        });
+
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+
+        return { success: true };
+      }),
+
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });

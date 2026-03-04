@@ -24,6 +24,8 @@ export async function createContext(
       name: "Usuario Hegarciagg",
       email: "hegarciagg@local.com",
       loginMethod: "local",
+      passwordHash: null,
+      isEmailVerified: 1,
       role: "admin",
       riskProfile: "moderate",
       createdAt: new Date(),

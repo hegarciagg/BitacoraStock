@@ -16,11 +16,19 @@ import AnalysisHub from "./pages/AnalysisHub";
 import ProfilePage from "./pages/ProfilePage";
 import HMMTradingSystem from "./pages/HMMTradingSystem";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import VerifyEmail from "./pages/VerifyEmail";
+import EmailVerified from "./pages/EmailVerified";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
+      <Route path="/verify-email" component={VerifyEmail} />
+      <Route path="/email-verified" component={EmailVerified} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/portfolio/:portfolioId" component={PortfolioDetail} />
       <Route path="/portfolio/:portfolioId/simulation" component={SimulationAnalysis} />

@@ -15,7 +15,9 @@ export const users = mysqlTable("users", {
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
-  loginMethod: varchar("loginMethod", { length: 64 }),
+  passwordHash: varchar("passwordHash", { length: 255 }), // Hashed password for direct logins
+  isEmailVerified: int("isEmailVerified").default(0), // 0 = false, 1 = true
+  loginMethod: varchar("loginMethod", { length: 64 }), // e.g. "google", "apple", "email"
   profilePicture: text("profilePicture"),
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
   riskProfile: mysqlEnum("riskProfile", ["conservative", "moderate", "aggressive"]).default("moderate"),
@@ -26,6 +28,20 @@ export const users = mysqlTable("users", {
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
+
+// Tabla para códigos OTP de verificación
+export const otpCodes = mysqlTable("otpCodes", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  code: varchar("code", { length: 6 }).notNull(),
+  type: mysqlEnum("type", ["email_verification", "password_reset"]).notNull(),
+  expiresAt: datetime("expiresAt").notNull(),
+  used: int("used").default(0).notNull(), // 0 = false, 1 = true
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type OtpCode = typeof otpCodes.$inferSelect;
+export type InsertOtpCode = typeof otpCodes.$inferInsert;
 
 
 // Tabla para portafolios de inversión
