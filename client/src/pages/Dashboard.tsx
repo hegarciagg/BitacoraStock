@@ -3,9 +3,10 @@ import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardLayout from "@/components/DashboardLayout";
-import { Plus, TrendingUp, AlertCircle, FileText, BarChart3, Calendar, Zap, BrainCircuit } from "lucide-react";
+import { Plus, TrendingUp, AlertCircle, FileText, BarChart3, Calendar, Zap, BrainCircuit, RefreshCw } from "lucide-react";
 import { useLocation } from "wouter";
-import { useState, useMemo } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,7 +20,12 @@ export default function Dashboard() {
   const [newPortfolioName, setNewPortfolioName] = useState("");
   const [newPortfolioDesc, setNewPortfolioDesc] = useState("");
   const [isCreating, setIsCreating] = useState(false);
-  const marketNews = useMemo(() => getMarketNews(), []);
+  
+  const newsQuery = useQuery({
+    queryKey: ['market-news'],
+    queryFn: getMarketNews,
+    refetchInterval: 1000 * 60 * 5, // Refresh every 5 minutes
+  });
 
   const portfolios = trpc.portfolio.list.useQuery();
   const createPortfolio = trpc.portfolio.create.useMutation({
@@ -171,7 +177,13 @@ export default function Dashboard() {
         )}
 
         <div className="grid lg:grid-cols-2 gap-6">
-          <MarketNewsFeed news={marketNews} limit={5} />
+          <MarketNewsFeed 
+            news={newsQuery.data} 
+            isLoading={newsQuery.isLoading} 
+            isRefetching={newsQuery.isRefetching}
+            onRefresh={() => newsQuery.refetch()}
+            limit={5} 
+          />
           
           <div className="space-y-6">
             <Card className="bg-white border-slate-200 shadow-sm">

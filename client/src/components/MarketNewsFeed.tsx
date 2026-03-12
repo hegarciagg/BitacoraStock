@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown, AlertCircle, Zap } from "lucide-react";
+import { TrendingUp, TrendingDown, AlertCircle, Zap, RefreshCw } from "lucide-react";
 
 export interface MarketNews {
   id: string;
@@ -20,6 +20,8 @@ export interface MarketNews {
 interface MarketNewsFeedProps {
   news?: MarketNews[];
   isLoading?: boolean;
+  isRefetching?: boolean;
+  onRefresh?: () => void;
   limit?: number;
 }
 
@@ -63,7 +65,13 @@ function formatTime(date: Date): string {
   return "hace poco";
 }
 
-export default function MarketNewsFeed({ news = [], isLoading = false, limit = 5 }: MarketNewsFeedProps) {
+export default function MarketNewsFeed({ 
+  news = [], 
+  isLoading = false, 
+  isRefetching = false,
+  onRefresh,
+  limit = 5 
+}: MarketNewsFeedProps) {
   const displayNews = news.slice(0, limit);
 
   if (isLoading) {
@@ -104,14 +112,26 @@ export default function MarketNewsFeed({ news = [], isLoading = false, limit = 5
 
   return (
     <Card className="bg-white shadow-sm border-slate-200">
-      <CardHeader>
-        <CardTitle className="text-slate-900 flex items-center gap-2">
-          <Zap className="w-5 h-5 text-yellow-500" />
-          Noticias del Mercado
-        </CardTitle>
-        <CardDescription className="text-slate-500">
-          Últimas noticias financieras relevantes para tu portafolio
-        </CardDescription>
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <div>
+          <CardTitle className="text-slate-900 flex items-center gap-2">
+            <Zap className="w-5 h-5 text-yellow-500" />
+            Noticias del Mercado
+          </CardTitle>
+          <CardDescription className="text-slate-500 mt-1">
+            Últimas noticias financieras relevantes para tu portafolio
+          </CardDescription>
+        </div>
+        {onRefresh && (
+          <button 
+            onClick={onRefresh}
+            disabled={isRefetching}
+            className="p-2 rounded-md hover:bg-slate-100 text-slate-500 transition-colors shrink-0"
+            title="Actualizar noticias"
+          >
+            <RefreshCw className={`w-4 h-4 ${isRefetching ? 'animate-spin' : ''}`} />
+          </button>
+        )}
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

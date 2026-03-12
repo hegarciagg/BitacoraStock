@@ -30,6 +30,6 @@ export const navItems: NavItem[] = [
 
 export const bottomNavItems: NavItem[] = [
   { label: "Application Settings", path: "/settings/app", icon: Settings },
-  { label: "User Settings", path: "/settings/user", icon: User },
+  { label: "User Settings", path: "/settings", icon: User },
   { label: "Help", path: "/help", icon: HelpCircle },
 ];

@@ -2,6 +2,7 @@
  * Motor de Decisión Profesional ORCA LP - Capa Lógica
  * 
  * Módulos:
+ * 0. Orca On-Chain Loader: Carga datos en vivo desde la cadena Solana
  * 1. Capa de Datos: Obtiene datos históricos de precios
  * 2. Capa de Estrategia: Simula LP vs HODL (Concentrated Liquidity)
  * 3. Capa de Riesgo y Métricas: Calcula Sharpe, Drawdown, etc.
@@ -10,8 +11,534 @@
  */
 
 // ==========================================
-// 1. CAPA DE DATOS
+// 0. ORCA ON-CHAIN LOADER
 // ==========================================
+
+const ORCA_RPC_ENDPOINTS = [
+    'https://api.mainnet-beta.solana.com',
+    'https://solana-mainnet.rpc.extrnode.com',
+    'https://rpc.ankr.com/solana',
+];
+
+// ── Base58 decoder (needed to encode/decode Solana pubkeys) ──
+const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+function base58Decode(str) {
+    const alphabet = BASE58_ALPHABET;
+    let decoded = BigInt(0);
+    let multi = BigInt(1);
+    for (let i = str.length - 1; i >= 0; i--) {
+        const char = str[i];
+        const idx = alphabet.indexOf(char);
+        if (idx < 0) throw new Error(`Invalid base58 character: ${char}`);
+        decoded += multi * BigInt(idx);
+        multi *= BigInt(58);
+    }
+    const bytes = new Uint8Array(32);
+    for (let i = 31; i >= 0; i--) {
+        bytes[i] = Number(decoded & BigInt(0xff));
+        decoded >>= BigInt(8);
+    }
+    return bytes;
+}
+
+function base58Encode(bytes) {
+    const alphabet = BASE58_ALPHABET;
+    let num = BigInt(0);
+    for (const b of bytes) { num = (num << BigInt(8)) | BigInt(b); }
+    let result = '';
+    while (num > 0n) {
+        result = alphabet[Number(num % 58n)] + result;
+        num /= 58n;
+    }
+    // Leading zeros
+    for (const b of bytes) {
+        if (b === 0) result = '1' + result;
+        else break;
+    }
+    return result;
+}
+
+// ── DataView helpers ──
+function dvReadPubkey(dv, offset) {
+    const bytes = new Uint8Array(dv.buffer, dv.byteOffset + offset, 32);
+    return base58Encode(bytes);
+}
+
+function dvReadU128LE(dv, offset) {
+    // Read as two u64 LE halves
+    let lo = 0n, hi = 0n;
+    for (let i = 0; i < 8; i++) lo |= BigInt(dv.getUint8(offset + i)) << BigInt(8 * i);
+    for (let i = 0; i < 8; i++) hi |= BigInt(dv.getUint8(offset + 8 + i)) << BigInt(8 * i);
+    return (hi << 64n) | lo;
+}
+
+function dvReadI32LE(dv, offset) {
+    return dv.getInt32(offset, true /* little-endian */);
+}
+
+function dvReadU16LE(dv, offset) {
+    return dv.getUint16(offset, true);
+}
+
+// ── Tick → Price conversion ──
+// In Orca Whirlpools: price = 1.0001^tick  (for token_b per token_a)
+function tickToPrice(tick) {
+    return Math.pow(1.0001, tick);
+}
+
+// ── sqrtPrice (Q64.64 fixed-point) → price ──
+function sqrtPriceToPrice(sqrtPriceX64) {
+    // Q64.64: integer = sqrtPriceX64 >> 64, fractional = sqrtPriceX64 & (2^64-1)
+    // Split to preserve precision (direct Number() on a 128-bit BigInt loses bits)
+    const divisor = 2n ** 64n;
+    const whole = sqrtPriceX64 / divisor;            // BigInt integer part
+    const frac  = sqrtPriceX64 % divisor;            // BigInt fractional part
+    const sqrtFloat = Number(whole) + Number(frac) / Number(divisor);
+    return sqrtFloat * sqrtFloat;
+}
+
+// ── Whirlpool fee rate (stored as hundredths of a basis point) → decimal ──
+// e.g. feeRate = 3000 means 0.30% (3000 / 1_000_000)
+function feeRateToDecimal(raw) {
+    return raw / 1_000_000;
+}
+
+// ── Fetch account bytes via the local server-side Solana RPC proxy ──
+// The proxy at /api/solana-rpc forwards requests to Solana mainnet without CORS issues
+async function fetchAccountData(address) {
+    const resp = await fetch('/api/solana-rpc', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            method: 'getAccountInfo',
+            params: [address, { encoding: 'base64' }]
+        })
+    });
+    if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.error || `Proxy error: ${resp.status}`);
+    }
+    const json = await resp.json();
+    const value = json?.result?.value;
+    if (!value) throw new Error('Account not found or null');
+    const rawBase64 = value.data[0];
+    const binary = atob(rawBase64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new DataView(bytes.buffer);
+}
+
+// ── Fetch oldest transaction for Position Account to get Start Date ──
+async function fetchPositionStartDate(address) {
+    try {
+        const resp = await fetch('/api/solana-rpc', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                method: 'getSignaturesForAddress',
+                params: [address, { limit: 1000 }]
+            })
+        });
+        if (resp.ok) {
+            const json = await resp.json();
+            const sigs = json?.result;
+            if (sigs && sigs.length > 0) {
+                // The last signature in the array is the oldest (first) transaction
+                const oldest = sigs[sigs.length - 1];
+                if (oldest.blockTime) {
+                    const date = new Date(oldest.blockTime * 1000);
+                    return date.toISOString().split('T')[0];
+                }
+            }
+        }
+    } catch {}
+    return null;
+}
+
+// ── Known tokens: symbol + decimals ──
+const KNOWN_TOKENS = {
+    'So11111111111111111111111111111111111111112':  { symbol: 'SOL',    decimals: 9 },
+    'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v': { symbol: 'USDC',   decimals: 6 },
+    'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB': { symbol: 'USDT',   decimals: 6 },
+    'mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So': { symbol: 'mSOL',   decimals: 9 },
+    'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263': { symbol: 'BONK', decimals: 5 },
+    'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN': { symbol: 'JUP',    decimals: 6 },
+    'EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm': { symbol: 'WIF',  decimals: 6 },
+    '7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr': { symbol: 'POPCAT', decimals: 9 },
+    'hntyVP6YFm1Hg25TN9WGLqM12b8TQmcknKrdu1oxWux': { symbol: 'HNT',    decimals: 8 },
+    'bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1':  { symbol: 'bSOL',   decimals: 9 },
+    'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn': { symbol: 'jitoSOL', decimals: 9 },
+    'rndrizKT3MK1iimdxRdWabcF7Zg7AR5T4nud4EkHBof':  { symbol: 'RNDR',   decimals: 8 },
+};
+
+function mintToSymbol(mint) {
+    return KNOWN_TOKENS[mint]?.symbol || mint.slice(0, 4) + '…';
+}
+
+// ── Fetch token info (symbol + decimals) from Jupiter token list or mint account ──
+async function fetchTokenInfo(mint) {
+    // 1. Check local known tokens first
+    if (KNOWN_TOKENS[mint]) return KNOWN_TOKENS[mint];
+    // 2. Try Jupiter token API (public, no CORS issues)
+    try {
+        const resp = await fetch(`https://tokens.jup.ag/token/${mint}`, { signal: AbortSignal.timeout(5000) });
+        if (resp.ok) {
+            const { symbol, decimals } = await resp.json();
+            if (symbol) return { symbol, decimals: decimals ?? 6 };
+        }
+    } catch {}
+    // 3. Fallback: read decimals from SPL mint account (byte 44)
+    try {
+        const dv = await fetchAccountData(mint);
+        const decimals = dv.getUint8(44);
+        return { symbol: mint.slice(0, 4) + '…', decimals };
+    } catch {}
+    return { symbol: mint.slice(0, 4) + '…', decimals: 6 };
+}
+
+// ── Derive Yahoo Finance ticker from two token symbols ──
+function deriveYahooTicker(symbolA, symbolB) {
+    const STABLES = new Set(['USDC', 'USDT', 'DAI', 'USDH', 'BUSD']);
+    if (STABLES.has(symbolB)) return `${symbolA}-USD`;
+    if (STABLES.has(symbolA)) return `${symbolB}-USD`;
+    // SOL, ETH, BTC as quote → map base to USD
+    const QUOTE = new Set(['SOL', 'ETH', 'BTC', 'mSOL', 'jitoSOL', 'bSOL']);
+    if (QUOTE.has(symbolB) && !symbolA.includes('…')) return `${symbolA}-USD`;
+    if (QUOTE.has(symbolA) && !symbolB.includes('…')) return `${symbolB}-USD`;
+    return null; // can't determine → don't change
+}
+
+// ── Calculate position token amounts from liquidity math ──
+// Returns { amountA, amountB } in raw smallest-unit amounts
+function calcPositionRawAmounts(liquidity, sqrtPLow, sqrtPHigh, sqrtPCurrent) {
+    const L = Number(liquidity);
+    let amountA = 0, amountB = 0;
+    if (sqrtPCurrent <= sqrtPLow) {
+        // All token A
+        amountA = L * (1 / sqrtPLow - 1 / sqrtPHigh);
+    } else if (sqrtPCurrent >= sqrtPHigh) {
+        // All token B
+        amountB = L * (sqrtPHigh - sqrtPLow);
+    } else {
+        // In range
+        amountA = L * (1 / sqrtPCurrent - 1 / sqrtPHigh);
+        amountB = L * (sqrtPCurrent - sqrtPLow);
+    }
+    return { amountA, amountB };
+}
+
+// ── Fetch token prices using Pool Price (no external API needed for USD pairs) ──
+function getInferredUSDPrices(symbolA, symbolB, pCurrent) {
+    let priceA = 0, priceB = 0;
+    const isStable = (sym) => ['USDC', 'USDT', 'DAI', 'USDH'].includes(sym);
+    if (isStable(symbolB)) {
+        priceB = 1.0;
+        priceA = pCurrent;
+    } else if (isStable(symbolA)) {
+        priceA = 1.0;
+        priceB = 1.0 / pCurrent;
+    } else {
+        // Fallback: If not a USD pair, we can't easily price it strictly from the pool
+        // without an oracle. For this specific Orca UI, we just return 0 to skip auto-fill.
+        priceA = 0; priceB = 0;
+    }
+    return { priceA, priceB };
+}
+
+// ── Ed25519 on-curve check (needed for PDA derivation) ──
+// Used to verify that a SHA256 hash is NOT a valid ed25519 point → valid PDA
+const _P = 2n**255n - 19n;
+const _D = 37095705934669439343138083508754565189542113879843219016388785533085940283555n;
+const _SQRT_M1 = 19681161376707505956807079304988542015446066515923890162744021073123829784752n;
+
+function _modpow(b, e, m) {
+    let r = 1n; b = ((b % m) + m) % m;
+    for (; e > 0n; e >>= 1n) { if (e & 1n) r = r * b % m; b = b * b % m; }
+    return r;
+}
+
+function isOnEd25519Curve(bytes32) {
+    // Treat bytes as compressed ed25519 point (y in little-endian, sign in MSB of byte[31])
+    const b = new Uint8Array(bytes32);
+    const signX = (b[31] >> 7) & 1;
+    const yb = b.slice(); yb[31] &= 0x7f;
+    // Read y little-endian (byte[0] = LSB)
+    let y = 0n;
+    for (let i = 0; i < 32; i++) y |= BigInt(yb[i]) << BigInt(8 * i);
+    if (y >= _P) return false;
+    const y2 = y * y % _P;
+    const u = ((y2 - 1n) % _P + _P) % _P;
+    const v = (_D * y2 % _P + 1n) % _P;
+    // Compute x = sqrt(u/v) using the formula: x = u*v^3*(u*v^7)^((p-5)/8)
+    const v3 = v * v % _P * v % _P;
+    const v7 = v3 * v3 % _P * v % _P;
+    let x = u * v3 % _P * _modpow(u * v7 % _P, (_P - 5n) / 8n, _P) % _P;
+    const vx2 = v * x % _P * x % _P;
+    if (vx2 === u) { /* ok */ }
+    else if (vx2 === (_P - u) % _P) { x = x * _SQRT_M1 % _P; }
+    else return false; // x² doesn't exist → not on curve
+    if (x === 0n && signX === 1) return false;
+    return true;
+}
+
+async function _sha256(bytes) {
+    return new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
+}
+
+// Derives a Solana PDA: SHA256(seeds... + programId + "ProgramDerivedAddress")
+// Returns the 32-byte address, or null if the hash lands on the curve (invalid PDA)
+async function _createProgramAddress(seeds, programIdBytes) {
+    const marker = new TextEncoder().encode('ProgramDerivedAddress');
+    const totalLen = seeds.reduce((s, d) => s + d.length, 0) + 32 + marker.length;
+    const buf = new Uint8Array(totalLen);
+    let off = 0;
+    for (const s of seeds) { buf.set(s, off); off += s.length; }
+    buf.set(programIdBytes, off); off += 32;
+    buf.set(marker, off);
+    const hash = await _sha256(buf);
+    if (isOnEd25519Curve(hash)) return null; // on-curve → not a valid PDA
+    return hash;
+}
+
+// Find the Whirlpool position PDA given a position NFT mint (base58)
+// Seeds: ["position", positionMint_bytes, bump]
+async function findWhirlpoolPositionPDA(positionMintBase58) {
+    const WHIRLPOOL_PROGRAM = base58Decode('whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc');
+    const mintBytes = base58Decode(positionMintBase58);
+    const seed0 = new TextEncoder().encode('position');
+    for (let bump = 255; bump >= 0; bump--) {
+        const addr = await _createProgramAddress(
+            [seed0, mintBytes, new Uint8Array([bump])],
+            WHIRLPOOL_PROGRAM
+        );
+        if (addr !== null) return base58Encode(addr);
+    }
+    throw new Error('Could not derive position PDA from the given mint');
+}
+
+// ── POSITION ACCOUNT LAYOUT (Anchor, bytes after 8-byte discriminator) ──
+// Offset  Size  Field
+//    0     32   whirlpool (pubkey)
+//   32     32   positionMint (pubkey)
+//   64     16   liquidity (u128 LE)
+//   80      4   tickLowerIndex (i32 LE)
+//   84      4   tickUpperIndex (i32 LE)
+//   88     16   feeGrowthCheckpointA (u128)
+//  104      8   feeOwedA (u64)
+//  112     16   feeGrowthCheckpointB (u128)
+//  128      8   feeOwedB (u64)
+// (reward data follows, not needed)
+
+function decodePosition(dv) {
+    const DISC = 8; // skip anchor discriminator
+    return {
+        whirlpool:      dvReadPubkey(dv, DISC + 0),
+        positionMint:   dvReadPubkey(dv, DISC + 32),
+        liquidity:      dvReadU128LE(dv, DISC + 64),
+        tickLowerIndex: dvReadI32LE(dv,  DISC + 80),
+        tickUpperIndex: dvReadI32LE(dv,  DISC + 84),
+        feeOwedA:       dvReadU128LE(dv, DISC + 104),
+        feeOwedB:       dvReadU128LE(dv, DISC + 120),
+    };
+}
+
+// ── WHIRLPOOL ACCOUNT LAYOUT (bytes after 8-byte discriminator) ──
+// Verified against Orca Whirlpool program Rust source / IDL:
+// Offset  Size  Field
+//    0     32   whirlpoolsConfig (pubkey)
+//   32      1   whirlpoolBump
+//   33      2   tickSpacing (u16 LE)
+//   35      2   tickSpacingSeed (u16 LE)
+//   37      2   feeRate (u16 LE)  e.g. 3000 = 0.30%
+//   39      2   protocolFeeRate (u16 LE)
+//   41     16   liquidity (u128 LE)  ← FULL 16 bytes!
+//   57     16   sqrtPrice (u128 LE, Q64.64)
+//   73      4   tickCurrentIndex (i32 LE)
+//   77      8   protocolFeeOwedA (u64)
+//   85      8   protocolFeeOwedB (u64)
+//   93     32   tokenMintA (pubkey)
+//  125     32   tokenVaultA (pubkey)
+//  157     16   feeGrowthGlobalA (u128)
+//  173     32   tokenMintB (pubkey)
+//  205     32   tokenVaultB (pubkey)
+
+function decodeWhirlpool(dv) {
+    const DISC = 8;
+    return {
+        tickSpacing:      dvReadU16LE(dv,  DISC + 33),
+        feeRate:          dvReadU16LE(dv,  DISC + 37),
+        sqrtPrice:        dvReadU128LE(dv, DISC + 57),   // was 49 — liquidity is 16 bytes
+        tickCurrentIndex: dvReadI32LE(dv,  DISC + 73),   // was 65
+        tokenMintA:       dvReadPubkey(dv, DISC + 93),   // was 101
+        tokenMintB:       dvReadPubkey(dv, DISC + 173),  // was 165
+    };
+}
+
+// ── Select the matching poolFeeTier <option> ──
+function selectFeeOptionByRate(decimalRate) {
+    const sel = document.getElementById('poolFeeTier');
+    if (!sel) return;
+    const valueStr = String(decimalRate);
+    let found = false;
+    for (const opt of sel.options) {
+        if (Math.abs(parseFloat(opt.value) - decimalRate) < 0.000001) {
+            opt.selected = true;
+            found = true;
+            break;
+        }
+    }
+    // If exact fee tier doesn't exist, append it and select it
+    if (!found) {
+        const newOpt = document.createElement('option');
+        newOpt.value = valueStr;
+        newOpt.text = (decimalRate * 100).toFixed(2) + '%';
+        sel.add(newOpt);
+        newOpt.selected = true;
+    }
+}
+
+// ── Main load function ──
+async function loadOrcaPosition() {
+    const addrInput = document.getElementById('orca-position-address');
+    const statusEl  = document.getElementById('orca-status');
+    const btn       = document.getElementById('btn-load-orca');
+
+    const posAddress = addrInput.value.trim();
+    if (!posAddress) {
+        statusEl.className = 'err';
+        statusEl.textContent = '❌ Introduce una Position Address.';
+        return;
+    }
+
+    btn.disabled = true;
+    statusEl.className = 'loading';
+    statusEl.textContent = '⏳ Consultando Solana RPC…';
+
+    try {
+        // 1. Fetch & decode the Position account
+        // orca.so shows the position NFT mint — try direct fetch first, then derive PDA.
+        statusEl.textContent = '⏳ Cargando cuenta de posición…';
+        let positionDV;
+        try {
+            positionDV = await fetchAccountData(posAddress);
+        } catch (_directErr) {
+            statusEl.textContent = '⏳ Derivando PDA desde position mint…';
+            const pdaAddress = await findWhirlpoolPositionPDA(posAddress);
+            console.log('[Orca] Derived position PDA:', pdaAddress);
+            statusEl.textContent = '⏳ Cargando cuenta PDA de posición…';
+            positionDV = await fetchAccountData(pdaAddress);
+        }
+
+        const position = decodePosition(positionDV);
+        console.log('[Orca] Position decoded:', position);
+
+        // 2. Fetch & decode the Whirlpool account
+        statusEl.textContent = '⏳ Cargando datos del pool Whirlpool…';
+        const whirlpoolDV = await fetchAccountData(position.whirlpool);
+        const pool = decodeWhirlpool(whirlpoolDV);
+        console.log('[Orca] Whirlpool decoded:', pool);
+
+        // 3. Compute raw prices from ticks
+        const rawPLow  = tickToPrice(position.tickLowerIndex);
+        const rawPHigh = tickToPrice(position.tickUpperIndex);
+        const rawPCurrent = Math.sqrt(sqrtPriceToPrice(pool.sqrtPrice));
+        const feeDecimal  = feeRateToDecimal(pool.feeRate);
+
+        // 4. Fetch token info (symbol + decimals)
+        statusEl.textContent = '⏳ Obteniendo metadatos de tokens…';
+        const [infoA, infoB] = await Promise.all([
+            fetchTokenInfo(pool.tokenMintA),
+            fetchTokenInfo(pool.tokenMintB),
+        ]);
+        const pairName    = `${infoA.symbol}/${infoB.symbol}`;
+        const yahooTicker = deriveYahooTicker(infoA.symbol, infoB.symbol);
+
+        // Adjust prices using token decimal scale shift (10^(decimalsA - decimalsB))
+        const decimalShift = Math.pow(10, infoA.decimals - infoB.decimals);
+        let pLow  = rawPLow * decimalShift;
+        let pHigh = rawPHigh * decimalShift;
+        let pCurrent = rawPCurrent * rawPCurrent * decimalShift; // square it back as we took sqrt
+
+        // Fix order if decimals caused inversion
+        if (pLow > pHigh) [pLow, pHigh] = [pHigh, pLow];
+
+        console.log(`[Orca] Scaled Prices: pLow=${pLow.toFixed(6)}, pHigh=${pHigh.toFixed(6)}, pair=${pairName}, fee=${feeDecimal}`);
+
+        // 5. Calculate position USD value & get Start Date
+        statusEl.textContent = '⏳ Calculando valor y fecha de la posición…';
+        const sqrtPLow  = Math.sqrt(rawPLow);
+        const sqrtPHigh = Math.sqrt(rawPHigh);
+        const rawAmounts = calcPositionRawAmounts(position.liquidity, sqrtPLow, sqrtPHigh, rawPCurrent);
+        const decAmountA = rawAmounts.amountA / Math.pow(10, infoA.decimals);
+        const decAmountB = rawAmounts.amountB / Math.pow(10, infoB.decimals);
+        
+        const [startDate] = await Promise.all([
+            fetchPositionStartDate(posAddress) // Use PDA / position address to find creation date
+        ]);
+
+        // Calculate USD value using the pool's current price (assuming it's paired with a stablecoin)
+        const prices = getInferredUSDPrices(infoA.symbol, infoB.symbol, pCurrent);
+        const positionValueUSD = (prices.priceA > 0) ? (decAmountA * prices.priceA + decAmountB * prices.priceB) : 0;
+        console.log(`[Orca] Values: $${positionValueUSD.toFixed(2)}, Started: ${startDate}`);
+
+        // 6. Populate form fields
+        const setVal = (id, val) => {
+            const el = document.getElementById(id);
+            if (el && val !== null && val !== undefined && !isNaN(val)) {
+                el.value = val;
+                el.dispatchEvent(new Event('input', { bubbles: true }));
+                el.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        };
+
+        setVal('pLow', pLow < 0.01 ? pLow.toFixed(6) : pLow.toFixed(4));
+        setVal('pHigh', pHigh < 0.01 ? pHigh.toFixed(6) : pHigh.toFixed(4));
+        selectFeeOptionByRate(feeDecimal);
+
+        if (yahooTicker) setVal('symbol', yahooTicker);
+        if (positionValueUSD && positionValueUSD > 0.01) {
+            setVal('capital', positionValueUSD.toFixed(2));
+        }
+        if (startDate) {
+            const sdEl = document.getElementById('startDate');
+            if (sdEl) {
+                sdEl.value = startDate;
+                sdEl.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+
+        // 7. Update pool name in table header
+        const tablePoolName = document.getElementById('table-pool-name');
+        if (tablePoolName) tablePoolName.textContent = pairName;
+        const poolTierLabel = document.getElementById('pool-tier-label');
+        if (poolTierLabel) poolTierLabel.textContent = (feeDecimal * 100).toFixed(2) + '%';
+
+        // 8. Show success
+        statusEl.className = 'ok';
+        const fmtUSD = (n) => n > 0 ? ` · Valor ~$${n.toFixed(2)}` : '';
+        statusEl.textContent = `✅ Posición cargada · ${pairName} · Fee ${(feeDecimal * 100).toFixed(2)}%${fmtUSD(positionValueUSD)}`;
+
+    } catch (err) {
+        console.error('[Orca] Load failed:', err);
+        statusEl.className = 'err';
+        statusEl.textContent = `❌ Error: ${err.message}. Comprueba la dirección o tu conexión.`;
+    } finally {
+        btn.disabled = false;
+    }
+}
+
+// ── Wire up the button ──
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('btn-load-orca');
+    if (btn) btn.addEventListener('click', loadOrcaPosition);
+
+    // Also allow pressing Enter in the address input
+    const inp = document.getElementById('orca-position-address');
+    if (inp) inp.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); loadOrcaPosition(); }
+    });
+});
+
 
 async function downloadPriceData(symbol, startDate) {
     const statusMsg = document.getElementById('statusMessage');
@@ -712,48 +1239,55 @@ document.getElementById('runAnalysis').addEventListener('click', async () => {
         // Mostrar Patrimonio Actual (Capital Inicial)
         document.getElementById('val-total-value').textContent = fmt(capital);
         
-        // Cálculo de Rango Óptimo (7 días) basado en Volatilidad
+        // Cálculo de Rango Óptimo (30 días) basado en Volatilidad
         // Usar los últimos 30 precios para calcular la volatilidad diaria reciente
         const last30Prices = prices.slice(-30);
         const dailyVol = calculateVolatility(last30Prices);
-        const vol7d = dailyVol * Math.sqrt(7);
-        
-        const optMin = currentPrice * (1 - vol7d);
-        const optMax = currentPrice * (1 + vol7d);
-        
-        // Actualizar UI de Rango Óptimo
+        const vol30d = dailyVol * Math.sqrt(30);
+        const vol7d  = dailyVol * Math.sqrt(7);
+
+        // --- Rango 30d ---
+        const optMin30 = currentPrice * (1 - vol30d);
+        const optMax30 = currentPrice * (1 + vol30d);
+
         const valOptRange = document.getElementById('val-opt-range');
-        if(valOptRange) valOptRange.innerText = `${fmtDec(optMin)} — ${fmtDec(optMax)}`;
-        
+        if (valOptRange) valOptRange.innerText = `${fmtDec(optMin30)} — ${fmtDec(optMax30)}`;
+
         const valOptVol = document.getElementById('val-opt-vol');
-        if(valOptVol) valOptVol.innerText = `Volatility (7d): ${(vol7d * 100).toFixed(2)}%`;
-        
-        // Calcular cantidades en los extremos del rango óptimo
+        if (valOptVol) valOptVol.innerText = `Volatility (30d): ${(vol30d * 100).toFixed(2)}%`;
+
         const valOptCoins = document.getElementById('val-opt-coins');
         if (valOptCoins) {
             try {
-                // Obtener nombres de tokens del símbolo (ej: SOL-USD)
-                let tokenX = "Token X";
-                let tokenY = "Token Y";
-                if (symbol.includes('-')) {
-                    const parts = symbol.split('-');
-                    tokenX = parts[0];
-                    tokenY = parts[1];
-                }
+                let tokenX = "Token X", tokenY = "Token Y";
+                if (symbol.includes('-')) { const p = symbol.split('-'); tokenX = p[0]; tokenY = p[1]; }
+                const L_opt30 = CLEngine.calculateLiquidity(capital, currentPrice, optMin30, optMax30);
+                const atMin30 = CLEngine.positionAmounts(L_opt30, optMin30, optMin30, optMax30);
+                const atMax30 = CLEngine.positionAmounts(L_opt30, optMax30, optMin30, optMax30);
+                valOptCoins.innerText = `${fmtDec(atMin30.x)} ${tokenX} | ${fmtDec(atMax30.y)} ${tokenY}`;
+            } catch (e) { valOptCoins.innerText = "Extremos: N/A"; }
+        }
 
-                // Calcular liquidez L para este rango hipotético partiendo del capital inicial
-                const L_opt = CLEngine.calculateLiquidity(capital, currentPrice, optMin, optMax);
-                
-                // En el extremo inferior (optMin), la posición es 100% Token X
-                const amountsAtMin = CLEngine.positionAmounts(L_opt, optMin, optMin, optMax);
-                // En el extremo superior (optMax), la posición es 100% Token Y
-                const amountsAtMax = CLEngine.positionAmounts(L_opt, optMax, optMin, optMax);
+        // --- Rango 7d ---
+        const optMin7 = currentPrice * (1 - vol7d);
+        const optMax7 = currentPrice * (1 + vol7d);
 
-                valOptCoins.innerText = `${fmtDec(amountsAtMin.x)} ${tokenX} | ${fmtDec(amountsAtMax.y)} ${tokenY}`;
-            } catch (e) {
-                console.error("Error calculating opt range coins:", e);
-                valOptCoins.innerText = "Extremos: N/A";
-            }
+        const valOptRange7 = document.getElementById('val-opt-range-7d');
+        if (valOptRange7) valOptRange7.innerText = `${fmtDec(optMin7)} — ${fmtDec(optMax7)}`;
+
+        const valOptVol7 = document.getElementById('val-opt-vol-7d');
+        if (valOptVol7) valOptVol7.innerText = `Volatility (7d): ${(vol7d * 100).toFixed(2)}%`;
+
+        const valOptCoins7 = document.getElementById('val-opt-coins-7d');
+        if (valOptCoins7) {
+            try {
+                let tokenX = "Token X", tokenY = "Token Y";
+                if (symbol.includes('-')) { const p = symbol.split('-'); tokenX = p[0]; tokenY = p[1]; }
+                const L_opt7 = CLEngine.calculateLiquidity(capital, currentPrice, optMin7, optMax7);
+                const atMin7 = CLEngine.positionAmounts(L_opt7, optMin7, optMin7, optMax7);
+                const atMax7 = CLEngine.positionAmounts(L_opt7, optMax7, optMin7, optMax7);
+                valOptCoins7.innerText = `${fmtDec(atMin7.x)} ${tokenX} | ${fmtDec(atMax7.y)} ${tokenY}`;
+            } catch (e) { valOptCoins7.innerText = "Extremos: N/A"; }
         }
         
         // Usemos la tarifa diaria teórica actual si está en el rango, o 0 si está fuera.

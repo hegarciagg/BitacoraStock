@@ -7,6 +7,59 @@
     <style>
         /* Incrustando CSS básico para asegurar que los estilos carguen inmediatamente para previsualización, 
            Estilos completos estarán en styles.css pero enlazados aquí */
+
+        /* ── Orca On-Chain Loader Card ── */
+        .orca-loader-card {
+            background: linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(99,102,241,0.08) 100%);
+            border: 1px solid rgba(56,189,248,0.3);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+        }
+        .orca-loader-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #38bdf8;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .orca-address-row {
+            display: flex;
+            gap: 8px;
+            align-items: stretch;
+        }
+        .orca-address-row input {
+            flex: 1;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.02em;
+        }
+        #btn-load-orca {
+            flex-shrink: 0;
+            padding: 0 14px;
+            background: linear-gradient(135deg, #38bdf8, #6366f1);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            white-space: nowrap;
+        }
+        #btn-load-orca:hover  { opacity: 0.88; }
+        #btn-load-orca:active { transform: scale(0.97); }
+        #btn-load-orca:disabled { opacity: 0.5; cursor: not-allowed; }
+        #orca-status {
+            margin-top: 8px;
+            font-size: 0.78rem;
+            min-height: 18px;
+            color: #94a3b8;
+        }
+        #orca-status.ok  { color: #22c55e; }
+        #orca-status.err { color: #ef4444; }
+        #orca-status.loading { color: #f59e0b; }
     </style>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="/shared/nav-footer.css">
@@ -61,7 +114,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
             Application Settings
         </a>
-        <a href="#" class="nav-link">
+        <a href="/settings" class="nav-link">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             User Settings
         </a>
@@ -96,6 +149,22 @@
         <section class="panel inputs-panel">
             <h2>⚙️ Strategy Parameters</h2>
             <form id="lpForm">
+                <!-- ── ORCA ON-CHAIN POSITION LOADER ── -->
+                <div class="orca-loader-card">
+                    <h3>🔗 Orca Position (On-Chain)</h3>
+                    <div class="orca-address-row">
+                        <input
+                            type="text"
+                            id="orca-position-address"
+                            placeholder="Pega tu Position Address de orca.so…"
+                            autocomplete="off"
+                            spellcheck="false"
+                        >
+                        <button type="button" id="btn-load-orca">⬇️ Load from Chain</button>
+                    </div>
+                    <div id="orca-status">Introduce una dirección para cargar los datos de la posición.</div>
+                </div>
+
                 <div class="form-group">
                     <label for="symbol">Asset Pair (Yahoo Ticker)</label>
                     <input type="text" id="symbol" value="SOL-USD" placeholder="e.g. ETH-USD">
@@ -171,11 +240,19 @@
                         </span>
                     </div>
                     <div class="summary-item">
-                        <span class="label">Rango Óptimo (7d)</span>
+                        <span class="label">Rango Óptimo (30d)</span>
                         <span class="value-group">
                             <span class="value" id="val-opt-range">--</span>
                             <span class="sub-value opt-vol-sub" id="val-opt-vol">Volatilidad: --</span>
                             <span class="sub-value opt-coins-sub" id="val-opt-coins" style="color: var(--accent-color); font-weight: 500; font-size: 0.75rem; margin-top: 2px;">--</span>
+                        </span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Rango Óptimo (7d)</span>
+                        <span class="value-group">
+                            <span class="value" id="val-opt-range-7d">--</span>
+                            <span class="sub-value opt-vol-sub" id="val-opt-vol-7d">Volatilidad: --</span>
+                            <span class="sub-value opt-coins-sub" id="val-opt-coins-7d" style="color: var(--accent-color); font-weight: 500; font-size: 0.75rem; margin-top: 2px;">--</span>
                         </span>
                     </div>
                     <div class="summary-item" id="alert-summary-item">

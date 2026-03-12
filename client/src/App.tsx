@@ -15,6 +15,7 @@ import ScenarioAnalysis from "./pages/ScenarioAnalysis";
 import AnalysisHub from "./pages/AnalysisHub";
 import ProfilePage from "./pages/ProfilePage";
 import HMMTradingSystem from "./pages/HMMTradingSystem";
+import UserSettings from "./pages/UserSettings";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -41,6 +42,7 @@ function Router() {
       <Route path="/sentiment">{() => { window.location.replace('/analysis'); return null; }}</Route>
       <Route path="/hmm-trading" component={HMMTradingSystem} />
       <Route path="/profile" component={ProfilePage} />
+      <Route path="/settings" component={UserSettings} />
       <Route path="/compare" component={PortfolioComparator} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
