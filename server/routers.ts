@@ -334,11 +334,15 @@ export const appRouter = router({
       .input(z.object({
         investmentId: z.number(),
         portfolioId: z.number(),
+        assetName: z.string().optional(),
+        assetType: z.enum(["stock", "etf", "bond", "crypto", "commodity", "fund", "other"]).optional(),
+        action: z.enum(["buy", "sell", "dividend"]).optional(),
         symbol: z.string().optional(),
         quantity: z.string().optional(),
         unitPrice: z.string().optional(),
         totalValue: z.string().optional(),
         commission: z.string().optional(),
+        transactionDate: z.date().optional(),
         saleDate: z.date().optional(),
         salePrice: z.string().optional(),
         saleValue: z.string().optional(),
@@ -359,11 +363,15 @@ export const appRouter = router({
         }
         const { updateInvestmentWithCacheInvalidation } = await import("./services/crudWithCacheInvalidation");
         return updateInvestmentWithCacheInvalidation(ctx.user.id, input.investmentId, input.portfolioId, {
+          assetName: input.assetName,
+          assetType: input.assetType,
+          action: input.action,
           symbol: input.symbol,
           quantity: input.quantity,
           unitPrice: input.unitPrice,
           totalValue: input.totalValue,
           commission: input.commission,
+          transactionDate: input.transactionDate,
           saleDate: input.saleDate,
           salePrice: input.salePrice,
           saleValue: input.saleValue,

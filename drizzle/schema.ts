@@ -64,7 +64,7 @@ export const investments = mysqlTable("investments", {
   userId: int("userId").notNull(),
   symbol: varchar("symbol", { length: 20 }).notNull(),
   assetName: varchar("assetName", { length: 255 }).notNull(),
-  assetType: mysqlEnum("assetType", ["stock", "etf", "bond", "crypto", "commodity", "other"]).notNull(),
+  assetType: mysqlEnum("assetType", ["stock", "etf", "bond", "crypto", "commodity", "fund", "other"]).notNull(),
   action: mysqlEnum("action", ["buy", "sell", "dividend"]).notNull(),
   quantity: decimal("quantity", { precision: 18, scale: 8 }).notNull(),
   unitPrice: decimal("unitPrice", { precision: 18, scale: 8 }).notNull(),

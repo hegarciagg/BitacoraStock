@@ -135,11 +135,15 @@ export async function updateInvestmentWithCacheInvalidation(
       throw new Error("Investment not found");
     }
 
+    // Actualizar la inversión en la base de datos
+    await db.updateInvestment(investmentId, updates);
+
     // Invalidar caché del portafolio
     const context = createInvalidationContext(userId, "investment_updated", portfolioId);
     await handleCacheInvalidation(context);
     
-    return investment;
+    // Devolvemos la inversión actualizada (con los updates aplicados)
+    return { ...investment, ...updates };
   } catch (error) {
     console.error("[CRUD] Error updating investment:", error);
     throw error;
@@ -167,6 +171,9 @@ export async function deleteInvestmentWithCacheInvalidation(
     if (!investment || investment.portfolioId !== portfolioId) {
       throw new Error("Investment not found");
     }
+
+    // Borrar la inversión en la base de datos
+    await db.deleteInvestment(investmentId);
 
     // Invalidar caché del portafolio
     const context = createInvalidationContext(userId, "investment_deleted", portfolioId);
